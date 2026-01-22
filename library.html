@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Library | The Essay Cabinet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
+  </head>
+  <body>
+    <div class="site">
+      <header>
+        <div class="container nav">
+          <a class="brand" href="index.html">The Cabinet</a>
+          <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="library.html" aria-current="page">Library</a>
+            <a href="about.html">About</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section class="library-section">
+          <div class="container" data-reveal>
+            <h1 class="section-title">Library of texts</h1>
+            <p class="section-subtitle">
+              Essays, treatises, and field notes arranged by theme. Each entry is a focused
+              piece meant to be read slowly, revisited, and cited.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="container">
+            <div class="library-toolbar" data-reveal>
+              <label class="sr-only" for="library-search">Search the library</label>
+              <input
+                id="library-search"
+                class="library-search"
+                type="search"
+                placeholder="Search by title, summary, or tag"
+                data-library-search
+              >
+              <div class="tag-filter-wrapper">
+                <div id="library-tags" class="tag-row tag-filter" data-library-tags></div>
+                <button
+                  class="tag-toggle"
+                  type="button"
+                  data-tag-toggle
+                  aria-expanded="false"
+                  aria-controls="library-tags"
+                >
+                  Show more tags
+                </button>
+              </div>
+            </div>
+            <div class="library-list" data-library-list></div>
+            <p class="library-empty" data-library-empty hidden>
+              No texts match that search yet. Try clearing filters or typing a different tag.
+            </p>
+          </div>
+        </section>
+        <section class="section">
+          <div class="container about-grid">
+            <div class="about-card" data-reveal>
+              <h3 class="section-title">Start Here</h3>
+              <p class="section-subtitle">
+                Suggested routes through the library, curated for different moods and goals.
+              </p>
+              <div class="tag-row">
+                <a class="tag" href="about.html">The Essentials</a>
+                <a class="tag" href="about.html">On Theory</a>
+                <a class="tag" href="about.html">Ethics and method</a>
+              </div>
+            </div>
+            <div class="about-card" data-reveal>
+              <h3 class="section-title">Newsletter</h3>
+              <p class="section-subtitle">
+                Slow delivery. Get one new essay in your inbox every month. No noise.
+              </p>
+              <a class="button secondary" href="about.html">Subscribe for free</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="container">
+          <span>Updated regularly with new essays and notes.</span>
+          <a class="footer-rss" href="rss.xml" aria-label="RSS feed">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor"/>
+              <path d="M4 11a9 9 0 0 1 9 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M4 4a16 16 0 0 1 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>RSS</span>
+          </a>
+          <span>© 2026 Jakub Pacocha. All rights reserved.</span>
+        </div>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

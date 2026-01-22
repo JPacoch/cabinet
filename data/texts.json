@@ -1,0 +1,41 @@
+[
+  {
+    "slug": "christocentric-determinism",
+    "title": "Christocentric Determinism",
+    "type": "Essay",
+    "readingTime": "9 min read",
+    "updated": "2026",
+    "date": "2026-01-22",
+    "excerpt": "On bridging the theological tension between arminianism and calvinism.",
+    "summary": "On bridging the theological tension between arminianism and calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.",
+    "tags": ["Determinism", "Theology", "Chiristianity"],
+    "cardTags": ["Determinism", "Theology"],
+    "content": "texts/christocentric-determinism.md"
+  },
+  {
+    "slug": "welcome",
+    "title": "Welcome!",
+    "type": "Notes",
+    "readingTime": "1 min read",
+    "updated": "2026",
+    "date": "2026-01-21",
+    "excerpt": "Hi! Thank you for visiting my blog :)",
+    "summary": "Hi! Thank you for visiting my blog :)",
+    "tags": ["Message", "Note"],
+    "cardTags": ["Message", "Note"],
+    "content": "texts/welcome.md"
+  },
+  {
+    "slug": "placeholder",
+    "title": "Placeholder",
+    "type": "Notes",
+    "readingTime": "1 min read",
+    "updated": "2026",
+    "date": "2026-01-23",
+    "excerpt": "Placeholder",
+    "summary": "Placeholder",
+    "tags": ["Message", "Note"],
+    "cardTags": ["Message", "Note"],
+    "content": "texts/placeholder.md"
+  }
+]

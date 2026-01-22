@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Text | The Cabinet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
+  </head>
+  <body>
+    <div class="site">
+      <header>
+        <div class="container nav">
+          <a class="brand" href="index.html">The Cabinet</a>
+          <nav class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="library.html">Library</a>
+            <a href="about.html">About</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section class="article">
+          <div class="container" data-reveal data-article>
+            <div class="article-header">
+              <a class="tag tag-link" href="library.html">Back to library</a>
+              <h1 class="article-title" data-article-title></h1>
+              <div class="article-meta" data-article-meta></div>
+            </div>
+            <article class="article-body" data-article-body></article>
+            <div class="share-toolbar" data-share-toolbar hidden>
+              <span class="share-label">Share this text</span>
+              <div class="share-actions">
+                <button class="share-button" type="button" data-share="copy">Copy link</button>
+                <a class="share-button" href="#" data-share="twitter" target="_blank" rel="noopener noreferrer">Twitter</a>
+                <a class="share-button" href="#" data-share="facebook" target="_blank" rel="noopener noreferrer">Facebook</a>
+                <a class="share-button" href="#" data-share="linkedin" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+              </div>
+              <span class="share-status" data-share-status role="status" aria-live="polite"></span>
+            </div>
+            <p class="article-error" data-article-error hidden>
+              This text could not be found. Return to the library to choose another entry.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="container">
+          <span data-article-tags></span>
+          <a class="footer-rss" href="rss.xml" aria-label="RSS feed">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor"/>
+              <path d="M4 11a9 9 0 0 1 9 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M4 4a16 16 0 0 1 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>RSS</span>
+          </a>
+          <span>© 2026 Jakub Pacocha. All rights reserved.</span>
+          <span><a class="tag tag-link" href="library.html">Return to library</a></span>
+        </div>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

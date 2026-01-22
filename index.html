@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Archive of Essays and Treatises</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
+  </head>
+  <body>
+    <div class="site">
+      <header>
+        <div class="container nav">
+          <a class="brand" href="index.html">The Cabinet</a>
+          <nav class="nav-links">
+            <a href="index.html" aria-current="page">Home</a>
+            <a href="library.html">Library</a>
+            <a href="about.html">About</a>
+          </nav>
+        </div>
+      </header>
+
+      <main>
+        <section class="hero container">
+          <div data-reveal>
+            <h1 class="hero-title">A living cabinet of essays, treatises, and longform notes.</h1>
+            <p class="hero-subtitle">
+              This site is a home for slow reading: careful arguments, field notes, and
+              reflective drafts. Each piece was written to be read without distraction :)
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="library.html">Browse the library</a>
+              <a class="button secondary" href="about.html">Read about me</a>
+            </div>
+          </div>
+          <div class="hero-card" data-reveal>
+            <div class="hero-status" aria-label="Active">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span class="status-text"><b>Current focus</b></span>
+            </div>
+            <!--<h3>Current focus</h3>-->
+            <p>
+              Atheism and christocentrism in contemporary philosophy of religion.
+            </p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="container">
+            <h2 class="section-title" data-reveal>Featured texts</h2>
+            <p class="section-subtitle" data-reveal>
+              A rotating shelf of drafts and finished pieces. Read on desktop and mobile.
+            </p>
+            <div class="card-grid" data-texts-grid data-count="3"></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="container" data-reveal>
+            <h2 class="section-title">A library built for depth</h2>
+            <p class="section-subtitle">
+              The archive is organized around themes rather than chronology. Each text lives
+              in the library with a short abstract, estimated reading time, and a plain-text
+              path for long-term preservation.
+            </p>
+            <a class="button secondary" href="library.html">Enter the library</a>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <div class="container">
+          <span>Updated regularly with new essays and notes.</span>
+          <a class="footer-rss" href="rss.xml" aria-label="RSS feed">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M6 18a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" fill="currentColor"/>
+              <path d="M4 11a9 9 0 0 1 9 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M4 4a16 16 0 0 1 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <span>RSS</span>
+          </a>
+          <span>© 2026 Jakub Pacocha. All rights reserved.</span>
+        </div>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
