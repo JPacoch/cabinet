@@ -12,14 +12,17 @@ Where strict spinozism leads to an impersonal nature of human life, christian th
 In John 12:32 Jesus says: 
 
 >"and I, when I am lifted up from the earth, will draw all people to myself"
-This declaration establishes the **universal status of election**, which seems to be a almoast legal-like statemant. When Christ died he brought together the entire universe. The election mst be universal as the incarnation united God with all humanity and not just a specific list of names. To argue otherwise is to limit the value of Christ’s sacrifice and his own teachings (and maybe his own divinity as well?). So basically, every human being lives under the scope of universal election.
+
+This declaration establishes the **universal status of election**, which seems to be a almoast legal-like statement, a reality. When Christ died he brought together the entire universe. The election mst be universal as the incarnation united God with all humanity and not just a specific list of names. To argue otherwise is to limit the value of Christ’s sacrifice and his own teachings (and maybe his own divinity as well?). So basically, every human being lives under the scope of universal election.
 
 This might be similar to some views of Karl Barth (*“humanity is elected in Christ"*). The doors of salvation are legally open to every single human being. God is not a tyrant who creates people for destruction as he has objectively reconciled the world with himself.
 
 ## Sovereign activation - challenging the arminian boldness
 If everyone is drawn, why isn’t everyone saved? While the status of the election is universal, the reality of faith is not. This discrepancy is not explained by human free will (that essentially subtracts from God's omnipotent substance) but rather the doctrine of **sovereign activation**. 
 A finite human cannot choose the infinite (unless the infinite divinity causes that choice). This is where Jesus, in John 6:65, specifies his soteriological framework further:
+
 >"This is why I told you that no one can come to me unless it is granted him by the Father"
+
 In this system, salvation occurs through sovereign activation. The lost are simply those operating on the default laws and nature of the universe, whereas the saved are those in whom God activated the divine calling. Note, that this activation could not be a cooperative effort, like a 50/50 effort split between human and the absolute.
 
 This activation may be similar to a mechanism of  efficient grace or middle knowledge. The all knowing God, perceiving the infinite timeline of cause and effect, applies irresistible grace that is consistent with one’s path of life and experiences. The difference between the believer and the non-believer is not a difference of morality, ethics or wisdom, rather a different state of sanctification caused by God's action. One has been activated by will and grace of the absolute and the other remain in the fog of default natural state.
@@ -34,8 +37,10 @@ In Deleuze’s terms  the universal election is the *virtual* reality - fully pr
 ## Mystery of the lost
 The inevitable question arises regarding those who are never activated - the lost. Why doesn’t the absolute activate everyone?
 In this system their lack of activation is not a failure of God’s power (nor an act of successful resistance against thereof). As stated before, they are those who simply were chosen to live within the logic and laws of the universe, and nothing more. Romans 11:32 emphasizes on that idea: 
+
 > "for God has bound everyone over to disobedience so that he may have mercy on them all"
-That obligation is a positive act of the sovereign God to maintain a portion of humanity in the natural state. This serves a dialectical purpose: the "vessels of common use" provide the necessary contrast for the revelation of glory to the "vessels of mercy" (*vide* Romans 9). The non-activated are integral to the divine plan as their existence in the nature highlights the miracle of God’s grace beside it.
+
+That obligation is a positive act of the sovereign God to maintain a portion of humanity in the natural state. This creates a state of tragic necessity: the "vessels of common use" provide the necessary contrast for the revelation of glory to the "vessels of mercy" (*vide* Romans 9). The non-activated are integral to the divine plan as their existence in the nature highlights the miracle of God’s grace beside it.
 
 Whether these individuals lack a specific component or simply were not meant to be recipients of the divine call is second-degree matter. The Sovereign did not activate the action of faith within them. They remain recipients of the general election in Christ, but without the subjective activation required to transition from the logic of nature to the logic of salvation.
 
