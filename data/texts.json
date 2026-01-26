@@ -8,7 +8,7 @@
     "date": "2026-01-22",
     "excerpt": "On bridging the theological tension between arminianism and calvinism.",
     "summary": "On bridging the theological tension between arminianism and calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.",
-    "tags": ["Determinism", "Theology", "Chiristianity"],
+    "tags": ["Determinism", "Theology", "Chiristianity", "2026"],
     "cardTags": ["Determinism", "Theology"],
     "content": "texts/christocentric-determinism.md"
   },
@@ -21,7 +21,7 @@
     "date": "2026-01-21",
     "excerpt": "Hi! Thank you for visiting my blog :)",
     "summary": "Hi! Thank you for visiting my blog :)",
-    "tags": ["Message", "Note"],
+    "tags": ["Message", "Note", "2026"],
     "cardTags": ["Message", "Note"],
     "content": "texts/welcome.md"
   },
@@ -34,7 +34,7 @@
     "date": "2026-01-23",
     "excerpt": "Placeholder",
     "summary": "Placeholder",
-    "tags": ["Message", "Note"],
+    "tags": ["Message", "Note", "2026"],
     "cardTags": ["Message", "Note"],
     "content": "texts/placeholder.md"
   }

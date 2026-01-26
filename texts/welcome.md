@@ -7,20 +7,20 @@ This site is a home for slow reading: careful arguments, field notes, and reflec
 This newsletter focuses primarily on philosophy, with regular excursions into theology and metaphysics
 You can expect essays that explore:
 
-    - nature of substance: determinism, free will, and what it means to be real
+    - nature of substance: determinism, free will, and what it means for something to *be real*
 
-    - theological synthesis: analyzing religious concepts through rigorous philosophical logic
+    - theological synthesis: analyzing religious concepts through philosophical logic
 
     - notes & reviews: thoughts on texts, thinkers, and cultural moments
 
-(One month I might analyze the facade of free will in a theological context, the next I might explore the concept of the virtual in modern philosophy)
+(One month I might analyze the facade of free will in a theological context and the next I might explore the concept of Deleuze's *virtual* in modern philosophy)
 
 ## The Cadence
 
 I value depth over frequency; I will try to publish once a month :)
 However, the goal is not not to achieve maximum clarity, but rather a snapshot of thought; the slow construction of arguments that can be revisited over the years.
 
-## Who this is for
+## Who this is for?
 
 This is for the curious. Whether you are a secular philosopher, a religious believer, or someone simply trying to read some thoughts on this machine called a universe, you are welcome here.
 
