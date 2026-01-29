@@ -1,4 +1,4 @@
-# Philosophical Blog & Website
+# Philosophical blog
 
 A static website hosted on **Netlify**. This project uses plain HTML, CSS, and JS with no built-in tools.
 
@@ -11,14 +11,27 @@ A static website hosted on **Netlify**. This project uses plain HTML, CSS, and J
 - `data/texts.json`: Metadata for articles (title, date, reading time, etc.).
 - `scripts/`: Utility scripts.
 
-## 🚀 Local Development
+## 🚀 Local development
 To test the site locally:
 1. Open the project in **VS Code**.
 2. Use the **Live Server** extension (or the built-in emulator) to launch `index.html`.
 3. Ensure your browser allows local fetching of JSON and Markdown files.
 
-## 📡 RSS Feed
+## 📡 RSS feed
 The `rss.xml` file is generated via a Python script. No external libraries needed.
 To update the feed, run:
 ```bash
 python3 scripts/generate_rss.py
+```
+
+## 📄 Visual content workflow
+| Task     | Action                                                 |
+|----------|--------------------------------------------------------|
+| Write    | Create new-post.md in /texts/                          |
+| Register | Add metadata entry to data/texts.json                  |
+| Sync     | Run python3 scripts/generate_rss.py to update the feed |
+
+## 🛠️ Built with simplicity
+- 0 dependencies: no react, no tailwind, no bundlers
+- RSS optimized: pure XML generation
+- Markdown as a base for articles
