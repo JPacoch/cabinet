@@ -5,6 +5,71 @@
   let revealObserverTall = null;
   const REVEAL_THRESHOLD = 0.2;
   const REVEAL_TALL_THRESHOLD = 0;
+  const THEME_STORAGE_KEY = "cabinet-theme";
+
+  const getStoredTheme = () => {
+    try {
+      const stored = localStorage.getItem(THEME_STORAGE_KEY);
+      if (stored === "dark" || stored === "light") {
+        return stored;
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return null;
+  };
+
+  const getPreferredTheme = () => {
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  };
+
+  const applyTheme = (theme) => {
+    document.documentElement.setAttribute("data-theme", theme);
+    const toggle = document.querySelector("[data-theme-toggle]");
+    if (!toggle) {
+      return;
+    }
+    const label = toggle.querySelector("[data-theme-label]");
+    const isDark = theme === "dark";
+    toggle.setAttribute("aria-pressed", String(isDark));
+    toggle.classList.toggle("is-dark", isDark);
+    if (label) {
+      label.textContent = isDark ? "Light" : "Dark";
+    }
+  };
+
+  const initThemeToggle = () => {
+    const toggle = document.querySelector("[data-theme-toggle]");
+    const storedTheme = getStoredTheme();
+    const initialTheme = storedTheme || getPreferredTheme();
+    applyTheme(initialTheme);
+
+    if (!toggle) {
+      return;
+    }
+
+    toggle.addEventListener("click", () => {
+      const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+      } catch (error) {
+        console.error(error);
+      }
+      applyTheme(nextTheme);
+    });
+
+    const media = window.matchMedia
+      ? window.matchMedia("(prefers-color-scheme: dark)")
+      : null;
+    if (media && !storedTheme) {
+      media.addEventListener("change", (event) => {
+        applyTheme(event.matches ? "dark" : "light");
+      });
+    }
+  };
 
   const handleReveal = (entries, observer) => {
     entries.forEach((entry) => {
@@ -576,6 +641,7 @@
   };
 
   const init = async () => {
+    initThemeToggle();
     const needsTexts = document.querySelector(
       "[data-texts-grid], [data-library-list], [data-article]"
     );
