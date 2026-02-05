@@ -15,7 +15,7 @@
   {
     "slug": "welcome",
     "title": "Welcome!",
-    "type": "Notes",
+    "type": "Note",
     "readingTime": "1 min read",
     "updated": "2026",
     "date": "2026-01-21",
@@ -26,16 +26,16 @@
     "content": "texts/welcome.md"
   },
   {
-    "slug": "placeholder",
-    "title": "Placeholder",
-    "type": "Notes",
-    "readingTime": "1 min read",
+    "slug": "sartrean-trap",
+    "title": "The Sartrean Trap",
+    "type": "Essay",
+    "readingTime": "7 min read",
     "updated": "2026",
-    "date": "2026-01-23",
-    "excerpt": "Placeholder",
-    "summary": "Placeholder",
-    "tags": ["Message", "Note", "2026"],
-    "cardTags": ["Message", "Note"],
-    "content": "texts/placeholder.md"
+    "date": "2026-02-07",
+    "excerpt": "When the method becomes a prison - on how Sartre misused phenomenology.",
+    "summary": "When the method becomes a prison - on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'",
+    "tags": ["Phenomenology", "Existentialism", "Sartre", "Husserl", "2026"],
+    "cardTags": ["Phenomenology", "Existentialism"],
+    "content": "texts/sartrean-trap.md"
   }
 ]
