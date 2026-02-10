@@ -699,6 +699,95 @@ main {
   color: var(--muted);
 }
 
+/* Tufte-style sidenotes */
+.article-body {
+  position: relative;
+}
+
+.sidenote-ref {
+  position: relative;
+  top: -0.4em;
+  font-size: 0.75em;
+  line-height: 0;
+  color: var(--accent);
+  text-decoration: none;
+  font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 0 2px;
+}
+
+.sidenote-ref:hover,
+.sidenote-ref:focus {
+  color: var(--accent-2);
+}
+
+.sidenote {
+  display: inline;
+  position: relative;
+}
+
+.sidenote-content {
+  display: block;
+  float: right;
+  clear: right;
+  width: 40%;
+  margin-right: -45%;
+  margin-top: 0;
+  margin-bottom: 1.4rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--muted);
+  padding-left: 1rem;
+  border-left: 1px solid var(--accent);
+  font-family: "Newsreader", "Iowan Old Style", "Times New Roman", serif;
+  text-align: left;
+  text-justify: auto;
+}
+
+.sidenote-number {
+  display: inline-block;
+  color: var(--accent);
+  font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+  font-size: 0.8em;
+  font-weight: 500;
+  margin-right: 0.3em;
+}
+
+/* Mobile: convert sidenotes to inline footnotes */
+@media (max-width: 1024px) {
+  .sidenote-content {
+    display: inline;
+    float: none;
+    width: auto;
+    margin-right: 0;
+    margin-left: 0.5em;
+    margin-bottom: 0;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    border-left: none;
+    background: var(--quote-bg);
+    border-radius: 4px;
+    font-size: 0.9rem;
+  }
+  
+  .sidenote-content::before {
+    content: "[";
+    color: var(--accent);
+    margin-right: 0.2em;
+  }
+  
+  .sidenote-content::after {
+    content: "]";
+    color: var(--accent);
+    margin-left: 0.2em;
+  }
+  
+  .sidenote-number {
+    display: none;
+  }
+}
+
 .about-grid {
   display: grid;
   gap: 30px;

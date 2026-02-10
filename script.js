@@ -98,7 +98,24 @@
   };
 
   const markdownToHtml = (markdown) => {
-    const lines = markdown.replace(/\r/g, "").split("\n");
+    // First pass: collect sidenote definitions
+    const sidenotes = new Map();
+    const sidenoteDefs = markdown.match(/^\[\^(\d+)\]:\s*(.+)$/gm);
+
+    if (sidenoteDefs) {
+      sidenoteDefs.forEach((def) => {
+        const match = def.match(/^\[\^(\d+)\]:\s*(.+)$/);
+        if (match) {
+          const [, num, content] = match;
+          sidenotes.set(num, content.trim());
+        }
+      });
+    }
+
+    // Remove sidenote definitions from the markdown
+    let cleanedMarkdown = markdown.replace(/^\[\^(\d+)\]:\s*.+$/gm, '');
+
+    const lines = cleanedMarkdown.replace(/\r/g, "").split("\n");
     const blocks = [];
     let paragraph = [];
     let quote = [];
@@ -184,21 +201,40 @@
     flushQuote();
     flushList();
 
+    // Process sidenote references AFTER inline markdown rendering
+    const processSidenotes = (renderedHtml) => {
+      return renderedHtml.replace(/\[\^(\d+)\]/g, (match, num) => {
+        const content = sidenotes.get(num);
+        if (content) {
+          // Render inline markdown in the sidenote content
+          const renderedContent = renderInlineMarkdown(content);
+          return `<span class="sidenote"><sup class="sidenote-ref">${num}</sup><span class="sidenote-content"><span class="sidenote-number">${num}.</span> ${renderedContent}</span></span>`;
+        }
+        return match;
+      });
+    };
+
     return blocks
       .map((block) => {
         if (block.type === "p") {
-          return `<p>${renderInlineMarkdown(block.text)}</p>`;
+          const rendered = renderInlineMarkdown(block.text);
+          return `<p>${processSidenotes(rendered)}</p>`;
         }
         if (block.type === "blockquote") {
-          return `<blockquote>${renderInlineMarkdown(block.text)}</blockquote>`;
+          const rendered = renderInlineMarkdown(block.text);
+          return `<blockquote>${processSidenotes(rendered)}</blockquote>`;
         }
         if (block.type === "ul" || block.type === "ol") {
           const items = block.items
-            .map((item) => `<li>${renderInlineMarkdown(item)}</li>`)
+            .map((item) => {
+              const rendered = renderInlineMarkdown(item);
+              return `<li>${processSidenotes(rendered)}</li>`;
+            })
             .join("");
           return `<${block.type}>${items}</${block.type}>`;
         }
-        return `<${block.type}>${renderInlineMarkdown(block.text)}</${block.type}>`;
+        const rendered = renderInlineMarkdown(block.text);
+        return `<${block.type}>${processSidenotes(rendered)}</${block.type}>`;
       })
       .join("");
   };
