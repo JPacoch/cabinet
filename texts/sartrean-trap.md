@@ -2,7 +2,7 @@
 
 The beginnings of the twentieth century really entangled philosophers in a peculiar state of paralysis. Many discussions no matter how local, or global, practical or theoretical, risked being dissolved into a somewhat tragic, the same final matter of “Is the world even real? How could we know for certain? What is the relation between that real world and a human mind?”. All the legitimate, somehow inevitable questions,yet fatal to any pragmatic discussion. When every issue collapses into the foundational dilemma, none could be resolved really. 
 
-Husserl’s phenomenology was a methodological breakthrough. *Epoche* - the suspension of any assumptions (including metaphysical ones) was one of the finest inventions. Yet, Husserl did not deny the world, nor declared metaphysics obsolete, nonfactual, a fairy. He proposed a tool, a way of setting aside any prejudices, biases, dilemmas and worldviews temporarily in order to examine what is given in the experience, as it appears, and analyse the phenomenon further in that manner. The universe itself is not rejected, rather placed between (or behind) the brackets so that human consciousness, experience, meaning and appearance could be studied without distractions. 
+Husserl’s phenomenology was a methodological breakthrough.[^1] *Epoche* - the suspension of any assumptions (including metaphysical ones) was one of the finest inventions. Yet, Husserl did not deny the world, nor declared metaphysics obsolete, nonfactual, a fairy. He proposed a tool, a way of setting aside any prejudices, biases, dilemmas and worldviews temporarily in order to examine what is given in the experience, as it appears, and analyse the phenomenon further in that manner. The universe itself is not rejected, rather placed between (or behind) the brackets so that human consciousness, experience, meaning and appearance could be studied without distractions. 
 
 I believe Husserl’s intentions were of a pragmatic nature, very epistemology-centered. He sought clarity in that process of dissection and analyses, not an ultimate worldview or holistic picture of how things really are. One could think of it rather like metaphysics is being postponed, not abolished. Bracketing is thorough and strategic, but temporary and most importantly - limited. It is a suspension for the sake of focus, one could not conclude from this that nothing for certain lies beyond the bracket. 
 
@@ -15,7 +15,7 @@ What may be bothering is that many thinkers after Husserl misused that tool to c
 
 Sartre inherits Husserl's method but fundamentally transforms the scope of it. What was meant to be just a method in frenchmen’s hands becomes a complex picture of reality. Sartre’s phenomenology, especially in *Being and Nothingness*, presents more as an extensive ontology. He describes consciousness, the *for-itself*, the *in-itself*, freedom, nothingness, and the structure of human existence like a cartographer mapping a continent that is fully accessible with use of pure experience. So he does not use phenomenology to analyze the reality, rather speaks of his observations as they were exhausting the whole picture of what there is. A tool becomes a worldview. As Sartre says in *Being and Nothingness*:
 
->"Ontology itself can be attempted only as a phenomenology."
+>"The being of an existent is precisely what it appears"
 
 His identification of phenomenological description as ontology is precisely where the problem arises. He never recovers from the *epoche* and stays in the bracket, moreover his whole universe is built within it. If we were to freeze that viewpoint I would argue that this suspension, that *epoch*e from metaphysical plain becomes a metaphysical claim itself - for Sartre what lies beyond human experience and appearance is philosophically irrelevant. In his world the universe in essence is just an insignificant background for human existence. Everything apart from his concept of *for-itself* (and the actions revolving around it) is really diminished to the role of *in-itself* - muted, grayed out, secondary, unimportant.
 
@@ -43,3 +43,6 @@ Phenomenology should assist us in seeing further, not limit us on what we are al
 
 Husserl gave us a discipline of thought, Sartre turned it into a universe. The task now is to restore the original proportion. 
 And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?
+
+
+[^1]: E. Husserl developed phenomenology, a philosophical method in the early 1900s. I recommend reading his *The Crisis of European Sciences and Transcendental Phenomenology*, especially §10 to §15, before reading that article :)
