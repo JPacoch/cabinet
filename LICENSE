@@ -1,9 +1,36 @@
-Copyright (c) 2026 Jakub Pacocha
+# Licensing Information
 
-All rights reserved. 
+This repository contains both software (the "Code") and philosophical writings (the "Content"). These are licensed differently to ensure the engine is open for use, while the thoughts remain protected under a creative commons framework.
 
-No part of this repository, including but not limited to the articles, 
-source code, or design elements, may be reproduced, distributed, 
-or transmitted in any form or by any means, including photocopying, 
-recording, or other electronic or mechanical methods, without the 
-prior written permission of the author.
+---
+
+## 1. Code
+**License:** MIT License
+
+Copyright (c) 2026 Jakub Pacocha / the cabinet
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+## 2. Content (Essays & Philosophical Works)
+**License:** Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+
+This license requires that reusers give credit to the creator. It allows reusers to distribute, remix, adapt, and build upon the material in any medium or format, for noncommercial purposes only. If others modify or adapt the material, they must license the modified material under identical terms.
+
+**Key Terms:**
+* **Attribution (BY):** You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+* **NonCommercial (NC):** You may not use the material for commercial purposes.
+* **ShareAlike (SA):** If you remix, transform, or build upon the material, you must distribute your contributions under the same license as the original.
+
+For the full legal text of the CC BY-NC-SA 4.0 license, please visit: 
+https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+
+---
+
+## Summary
+In short: You can use the code to build your own site, but you cannot sell my essays or republish them without giving me credit and using this same license.

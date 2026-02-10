@@ -35,3 +35,11 @@ python3 scripts/generate_rss.py
 - 0 dependencies: no react, no tailwind, no bundlers
 - RSS optimized: pure XML generation
 - Markdown as a base for articles
+
+## ⚖️ License
+This project is a "hybrid" repository containing both the engine and the articles
+
+* **The Code** (infrastructure, CSS, and logic) is licensed under the [MIT License](LICENSE#1-code).
+* **The Content** (essays, philosophical reflections, and prose) is licensed under [CC BY-NC-SA 4.0](LICENSE#2-content-essays--philosophical-works).
+
+By contributing to this repository, you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md) and license your contributions under these same terms.
