@@ -201,12 +201,10 @@
     flushQuote();
     flushList();
 
-    // Process sidenote references AFTER inline markdown rendering
     const processSidenotes = (renderedHtml) => {
       return renderedHtml.replace(/\[\^(\d+)\]/g, (match, num) => {
         const content = sidenotes.get(num);
         if (content) {
-          // Render inline markdown in the sidenote content
           const renderedContent = renderInlineMarkdown(content);
           return `<span class="sidenote"><sup class="sidenote-ref">${num}</sup><span class="sidenote-content"><span class="sidenote-number">${num}.</span> ${renderedContent}</span></span>`;
         }
@@ -696,3 +694,29 @@
     init();
   }
 })();
+
+/* Newsletter Modal Logic */
+window.toggleModal = function(show) {
+  const modal = document.getElementById('newsletterModal');
+  if (!modal) return;
+
+  if (show) {
+    modal.classList.remove('closing');
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  } else {
+    modal.classList.add('closing');
+    setTimeout(() => {
+      modal.classList.remove('active');
+      modal.classList.remove('closing');
+      document.body.style.overflow = '';
+    }, 300);
+  }
+};
+
+window.addEventListener('click', (event) => {
+  const modal = document.getElementById('newsletterModal');
+  if (event.target === modal) {
+    window.toggleModal(false);
+  }
+});

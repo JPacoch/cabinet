@@ -307,6 +307,7 @@ main {
   background: transparent;
   color: var(--ink);
   box-shadow: none;
+  cursor: pointer;
 }
 
 .button:hover {
@@ -936,4 +937,116 @@ main {
     flex-direction: column;
     align-items: flex-start;
   }
+}
+
+/* Newsletter Modal */
+.modal-overlay {
+  display: flex;
+  visibility: hidden;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal-overlay.active {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-content {
+  background: var(--surface);
+  padding: 40px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  width: 90%;
+  max-width: 440px;
+  position: relative;
+  box-shadow: var(--shadow);
+  text-align: center;
+  transform: scale(0.95) translateY(10px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}
+
+.modal-overlay.closing .modal-content {
+  transform: scale(0.95) translateY(10px);
+}
+
+.modal-overlay .close-btn {
+  position: absolute;
+  top: 15px; right: 20px;
+  background: none;
+  border: none;
+  font-family: system-ui, sans-serif;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 5px;
+}
+
+.modal-overlay .close-btn:hover {
+  color: var(--ink);
+  transform: scale(1.1);
+}
+
+.modal-title {
+  font-family: "Fraunces", "Georgia", serif;
+  font-size: 1.6rem;
+  margin: 0 0 10px;
+  color: var(--ink);
+}
+
+.modal-text {
+  font-family: "Newsreader", "Iowan Old Style", "Times New Roman", serif;
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin: 0 0 25px;
+  line-height: 1.5;
+}
+
+.modal-overlay .form-group {
+  margin-bottom: 15px;
+}
+
+.custom-input {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  border-radius: 999px;
+  font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+  font-size: 0.95rem;
+  color: var(--ink);
+  transition: border-color 0.2s ease, outline 0.2s ease;
+}
+
+.custom-input:focus {
+  border-color: var(--accent);
+  outline: 2px solid var(--glow-accent);
+  outline-offset: 1px;
+}
+
+.custom-input::placeholder {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.full-width {
+  width: 100%;
+  justify-content: center;
+  cursor: pointer;
 }
