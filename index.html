@@ -1,122 +1,153 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>readthecabinet</title>
-    <link rel="icon" type="image/x-icon" href="/images/favico.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
-  </head>
-  <body>
-    <div class="site">
-      <header>
-        <div class="container nav">
-          <a class="brand" href="index.html">The Cabinet</a>
-          <nav class="nav-links">
-            <a href="index.html" aria-current="page">Home</a>
-            <a href="library.html">Library</a>
-            <a href="about.html">About</a>
-            <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle dark mode">
-              <span class="theme-toggle-label" data-theme-label>Dark</span>
-              <span class="theme-toggle-indicator" aria-hidden="true">
-                <span class="theme-toggle-knob"></span>
-              </span>
-            </button>
-          </nav>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>readthecabinet</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
+</head>
+
+<body>
+  <div class="site">
+    <header>
+      <div class="container nav">
+        <a class="brand" href="index.html">The Cabinet</a>
+        <nav class="nav-links">
+          <a href="index.html" aria-current="page">Home</a>
+          <a href="library.html">Library</a>
+          <a href="about.html">About</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false"
+            aria-label="Toggle dark mode">
+            <span class="theme-toggle-label" data-theme-label>Dark</span>
+            <span class="theme-toggle-indicator" aria-hidden="true">
+              <span class="theme-toggle-knob"></span>
+            </span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero container">
+        <div data-reveal>
+          <h1 class="hero-title">A living cabinet of essays, treatises, and longform notes.</h1>
+          <p class="hero-subtitle">
+            This site is a home for slow reading: careful arguments, field notes, and
+            reflective drafts. Each piece was written to be read without distraction :)
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="library.html">Browse the library</a>
+            <a class="button secondary" href="about.html">Read about me</a>
+          </div>
         </div>
-      </header>
+        <div class="hero-card" data-reveal>
+          <div class="hero-status" aria-label="Active">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span class="status-text"><b>Current focus</b></span>
+          </div>
+          <!--<h3>Current focus</h3>-->
+          <p>
+            Atheism and agnosticism in contemporary philosophy of religion.
+          </p>
+        </div>
+      </section>
 
-      <main>
-        <section class="hero container">
-          <div data-reveal>
-            <h1 class="hero-title">A living cabinet of essays, treatises, and longform notes.</h1>
-            <p class="hero-subtitle">
-              This site is a home for slow reading: careful arguments, field notes, and
-              reflective drafts. Each piece was written to be read without distraction :)
-            </p>
-            <div class="hero-actions">
-              <a class="button" href="library.html">Browse the library</a>
-              <a class="button secondary" href="about.html">Read about me</a>
-            </div>
-          </div>
-          <div class="hero-card" data-reveal>
-            <div class="hero-status" aria-label="Active">
-              <span class="status-dot" aria-hidden="true"></span>
-              <span class="status-text"><b>Current focus</b></span>
-            </div>
-            <!--<h3>Current focus</h3>-->
-            <p>
-              Atheism and agnosticism in contemporary philosophy of religion.
-            </p>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="container">
-            <h2 class="section-title" data-reveal>Featured texts</h2>
-            <p class="section-subtitle" data-reveal>
-              A rotating shelf of drafts and finished pieces. Read on desktop and mobile.
-            </p>
-            <div class="card-grid" data-texts-grid data-count="3"></div>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="container" data-reveal>
-            <h2 class="section-title">A library built for depth</h2>
-            <p class="section-subtitle">
-              The archive is organized around themes rather than chronology. Each text lives
-              in the library with a short abstract, estimated reading time, and a plain text
-              format for long-term preservation.
-            </p>
-            <a class="button secondary" href="library.html">Enter the library</a>
-          </div>
-        </section>
-        <section class="section">
-          <div class="container about-grid">
-            <div class="about-card" data-reveal>
-              <h3 class="section-title">Start Here</h3>
-              <p class="section-subtitle">
-                Suggested routes through the library, curated for different moods and goals.
-              </p>
-              <div class="tag-row">
-                <a class="tag" href="text.html?slug=sartrean-trap">Phenomenology</a>
-                <a class="tag" href="text.html?slug=christocentric-determinism">Determinism</a>
-                <a class="tag" href="text.html?slug=placeholder">The Essentials</a>
-              </div>
-            </div>
-            <div class="about-card" data-reveal>
-              <h3 class="section-title">Newsletter</h3>
-              <p class="section-subtitle">
-                Slow delivery. Get new article in your inbox every month. No noise.
-              </p>
-              <a class="button secondary" href="about.html">Subscribe for free</a>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer class="footer">
+      <section class="section">
         <div class="container">
-          <span>Updated regularly with new essays and notes.</span>
-          <a class="footer-rss" href="rss.xml" aria-label="RSS feed">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4a16 16 0 0 1 16 16"/>
-              <path d="M4 11a9 9 0 0 1 9 9"/>
-              <circle cx="5" cy="19" r="1"/>
-            </svg>
-            <span>RSS</span>
-          </a>
-          <span>© 2026 Jakub Pacocha. All rights reserved.</span>
+          <h2 class="section-title" data-reveal>Featured texts</h2>
+          <p class="section-subtitle" data-reveal>
+            A rotating shelf of drafts and finished pieces. Read on desktop and mobile.
+          </p>
+          <div class="card-grid" data-texts-grid data-count="3"></div>
         </div>
-      </footer>
+      </section>
+
+      <section class="section">
+        <div class="container" data-reveal>
+          <h2 class="section-title">A library built for depth</h2>
+          <p class="section-subtitle">
+            The archive is organized around themes rather than chronology. Each text lives
+            in the library with a short abstract, estimated reading time, and a plain text
+            format for long-term preservation.
+          </p>
+          <a class="button secondary" href="library.html">Enter the library</a>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container about-grid">
+          <div class="about-card" data-reveal>
+            <h3 class="section-title">Start Here</h3>
+            <p class="section-subtitle">
+              Suggested routes through the library, curated for different moods and goals.
+            </p>
+            <div class="tag-row">
+              <a class="tag" href="text.html?slug=sartrean-trap">Phenomenology</a>
+              <a class="tag" href="text.html?slug=christocentric-determinism">Determinism</a>
+              <a class="tag" href="text.html?slug=placeholder">The Essentials</a>
+            </div>
+          </div>
+          <div class="about-card" data-reveal>
+            <h3 class="section-title">Newsletter</h3>
+            <p class="section-subtitle">
+              Slow delivery. Get new article in your inbox every month. No noise.
+            </p>
+            <button type="button" class="button secondary" onclick="toggleModal(true)">
+              Subscribe for free
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="newsletterModal" class="modal-overlay">
+      <div class="modal-content">
+        <button type="button" class="close-btn" onclick="toggleModal(false)">&times;</button>
+
+        <div class="newsletter-form-container">
+          <h3 class="modal-title">Join the Newsletter</h3>
+          <p class="modal-text">Get new articles in your inbox every month.</p>
+
+          <form action="https://eomail5.com/form/5a2a496c-071c-11f1-b36f-d56f9fb2bdeb.js" method="post" id="eo-form">
+            <div class="form-group">
+              <input type="email" name="field_0" placeholder="Email Address" required class="custom-input">
+            </div>
+
+            <div style="position: absolute; left: -5000px;" aria-hidden="true">
+              <input type="text" name="hp5a2a496c-071c-11f1-b36f-d56f9fb2bdeb" tabindex="-1" value="">
+            </div>
+
+            <button type="submit" class="button secondary full-width">Sign Me Up</button>
+          </form>
+        </div>
+      </div>
     </div>
-    <script src="script.js"></script>
-    <script data-goatcounter="https://pacochp.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-  </body>
+
+    <footer class="footer">
+      <div class="container">
+        <span>Updated regularly with new essays and notes.</span>
+        <a class="footer-rss" href="rss.xml" aria-label="RSS feed">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4a16 16 0 0 1 16 16" />
+            <path d="M4 11a9 9 0 0 1 9 9" />
+            <circle cx="5" cy="19" r="1" />
+          </svg>
+          <span>RSS</span>
+        </a>
+        <span>© 2026 Jakub Pacocha. All rights reserved.</span>
+      </div>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+  <script data-goatcounter="https://pacochp.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+</body>
+
 </html>

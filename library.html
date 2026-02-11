@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Library | The Essay Cabinet</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
@@ -88,12 +89,35 @@
               <p class="section-subtitle">
                 Slow delivery. Get new post in your inbox every month. No noise.
               </p>
-              <a class="button secondary" href="about.html">Subscribe for free</a>
+              <button type="button" class="button secondary" onclick="toggleModal(true)">
+                Subscribe for free
+              </button>
             </div>
           </div>
         </section>
       </main>
+      <div id="newsletterModal" class="modal-overlay">
+        <div class="modal-content">
+          <button type="button" class="close-btn" onclick="toggleModal(false)">&times;</button>
 
+          <div class="newsletter-form-container">
+            <h3 class="modal-title">Join the Newsletter</h3>
+            <p class="modal-text">Get new articles in your inbox every month.</p>
+
+            <form action="https://eomail5.com/form/5a2a496c-071c-11f1-b36f-d56f9fb2bdeb.js" method="post" id="eo-form">
+              <div class="form-group">
+                <input type="email" name="field_0" placeholder="Email Address" required class="custom-input">
+              </div>
+
+              <div style="position: absolute; left: -5000px;" aria-hidden="true">
+                <input type="text" name="hp5a2a496c-071c-11f1-b36f-d56f9fb2bdeb" tabindex="-1" value="">
+              </div>
+
+              <button type="submit" class="button secondary full-width">Sign Me Up</button>
+            </form>
+          </div>
+        </div>
+      </div>
       <footer class="footer">
         <div class="container">
           <span>Updated regularly with new essays and notes.</span>
