@@ -31,7 +31,7 @@ python3 scripts/generate_rss.py
 | Register | Add metadata entry to data/texts.json                  |
 | Sync     | Run python3 scripts/generate_rss.py to update the feed |
 
-## 🛠️ Built with simplicity
+##  Built with simplicity
 - 0 dependencies: no react, no tailwind, no bundlers
 - RSS optimized: pure XML generation
 - Markdown as a base for articles
