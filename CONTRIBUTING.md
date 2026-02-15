@@ -38,7 +38,7 @@ The site is built using plain HTML CSS & JS. I am happy to accept PRs for:
 
 ---
 
-## ⚖️ Licensing
+##  Licensing
 
 By contributing, you agree that your contributions will be licensed under the project's existing licenses:
 * **Code:** MIT License

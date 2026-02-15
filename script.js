@@ -112,7 +112,6 @@
       });
     }
 
-    // Remove sidenote definitions from the markdown
     let cleanedMarkdown = markdown.replace(/^\[\^(\d+)\]:\s*.+$/gm, '');
 
     const lines = cleanedMarkdown.replace(/\r/g, "").split("\n");

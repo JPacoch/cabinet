@@ -2,7 +2,7 @@
 
 A static website hosted on **Netlify**. This project uses plain HTML, CSS, and JS with no built-in tools.
 
-## 📁 Structure
+##  Structure
 - `index.html`: Home page.
 - `about.html`: About page.
 - `library.html`: List of all articles.
@@ -11,20 +11,20 @@ A static website hosted on **Netlify**. This project uses plain HTML, CSS, and J
 - `data/texts.json`: Metadata for articles (title, date, reading time, etc.).
 - `scripts/`: Utility scripts.
 
-## 🚀 Local development
+##  Local development
 To test the site locally:
 1. Open the project in **VS Code**.
 2. Use the **Live Server** extension (or the built-in emulator) to launch `index.html`.
 3. Ensure your browser allows local fetching of JSON and Markdown files.
 
-## 📡 RSS feed
+##  RSS feed
 The `rss.xml` file is generated via a Python script. No external libraries needed.
 To update the feed, run:
 ```bash
 python3 scripts/generate_rss.py
 ```
 
-## 📄 Visual content workflow
+##  Visual content workflow
 | Task     | Action                                                 |
 |----------|--------------------------------------------------------|
 | Write    | Create new-post.md in /texts/                          |
@@ -36,7 +36,7 @@ python3 scripts/generate_rss.py
 - RSS optimized: pure XML generation
 - Markdown as a base for articles
 
-## ⚖️ License
+##  License
 This project is a "hybrid" repository containing both the engine and the articles
 
 * **The Code** (infrastructure, CSS, and logic) is licensed under the [MIT License](LICENSE#1-code).

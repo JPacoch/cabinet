@@ -50,9 +50,12 @@ We are left with the certainty that they:
 3. their existence serves the glory of the whole by providing the contrast necessary for grace to be recognized as grace
 
 ## Conclusion
-The idea of sovereign universal election with selective activation offers a robust theological fortress that tends to withstand logic and complies with biblical reasoning. It allows God’s absolute sovereignty (Spinoza) and affirms that he is the only power, cause and only will. However, through the mystery of the incarnation, it allows him to be Jesus - merciful god that draws all humanity.
+The idea of sovereign universal election with selective activation offers a robust theological fortress that tends to withstand logic and complies with biblical reasoning.[^1] It allows God’s absolute sovereignty (Spinoza) and affirms that he is the only power, cause and only will. However, through the mystery of the incarnation, it allows him to be Jesus - merciful god that draws all humanity.
 It asserts that we are fully determined and fully responsible - universally called yet selectively chosen. With no room for self-pride (arminianism) and no room for despair (calvinism) - maybe only just with the "fear and trembling" of a being held in the hands of an omnipotent, almighty divine power.
 
 God is not a passive observer (that relies on human cooperation), nor he is an illogical tyrant limiting the love he promised to all. In the mystery of his divinity one could describe him as an architect of a deterministic world, who had been sovereignly choosing to actualize his universal love in the specific, miraculous events on individual beings. Leaving the remaining mass of the universe as a means that testify his grace and power.
 
 I don't claim to solve the moral equations of why the absolute activates some and omits the others. I argue that to solve this mystery by diminishing God's power or lessening Christ’s reach is far greater error. I accept the silence of the lost as terrifying that prerogative might be. Maybe this is the way that preserves divine substance and its atrtributes cohesieve and intact.
+
+
+[^1]: Only to some extent, a month after writing that article it came to me that maybe it's not as foolproof as it could be :) I reckon calvinism itself and supralapsarian view of absolute's doings are not as well-thought as I use to think back then.

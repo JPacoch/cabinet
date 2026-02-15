@@ -13,8 +13,6 @@ You can expect essays that explore:
 
     - notes & reviews: thoughts on texts, thinkers, and cultural moments
 
-(One month I might analyze the facade of free will in a theological context and the next I might explore the concept of Deleuze's *virtual* in modern philosophy)
-
 ## The Cadence
 
 I value depth over frequency; I will try to publish once a month :)
