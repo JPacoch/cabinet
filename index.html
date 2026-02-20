@@ -126,18 +126,18 @@
             <div style="text-align: left; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;">
               <input type="checkbox" id="marketing-consent" required style="margin-top: 5px; cursor: pointer;">
               <label for="marketing-consent" style="font-size: 0.85rem; color: var(--muted); line-height: 1.4; cursor: pointer;">
-                Wyrażam zgodę na otrzymywanie od The Cabinet newslettera oraz informacji handlowych na podany adres e-mail.
+                I agree to receive emails from The Cabinet and I accept the Privacy Policy.
               </label>
             </div>
 
             <button type="submit" id="submit-btn" class="button secondary full-width">Sign Me Up!</button>
             
             <p style="font-size: 0.7rem; color: var(--muted); margin-top: 15px; text-align: left; line-height: 1.4;">
-              Administratorem Twoich danych osobowych jest Jakub Pacocha. Dane będą przetwarzane w celu wysyłki newslettera. Szczegóły znajdziesz w <a href="LINK_DO_POLITYKI_PRYWATNOSCI" style="color: var(--ink); text-decoration: underline;">Polityce Prywatności</a>.
+              The administrator of your personal data is Jakub Pacocha. The data will be processed for the purpose of sending the newsletter. Details can be found under <a href="privacy-policy.html" style="color: var(--ink); text-decoration: underline;">Privacy Policy</a>.
             </p>
 
             <p id="success-msg" style="display: none; color: #1f6c5a; margin-top: 15px; font-weight: bold;">
-              Dziękuję za zapis! Sprawdź swoją skrzynkę, aby potwierdzić adres.
+              Thank you for signing up! Please check your inbox to confirm your address.
             </p>
 
           </form>
@@ -168,7 +168,7 @@
       const btn = document.getElementById('submit-btn');
       const successMsg = document.getElementById('success-msg');
       
-      btn.innerText = "Wysyłanie...";
+      btn.innerText = "Sending...";
       btn.disabled = true;
 
       setTimeout(() => {
@@ -181,5 +181,4 @@
     });
   </script>
 </body>
-
 </html>
