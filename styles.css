@@ -137,7 +137,7 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 0;
+  padding-block: 18px;
   gap: 16px;
 }
 
@@ -238,7 +238,8 @@ main {
 }
 
 .hero {
-  padding: 82px 0 60px;
+  padding-top: 82px;
+  padding-bottom: 60px;
   display: grid;
   gap: 32px;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -771,19 +772,19 @@ main {
     border-radius: 4px;
     font-size: 0.9rem;
   }
-  
+
   .sidenote-content::before {
     content: "[";
     color: var(--accent);
     margin-right: 0.2em;
   }
-  
+
   .sidenote-content::after {
     content: "]";
     color: var(--accent);
     margin-left: 0.2em;
   }
-  
+
   .sidenote-number {
     display: none;
   }
@@ -900,11 +901,13 @@ main {
     opacity: 0.6;
     box-shadow: 0 0 0 0 rgba(31, 108, 90, 0.6);
   }
+
   70% {
     transform: scale(1);
     opacity: 1;
     box-shadow: 0 0 0 12px rgba(31, 108, 90, 0);
   }
+
   100% {
     transform: scale(0.8);
     opacity: 0.6;
@@ -922,20 +925,42 @@ main {
   .nav {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
   }
 
   .nav-links {
     flex-wrap: wrap;
     justify-content: flex-start;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .nav-links a {
+    padding: 10px 16px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .theme-toggle {
+    min-height: 44px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
   }
 
   .hero {
-    padding: 62px 0 40px;
+    padding-top: 52px;
+    padding-bottom: 36px;
   }
 
   .hero-actions {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .hero-actions .button {
+    justify-content: center;
+    text-align: center;
   }
 }
 
@@ -944,8 +969,10 @@ main {
   display: flex;
   visibility: hidden;
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
@@ -985,7 +1012,8 @@ main {
 
 .modal-overlay .close-btn {
   position: absolute;
-  top: 15px; right: 20px;
+  top: 15px;
+  right: 20px;
   background: none;
   border: none;
   font-family: system-ui, sans-serif;
