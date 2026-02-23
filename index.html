@@ -113,17 +113,33 @@
         <div class="newsletter-form-container">
           <h3 class="modal-title">Join the newsletter</h3>
           <p class="modal-text">Get new articles in your inbox every month.</p>
+          
+          <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-          <form action="https://eomail5.com/form/5a2a496c-071c-11f1-b36f-d56f9fb2bdeb.js" method="post" id="eo-form">
+          <form action="https://assets.mailerlite.com/jsonp/2129775/forms/179945752443749576/subscribe" method="POST" id="mailerlite-form" target="hidden_iframe">
+            <input type="hidden" name="ml-submit" value="1">
+            <input type="hidden" name="anticsrf" value="true">
             <div class="form-group">
-              <input type="email" name="field_0" placeholder="Email Address" required class="custom-input">
+              <input type="email" name="fields[email]" placeholder="Email Address" required class="custom-input">
             </div>
 
-            <div style="position: absolute; left: -5000px;" aria-hidden="true">
-              <input type="text" name="hp5a2a496c-071c-11f1-b36f-d56f9fb2bdeb" tabindex="-1" value="">
+            <div style="text-align: left; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;">
+              <input type="checkbox" id="marketing-consent" required style="margin-top: 5px; cursor: pointer;">
+              <label for="marketing-consent" style="font-size: 0.85rem; color: var(--muted); line-height: 1.4; cursor: pointer;">
+                I agree to receive emails from The Cabinet and I accept the Privacy Policy.
+              </label>
             </div>
 
-            <button type="submit" class="button secondary full-width">Sign Me Up!</button>
+            <button type="submit" id="submit-btn" class="button secondary full-width">Sign Me Up!</button>
+            
+            <p style="font-size: 0.7rem; color: var(--muted); margin-top: 15px; text-align: left; line-height: 1.4;">
+              The administrator of your personal data is Jakub Pacocha. The data will be processed for the purpose of sending the newsletter. Details can be found under <a href="privacy-policy.html" style="color: var(--ink); text-decoration: underline;">Privacy Policy</a>.
+            </p>
+
+            <p id="success-msg" style="display: none; color: #1f6c5a; margin-top: 15px; font-weight: bold;">
+              Thank you for signing up! Please check your inbox to confirm your address.
+            </p>
+
           </form>
         </div>
       </div>
@@ -147,7 +163,22 @@
   </div>
   <script src="script.js"></script>
   <script data-goatcounter="https://pacochp.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <script>
+    document.getElementById('mailerlite-form').addEventListener('submit', function() {
+      const btn = document.getElementById('submit-btn');
+      const successMsg = document.getElementById('success-msg');
+      
+      btn.innerText = "Sending...";
+      btn.disabled = true;
 
+      setTimeout(() => {
+        successMsg.style.display = 'block';
+        btn.innerText = "Sign Me Up!";
+        btn.disabled = false;
+        document.querySelector('input[name="fields[email]"]').value = '';
+        document.getElementById('marketing-consent').checked = false;
+      }, 1500);
+    });
+  </script>
 </body>
-
 </html>

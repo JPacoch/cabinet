@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Privacy Policy | The Cabinet</title>
+    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
+</head>
+
+<body>
+    <div class="site">
+        <header>
+            <div class="container nav">
+                <a class="brand" href="index.html">The Cabinet</a>
+                <nav class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="library.html">Library</a>
+                    <a href="about.html">About</a>
+                    <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false"
+                        aria-label="Toggle dark mode">
+                        <span class="theme-toggle-label" data-theme-label>Dark</span>
+                        <span class="theme-toggle-indicator" aria-hidden="true">
+                            <span class="theme-toggle-knob"></span>
+                        </span>
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="section">
+                <div class="container" data-reveal>
+                    <h1 class="section-title">Privacy Policy</h1>
+                    <div id="content" class="markdown-content"></div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="container">
+                <span>Updated regularly with new essays and notes.</span>
+                <a class="footer-rss" href="rss.xml" aria-label="RSS feed">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 4a16 16 0 0 1 16 16" />
+                        <path d="M4 11a9 9 0 0 1 9 9" />
+                        <circle cx="5" cy="19" r="1" />
+                    </svg>
+                    <span>RSS</span>
+                </a>
+                <span>© 2026 Jakub Pacocha. All rights reserved.</span>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('privacy-policy.md')
+                .then(response => response.text())
+                .then(text => {
+                    document.getElementById('content').innerHTML = marked.parse(text);
+
+                    const paragraphs = document.querySelectorAll('#content p');
+                    paragraphs.forEach(p => {
+                        p.classList.add('section-subtitle');
+                        p.style.marginTop = '1.5rem';
+                        p.style.lineHeight = '1.6';
+                    });
+                    const lists = document.querySelectorAll('#content ul, #content ol');
+                    lists.forEach(list => {
+                        list.classList.add('section-subtitle');
+                        list.style.marginTop = '1.0rem';
+                        list.style.lineHeight = '1.6';
+                        list.style.paddingLeft = '2rem';
+                    });
+                })
+                .catch(error => console.error('Error loading markdown:', error));
+        });
+    </script>
+    <script src="script.js"></script>
+    <script data-goatcounter="https://pacochp.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+
+</html>
