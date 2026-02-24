@@ -17,7 +17,7 @@ For any questions regarding this Privacy Policy or the processing of personal da
 
 This Privacy Policy explains how personal data is collected, used, and protected in connection with:
 
-- Subscription to the newsletter available at: https://.COM  
+- Subscription to the newsletter available at: https://fromthecabinet.com  
 - Communication via email  
 - Operation of the website hosted on Netlify  
 
@@ -173,4 +173,4 @@ If you believe a minor has provided personal data, please contact pacochp@gmail.
 This Privacy Policy may be updated from time to time.  
 The latest version will always be available at:
 
-https://adres/privacy-policy
+https://fromthecabinet.com/privacy-policy
