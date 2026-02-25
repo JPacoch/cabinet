@@ -13,7 +13,7 @@ In John 12:32 Jesus says:
 
 >"and I, when I am lifted up from the earth, will draw all people to myself"
 
-This declaration establishes the **universal status of election**, which seems to be a almoast legal-like statement, a reality. When Christ died he brought together the entire universe. The election mst be universal as the incarnation united God with all humanity and not just a specific list of names. To argue otherwise is to limit the value of Christ’s sacrifice and his own teachings (and maybe his own divinity as well?). So basically, every human being lives under the scope of universal election.
+This declaration establishes the **universal status of election**, which seems to be an almoast legal-like statement, a reality. When Christ died he brought together the entire universe. The election must be universal as the incarnation united God with all humanity and not just a specific list of names. To argue otherwise is to limit the value of Christ’s sacrifice and his own teachings (and maybe his own divinity as well?). So basically, every human being lives under the scope of universal election.
 
 This might be similar to some views of Karl Barth (*“humanity is elected in Christ"*). The doors of salvation are legally open to every single human being. God is not a tyrant who creates people for destruction as he has objectively reconciled the world with himself.
 
