@@ -860,6 +860,7 @@ main {
   gap: 12px;
 }
 
+.footer-link,
 .footer-rss {
   display: inline-flex;
   align-items: center;
@@ -870,11 +871,14 @@ main {
   transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
+.footer-link svg,
 .footer-rss svg {
   width: 16px;
   height: 16px;
 }
 
+.footer-link:hover,
+.footer-link:focus-visible,
 .footer-rss:hover,
 .footer-rss:focus-visible {
   color: var(--ink);
