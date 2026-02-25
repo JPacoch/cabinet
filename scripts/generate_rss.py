@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 import argparse
 import datetime as dt
 import email.utils
