@@ -25,11 +25,11 @@ You are at work, and you are thinking of the wall, then you are at the wall, and
 
 This is what Sartre meant when he said we are a "useless passion", we are the only being that demand why, and the universe is the only entity that provides what.
 
-Perhaps the only thing left in that superposition of hanging betweend the hammer and the anvil is to stop asking for an instant remedy. Maybe let’s start getting curious about what it actually is like to live in the *middle*, without any cure.
+Perhaps the only thing left in that superposition of hanging between the hammer and the anvil is to stop asking for an instant remedy. Maybe let’s start getting curious about what it actually is like to live in the *middle*, without any cure.
 
 Petty life, the only one there is. Not a tragedy, just what it is.
 
 [^1]: Which of course I strongly recommend reading
-[^2]: One must imagine Sysyphus happy lol
+[^2]: One must imagine Sisyphus happy lol
 [^3]: I reckon Sartre would argue that the sole idea of "wall staring" is a projet of it's own; I am not gonna argue that.
 [^4]: One must imagine Sysyphus happy lol
