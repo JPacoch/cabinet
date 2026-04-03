@@ -200,14 +200,33 @@
     flushQuote();
     flushList();
 
+    const allBlocksText = blocks.map((b) => b.text).join(" ");
+    const occurrenceCounts = new Map();
+    const occurrencesSeen = new Map();
+    const countRegex = /\[\^(\d+)\]/g;
+    let countMatch;
+    while ((countMatch = countRegex.exec(allBlocksText)) !== null) {
+      const n = countMatch[1];
+      occurrenceCounts.set(n, (occurrenceCounts.get(n) || 0) + 1);
+      occurrencesSeen.set(n, 0);
+    }
+
     const processSidenotes = (renderedHtml) => {
       return renderedHtml.replace(/\[\^(\d+)\]/g, (match, num) => {
         const content = sidenotes.get(num);
-        if (content) {
-          const renderedContent = renderInlineMarkdown(content);
-          return `<span class="sidenote"><sup class="sidenote-ref">${num}</sup><span class="sidenote-content"><span class="sidenote-number">${num}.</span> ${renderedContent}</span></span>`;
+        if (!content) {
+          return match;
         }
-        return match;
+        const seen = (occurrencesSeen.get(num) || 0) + 1;
+        occurrencesSeen.set(num, seen);
+        const total = occurrenceCounts.get(num) || 1;
+
+        if (seen < total) {
+          return `<sup class="sidenote-ref">${num}</sup>`;
+        }
+
+        const renderedContent = renderInlineMarkdown(content);
+        return `<span class="sidenote"><sup class="sidenote-ref">${num}</sup><span class="sidenote-content"><span class="sidenote-number">${num}.</span> ${renderedContent}</span></span>`;
       });
     };
 
