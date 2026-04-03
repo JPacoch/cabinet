@@ -37,5 +37,18 @@
     "tags": ["Phenomenology", "Existentialism", "Sartre", "Husserl", "2026"],
     "cardTags": ["Phenomenology", "Existentialism"],
     "content": "texts/sartrean-trap.md"
+  },
+  {
+    "slug": "the-wall-and-nausea",
+    "title": "The Wall and Nausea",
+    "type": "Note",
+    "readingTime": "3 min read",
+    "updated": "2026",
+    "date": "2026-04-03",
+    "excerpt": "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the reality.",
+    "summary": "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.",
+    "tags": [ "Existentialism", "Sartre", "Camus", "2026"],
+    "cardTags": ["Existentialism", "Pain"],
+    "content": "texts/the-wall-and-nausea.md"
   }
 ]
