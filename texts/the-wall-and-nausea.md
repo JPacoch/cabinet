@@ -3,11 +3,11 @@ There is a peculiar kind of exhaustion that really does not come from simply doi
 
 Sartre called it ***la nausée*** and it is the main motive of his novel - *Nausea*[^1]. Roquentin (which is the main guy in the book) first experiences it when he picks up a pebble on a beach, and suddenly, he cannot put it down for some reason. Not because the pebble is special, but rather because it is not. Because it just is, positioned between his fingers, unnecessarily there, indifferent to being held. It is only then when Roquentin realizes that pebble, and for all it matters the whole world, does not need to be here; neither does he himself. There is nothing grand behind that existence, no plan, no architecture, no mission - all there is is for no reason whatsoever. 
 
-And in that moment the greatest ones that depicted that dread bring up instant remedies. Camus says: go swim, eat something good, go for a walk and consume the sun, coffee and conversations - instead of analyzing and dissecting existence, start to feel it. Sartre says: commit to a project[^3], author yourself, fill the nothingness with action. To me both of them essentially say: *look away*.
+And in that moment the greatest ones that depicted that dread, bring up instant remedies. Camus says: go swim, eat something good, go for a walk and consume the sun, coffee and conversations - instead of analyzing and dissecting existence, start to feel it. Sartre says: commit to a project[^3], author yourself, fill the nothingness with action. To me, both of them essentially say: *look away*.
 
 Both cures are in a sense forms of the Sunday parade - that scene in *Nausea* where the citizens of Bouville tip their hats to each other, walk their routes, and perform their purposes. The hikers hiking. The marathoners running. The people on their missions tunnelling their field of view until that void, that nothingness, the hollow everyday life is out of their scope.
 
-What then remains beyond simply sitting and staring at the wall. At least it  looks honest. Not productive, not comfortable, not special - but *honest*. It does not pretend it leads anywhere. The Sunday crowd creates fake edifice, the wall-starer just sits there and admits there is nothing to it. The wall-starer is definitely not winning in “the game of life” - but they have stopped losing.[^2][^3]
+What then remains beyond is simply sitting and staring at the wall. At least it  looks honest. Not productive, not comfortable, not special - but *honest*. It does not pretend it leads anywhere. The Sunday crowd creates fake edifice, the wall-starer just sits there and admits there is nothing to it. The wall-starer is definitely not winning in “the game of life” - but they have stopped losing.[^2][^3]
 
 Yet there is one main issue in that logic - you can't just live the wall.
 
@@ -31,5 +31,5 @@ Petty life, the only one there is. Not a tragedy, just what it is.
 
 [^1]: Which of course I strongly recommend reading
 [^2]: One must imagine Sisyphus happy lol
-[^3]: I reckon Sartre would argue that the sole idea of "wall staring" is a projet of it's own; I am not gonna argue that.
+[^3]: I reckon Sartre would say that the sole idea of "wall staring" is a projet of it's own; I am not gonna argue with that.
 [^4]: One must imagine Sysyphus happy lol
