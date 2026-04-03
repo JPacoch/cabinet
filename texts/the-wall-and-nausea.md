@@ -1,5 +1,5 @@
 
-There is a peculiar kind of exhaustion that really does not come from simply doing too much. And it doesn’t really come from doing too little. It comes from seeing too clearly.
+There is a peculiar kind of exhaustion that really does not come from simply doing too much. And it doesn’t really come from doing too little. *It comes from seeing too clearly*.
 
 Sartre called it ***la nausée*** and it is the main motive of his novel - *Nausea*[^1]. Roquentin (which is the main guy in the book) first experiences it when he picks up a pebble on a beach, and suddenly, he cannot put it down for some reason. Not because the pebble is special, but rather because it is not. Because it just is, positioned between his fingers, unnecessarily there, indifferent to being held. It is only then when Roquentin realizes that pebble, and for all it matters the whole world, does not need to be here; neither does he himself. There is nothing grand behind that existence, no plan, no architecture, no mission - all there is is for no reason whatsoever. 
 
@@ -17,19 +17,19 @@ It's because there is a *system*, and it doesn't care that you've seen through i
 
 We are slaves of our own doing, but not in some poetic sense. Practically. You try to stare at the wall, and the system shouts - your mind starts evaluating your week, and suddenly you're back inside the machine you were trying to opt out of.
 
-This is a being that is fixed between two equally unbearable poles. On one side the raw, dull weight of existence. Nausea, the wall. On the other side - the system, the Sunday parade. The demands of productivity, friendship and meaning. The distraction that masks the void, a distraction that grips your insides whether you consent or not.
+This is a being that is fixed between two equally unbearable poles. On one side the raw, dull weight of existence. Nausea, the wall. On the other side - the *system*, the Sunday parade. The demands of productivity, friendship and meaning. The distraction that masks the void, a distraction that grips your insides whether you consent or not.
 
 To be conscious enough to see both is to be caught in the middle. And I mean caught like in a *can't-fully-rest-anywhere* way.
 
-You are at work, and you are thinking of the wall, then you are at the wall, and the system is shouting about what you should be doing with your one wild adventurous life.
+You are at work, and you are thinking of the wall; then you are at the wall, and the system is shouting about what you should be doing with your one wild adventurous life.
 
-This is what Sartre meant when he said we are a "useless passion", we are the only being that demand why, and the universe is the only entity that provides what.
+This is what Sartre meant when he said we are a "useless passion", we are the only beings that demand *why*, and the universe is the only entity that provides *what*.
 
 Perhaps the only thing left in that superposition of hanging between the hammer and the anvil is to stop asking for an instant remedy. Maybe let’s start getting curious about what it actually is like to live in the *middle*, without any cure.
 
-Petty life, the only one there is. Not a tragedy, just what it is.
+Petty life, the only one there is. Not a tragedy - just what it is.
 
 [^1]: Which of course I strongly recommend reading
 [^2]: One must imagine Sisyphus happy lol
-[^3]: I reckon Sartre would say that the sole idea of "wall staring" is a projet of it's own; I am not gonna argue with that.
+[^3]: I reckon Sartre would say that the sole idea of "wall staring" is a projet of its own; I am not gonna argue with that.
 [^4]: One must imagine Sysyphus happy lol
