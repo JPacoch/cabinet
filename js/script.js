@@ -243,6 +243,20 @@
     return tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
   };
 
+  const getDisplayDate = (item) => {
+    if (item.date) {
+      const parts = item.date.split("-");
+      if (parts.length >= 2) {
+        const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        const monthIdx = parseInt(parts[1], 10) - 1;
+        if (monthIdx >= 0 && monthIdx < 12) {
+          return `${months[monthIdx]} ${parts[0]}`;
+        }
+      }
+    }
+    return item.updated;
+  };
+
   const getTexts = async () => {
     if (cachedTexts) {
       return cachedTexts;
@@ -358,7 +372,7 @@
             <div class="library-meta">
               <span>${escapeHtml(item.type)}</span>
               <span>${escapeHtml(item.readingTime)}</span>
-              <span>${escapeHtml(item.updated)}</span>
+              <span>${escapeHtml(getDisplayDate(item))}</span>
             </div>
             <h3><a href="text.html?slug=${encodeURIComponent(item.slug)}">${escapeHtml(item.title)}</a></h3>
             <p>${escapeHtml(item.summary || item.excerpt || "")}</p>
@@ -642,7 +656,7 @@
 
     if (metaEl) {
       metaEl.innerHTML = "";
-      [entry.type, entry.readingTime, `Updated ${entry.updated}`].forEach((label) => {
+      [entry.type, entry.readingTime, `Updated ${getDisplayDate(entry)}`].forEach((label) => {
         if (!label) {
           return;
         }
@@ -695,7 +709,7 @@
 })();
 
 /* Newsletter Modal Logic */
-window.toggleModal = function(show) {
+window.toggleModal = function (show) {
   const modal = document.getElementById('newsletterModal');
   if (!modal) return;
 
