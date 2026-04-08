@@ -25,6 +25,7 @@
         <a class="brand" href="index.html">The Cabinet</a>
         <nav class="nav-links">
           <a href="index.html" aria-current="page">Home</a>
+          <a href="https://quotes.fromthecabinet.com/">Quotes</a>
           <a href="library.html">Library</a>
           <a href="about.html">About</a>
           <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false"
@@ -116,10 +117,11 @@
         <div class="newsletter-form-container">
           <h3 class="modal-title">Join the newsletter</h3>
           <p class="modal-text">Get new articles in your inbox every month.</p>
-          
+
           <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-          <form action="https://assets.mailerlite.com/jsonp/2129775/forms/179945752443749576/subscribe" method="POST" id="mailerlite-form" target="hidden_iframe">
+          <form action="https://assets.mailerlite.com/jsonp/2129775/forms/179945752443749576/subscribe" method="POST"
+            id="mailerlite-form" target="hidden_iframe">
             <input type="hidden" name="ml-submit" value="1">
             <input type="hidden" name="anticsrf" value="true">
             <div class="form-group">
@@ -128,15 +130,18 @@
 
             <div style="text-align: left; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;">
               <input type="checkbox" id="marketing-consent" required style="margin-top: 5px; cursor: pointer;">
-              <label for="marketing-consent" style="font-size: 0.85rem; color: var(--muted); line-height: 1.4; cursor: pointer;">
+              <label for="marketing-consent"
+                style="font-size: 0.85rem; color: var(--muted); line-height: 1.4; cursor: pointer;">
                 I agree to receive emails from The Cabinet and I accept the Privacy Policy.
               </label>
             </div>
 
             <button type="submit" id="submit-btn" class="button secondary full-width">Sign Me Up!</button>
-            
+
             <p style="font-size: 0.7rem; color: var(--muted); margin-top: 15px; text-align: left; line-height: 1.4;">
-              The administrator of your personal data is Jakub Pacocha. The data will be processed for the purpose of sending the newsletter. Details can be found under <a href="privacy-policy.html" style="color: var(--ink); text-decoration: underline;">Privacy Policy</a>.
+              The administrator of your personal data is Jakub Pacocha. The data will be processed for the purpose of
+              sending the newsletter. Details can be found under <a href="privacy-policy.html"
+                style="color: var(--ink); text-decoration: underline;">Privacy Policy</a>.
             </p>
 
             <p id="success-msg" style="display: none; color: #1f6c5a; margin-top: 15px; font-weight: bold;">
@@ -161,8 +166,9 @@
           <span>RSS</span>
         </a>
         <a class="footer-link" href="privacy-policy.html" aria-label="Privacy Policy">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           <span>Privacy Policy</span>
         </a>
@@ -172,10 +178,10 @@
   </div>
   <script src="js/script.js"></script>
   <script>
-    document.getElementById('mailerlite-form').addEventListener('submit', function() {
+    document.getElementById('mailerlite-form').addEventListener('submit', function () {
       const btn = document.getElementById('submit-btn');
       const successMsg = document.getElementById('success-msg');
-      
+
       btn.innerText = "Sending...";
       btn.disabled = true;
 
@@ -189,4 +195,5 @@
     });
   </script>
 </body>
+
 </html>

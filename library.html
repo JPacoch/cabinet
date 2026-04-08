@@ -1,181 +1,184 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="A living cabinet of essays, treatises, and longform notes. his site is a home for slow reading: careful arguments, field notes, and
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A living cabinet of essays, treatises, and longform notes. his site is a home for slow reading: careful arguments, field notes, and
             reflective drafts. Each piece was written to be read without distraction.">
-    <title>From The Cabinet | Library</title>
-    <link rel="icon" type="image/x-icon" href="/images/favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
-    <script defer src="https://cloud.umami.is/script.js" data-website-id="4879fccc-2ad4-4153-8672-dd68782a4f40"></script>
-  </head>
-  <body>
-    <div class="site">
-      <header>
-        <div class="container nav">
-          <a class="brand" href="index.html">The Cabinet</a>
-          <nav class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="library.html" aria-current="page">Library</a>
-            <a href="about.html">About</a>
-            <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle dark mode">
-              <span class="theme-toggle-label" data-theme-label>Dark</span>
-              <span class="theme-toggle-indicator" aria-hidden="true">
-                <span class="theme-toggle-knob"></span>
-              </span>
-            </button>
-          </nav>
+  <title>From The Cabinet | Library</title>
+  <link rel="icon" type="image/x-icon" href="/images/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..800&family=Newsreader:opsz,wght@6..72,300..700&family=Space+Grotesk:wght@300..700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="4879fccc-2ad4-4153-8672-dd68782a4f40"></script>
+</head>
+
+<body>
+  <div class="site">
+    <header>
+      <div class="container nav">
+        <a class="brand" href="index.html">The Cabinet</a>
+        <nav class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="https://quotes.fromthecabinet.com/">Quotes</a>
+          <a href="library.html" aria-current="page">Library</a>
+          <a href="about.html">About</a>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false"
+            aria-label="Toggle dark mode">
+            <span class="theme-toggle-label" data-theme-label>Dark</span>
+            <span class="theme-toggle-indicator" aria-hidden="true">
+              <span class="theme-toggle-knob"></span>
+            </span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="library-section">
+        <div class="container" data-reveal>
+          <h1 class="section-title">Library of texts</h1>
+          <p class="section-subtitle">
+            Essays, treatises, and brief notes arranged by theme. Each entry is a focused
+            piece meant to be read slowly, revisited, and cited.
+          </p>
         </div>
-      </header>
+      </section>
 
-      <main>
-        <section class="library-section">
-          <div class="container" data-reveal>
-            <h1 class="section-title">Library of texts</h1>
-            <p class="section-subtitle">
-              Essays, treatises, and brief notes arranged by theme. Each entry is a focused
-              piece meant to be read slowly, revisited, and cited.
-            </p>
-          </div>
-        </section>
-
-        <section class="section">
-          <div class="container">
-            <div class="library-toolbar" data-reveal>
-              <label class="sr-only" for="library-search">Search the library</label>
-              <input
-                id="library-search"
-                class="library-search"
-                type="search"
-                placeholder="Search by title, summary, or tag"
-                data-library-search
-              >
-              <div class="tag-filter-wrapper">
-                <div id="library-tags" class="tag-row tag-filter" data-library-tags></div>
-                <button
-                  class="tag-toggle"
-                  type="button"
-                  data-tag-toggle
-                  aria-expanded="false"
-                  aria-controls="library-tags"
-                >
-                  Show more tags
-                </button>
-              </div>
-            </div>
-            <div class="library-list" data-library-list></div>
-            <p class="library-empty" data-library-empty hidden>
-              No texts match that search yet. Try clearing filters or typing a different tag.
-            </p>
-          </div>
-        </section>
-        <section class="section">
-          <div class="container about-grid">
-            <div class="about-card" data-reveal>
-              <h3 class="section-title">Start Here</h3>
-              <p class="section-subtitle">
-                Suggested routes through the library, curated for different moods and goals.
-              </p>
-              <div class="tag-row">
-                <a class="tag" href="text.html?slug=sartrean-trap">Phenomenology</a>
-                <a class="tag" href="text.html?slug=christocentric-determinism">Determinism</a>
-                <a class="tag" href="text.html?slug=placeholder">The Essentials</a>
-              </div>
-            </div>
-            <div class="about-card" data-reveal>
-              <h3 class="section-title">Newsletter</h3>
-              <p class="section-subtitle">
-                Slow delivery. Get new post in your inbox every month. No noise.
-              </p>
-              <button type="button" class="button secondary" onclick="toggleModal(true)">
-                Subscribe for free
+      <section class="section">
+        <div class="container">
+          <div class="library-toolbar" data-reveal>
+            <label class="sr-only" for="library-search">Search the library</label>
+            <input id="library-search" class="library-search" type="search"
+              placeholder="Search by title, summary, or tag" data-library-search>
+            <div class="tag-filter-wrapper">
+              <div id="library-tags" class="tag-row tag-filter" data-library-tags></div>
+              <button class="tag-toggle" type="button" data-tag-toggle aria-expanded="false"
+                aria-controls="library-tags">
+                Show more tags
               </button>
             </div>
           </div>
-        </section>
-      </main>
-      <div id="newsletterModal" class="modal-overlay">
-        <div class="modal-content">
-          <button type="button" class="close-btn" onclick="toggleModal(false)">&times;</button>
-
-          <div class="newsletter-form-container">
-            <h3 class="modal-title">Join the newsletter</h3>
-            <p class="modal-text">Get new articles in your inbox every month.</p>
-            
-            <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
-
-            <form action="https://assets.mailerlite.com/jsonp/2129775/forms/179945752443749576/subscribe" method="POST" id="mailerlite-form" target="hidden_iframe">
-              <input type="hidden" name="ml-submit" value="1">
-              <input type="hidden" name="anticsrf" value="true">
-              <div class="form-group">
-                <input type="email" name="fields[email]" placeholder="Email Address" required class="custom-input">
-              </div>
-
-              <div style="text-align: left; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;">
-                <input type="checkbox" id="marketing-consent" required style="margin-top: 5px; cursor: pointer;">
-                <label for="marketing-consent" style="font-size: 0.85rem; color: var(--muted); line-height: 1.4; cursor: pointer;">
-                  I agree to receive emails from The Cabinet and I accept the Privacy Policy.
-                </label>
-              </div>
-
-              <button type="submit" id="submit-btn" class="button secondary full-width">Sign Me Up!</button>
-              
-              <p style="font-size: 0.7rem; color: var(--muted); margin-top: 15px; text-align: left; line-height: 1.4;">
-                The administrator of your personal data is Jakub Pacocha. The data will be processed for the purpose of sending the newsletter. Details can be found under  <a href="privacy-policy.html" style="color: var(--ink); text-decoration: underline;">Privacy Policy</a>.
-              </p>
-
-              <p id="success-msg" style="display: none; color: #1f6c5a; margin-top: 15px; font-weight: bold;">
-                Thank you for signing up! Please check your inbox to confirm your address.
-              </p>
-
-            </form>
+          <div class="library-list" data-library-list></div>
+          <p class="library-empty" data-library-empty hidden>
+            No texts match that search yet. Try clearing filters or typing a different tag.
+          </p>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container about-grid">
+          <div class="about-card" data-reveal>
+            <h3 class="section-title">Start Here</h3>
+            <p class="section-subtitle">
+              Suggested routes through the library, curated for different moods and goals.
+            </p>
+            <div class="tag-row">
+              <a class="tag" href="text.html?slug=sartrean-trap">Phenomenology</a>
+              <a class="tag" href="text.html?slug=christocentric-determinism">Determinism</a>
+              <a class="tag" href="text.html?slug=placeholder">The Essentials</a>
+            </div>
+          </div>
+          <div class="about-card" data-reveal>
+            <h3 class="section-title">Newsletter</h3>
+            <p class="section-subtitle">
+              Slow delivery. Get new post in your inbox every month. No noise.
+            </p>
+            <button type="button" class="button secondary" onclick="toggleModal(true)">
+              Subscribe for free
+            </button>
           </div>
         </div>
-      </div>
+      </section>
+    </main>
+    <div id="newsletterModal" class="modal-overlay">
+      <div class="modal-content">
+        <button type="button" class="close-btn" onclick="toggleModal(false)">&times;</button>
 
-      <footer class="footer">
-        <div class="container">
-          <span>Updated regularly with new essays and notes.</span>
-          <a class="footer-rss" href="rss.xml" aria-label="RSS feed">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4a16 16 0 0 1 16 16"/>
-              <path d="M4 11a9 9 0 0 1 9 9"/>
-              <circle cx="5" cy="19" r="1"/>
-            </svg>
-            <span>RSS</span>
-          </a>
-          <a class="footer-link" href="privacy-policy.html" aria-label="Privacy Policy">
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-            </svg>
-            <span>Privacy Policy</span>
-          </a>
-          <span>© 2026 Jakub Pacocha. All rights reserved.</span>
+        <div class="newsletter-form-container">
+          <h3 class="modal-title">Join the newsletter</h3>
+          <p class="modal-text">Get new articles in your inbox every month.</p>
+
+          <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+          <form action="https://assets.mailerlite.com/jsonp/2129775/forms/179945752443749576/subscribe" method="POST"
+            id="mailerlite-form" target="hidden_iframe">
+            <input type="hidden" name="ml-submit" value="1">
+            <input type="hidden" name="anticsrf" value="true">
+            <div class="form-group">
+              <input type="email" name="fields[email]" placeholder="Email Address" required class="custom-input">
+            </div>
+
+            <div style="text-align: left; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 10px;">
+              <input type="checkbox" id="marketing-consent" required style="margin-top: 5px; cursor: pointer;">
+              <label for="marketing-consent"
+                style="font-size: 0.85rem; color: var(--muted); line-height: 1.4; cursor: pointer;">
+                I agree to receive emails from The Cabinet and I accept the Privacy Policy.
+              </label>
+            </div>
+
+            <button type="submit" id="submit-btn" class="button secondary full-width">Sign Me Up!</button>
+
+            <p style="font-size: 0.7rem; color: var(--muted); margin-top: 15px; text-align: left; line-height: 1.4;">
+              The administrator of your personal data is Jakub Pacocha. The data will be processed for the purpose of
+              sending the newsletter. Details can be found under <a href="privacy-policy.html"
+                style="color: var(--ink); text-decoration: underline;">Privacy Policy</a>.
+            </p>
+
+            <p id="success-msg" style="display: none; color: #1f6c5a; margin-top: 15px; font-weight: bold;">
+              Thank you for signing up! Please check your inbox to confirm your address.
+            </p>
+
+          </form>
         </div>
-      </footer>
+      </div>
     </div>
-    <script src="js/script.js"></script>
-    <script>
-      document.getElementById('mailerlite-form').addEventListener('submit', function() {
-        const btn = document.getElementById('submit-btn');
-        const successMsg = document.getElementById('success-msg');
-        
-        btn.innerText = "Sending...";
-        btn.disabled = true;
 
-        setTimeout(() => {
-          successMsg.style.display = 'block';
-          btn.innerText = "Sign Me Up!";
-          btn.disabled = false;
-          document.querySelector('input[name="fields[email]"]').value = '';
-          document.getElementById('marketing-consent').checked = false;
-        }, 1500);
-      });
-    </script>
-  </body>
+    <footer class="footer">
+      <div class="container">
+        <span>Updated regularly with new essays and notes.</span>
+        <a class="footer-rss" href="rss.xml" aria-label="RSS feed">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4a16 16 0 0 1 16 16" />
+            <path d="M4 11a9 9 0 0 1 9 9" />
+            <circle cx="5" cy="19" r="1" />
+          </svg>
+          <span>RSS</span>
+        </a>
+        <a class="footer-link" href="privacy-policy.html" aria-label="Privacy Policy">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          <span>Privacy Policy</span>
+        </a>
+        <span>© 2026 Jakub Pacocha. All rights reserved.</span>
+      </div>
+    </footer>
+  </div>
+  <script src="js/script.js"></script>
+  <script>
+    document.getElementById('mailerlite-form').addEventListener('submit', function () {
+      const btn = document.getElementById('submit-btn');
+      const successMsg = document.getElementById('success-msg');
+
+      btn.innerText = "Sending...";
+      btn.disabled = true;
+
+      setTimeout(() => {
+        successMsg.style.display = 'block';
+        btn.innerText = "Sign Me Up!";
+        btn.disabled = false;
+        document.querySelector('input[name="fields[email]"]').value = '';
+        document.getElementById('marketing-consent').checked = false;
+      }, 1500);
+    });
+  </script>
+</body>
+
 </html>
