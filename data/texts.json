@@ -8,8 +8,16 @@
     "date": "2026-02-07",
     "excerpt": "On bridging the theological tension between arminianism and calvinism.",
     "summary": "On bridging the theological tension between arminianism and calvinism. Creating a doctrine that might be both true to the gospel and intellectually satisfying.",
-    "tags": ["Determinism", "Theology", "Chiristianity", "2026"],
-    "cardTags": ["Determinism", "Theology"],
+    "tags": [
+      "Determinism",
+      "Theology",
+      "Chiristianity",
+      "2026"
+    ],
+    "cardTags": [
+      "Determinism",
+      "Theology"
+    ],
     "content": "texts/christocentric-determinism.md"
   },
   {
@@ -21,8 +29,15 @@
     "date": "2026-01-21",
     "excerpt": "Hi! Thank you for visiting my blog :)",
     "summary": "Hi! Thank you for visiting my blog :)",
-    "tags": ["Message", "Note", "2026"],
-    "cardTags": ["Message", "Note"],
+    "tags": [
+      "Message",
+      "Note",
+      "2026"
+    ],
+    "cardTags": [
+      "Message",
+      "Note"
+    ],
     "content": "texts/welcome.md"
   },
   {
@@ -34,8 +49,17 @@
     "date": "2026-02-15",
     "excerpt": "When the method becomes a prison - on how Sartre misused phenomenology.",
     "summary": "When the method becomes a prison - on how Sartre misused phenomenology. 'And if phenomenology refuses to step outside of itself, then isn't it becoming the very thing it was meant to battle?'",
-    "tags": ["Phenomenology", "Existentialism", "Sartre", "Husserl", "2026"],
-    "cardTags": ["Phenomenology", "Existentialism"],
+    "tags": [
+      "Phenomenology",
+      "Existentialism",
+      "Sartre",
+      "Husserl",
+      "2026"
+    ],
+    "cardTags": [
+      "Phenomenology",
+      "Existentialism"
+    ],
     "content": "texts/sartrean-trap.md"
   },
   {
@@ -47,8 +71,38 @@
     "date": "2026-04-03",
     "excerpt": "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the reality.",
     "summary": "Being truly conscious means existing in a painful superposition between a social system and the honest, dull silence of the 'In-Itself' and reality.",
-    "tags": [ "Existentialism", "Sartre", "Camus", "2026"],
-    "cardTags": ["Existentialism", "Pain"],
+    "tags": [
+      "Existentialism",
+      "Sartre",
+      "Camus",
+      "2026"
+    ],
+    "cardTags": [
+      "Existentialism",
+      "Pain"
+    ],
     "content": "texts/the-wall-and-nausea.md"
+  },
+  {
+    "slug": "phenomenology-certainty",
+    "title": "The Phenomenology and Certainty",
+    "type": "Post",
+    "readingTime": "5 min read",
+    "updated": "2026",
+    "date": "2026-04-17",
+    "excerpt": "How to organize naturalism and metaphisycs in the quest for certainty.",
+    "summary": "Science produces precise but constrained abstractions of experience, while metaphysics investigates the conditions that make experience possible; both contribute to understanding, but only within a cycle that returns them to the Life-World.",
+    "tags": [
+      "Phenomenology",
+      "Husserl",
+      "Heidegger",
+      "2026"
+    ],
+    "cardTags": [
+      "Phenomenology",
+      "Husserl"
+    ],
+    "content": "texts/phenomenology-certainty.md",
+    "url": "texts/phenomenology-certainty.html"
   }
 ]

@@ -368,7 +368,7 @@
         const tags = (item.cardTags && item.cardTags.length ? item.cardTags : item.tags || [])
           .slice(0, 2);
         return `
-          <a class="card" href="text.html?slug=${encodeURIComponent(item.slug)}" data-reveal>
+          <a class="card" href="${item.url ? escapeHtml(item.url) : `text.html?slug=${encodeURIComponent(item.slug)}`}" data-reveal>
             <div class="meta">${escapeHtml(item.type)}</div>
             <h3>${escapeHtml(item.title)}</h3>
             <p>${escapeHtml(item.excerpt || item.summary || "")}</p>
@@ -393,7 +393,7 @@
               <span>${escapeHtml(item.readingTime)}</span>
               <span>${escapeHtml(getDisplayDate(item))}</span>
             </div>
-            <h3><a href="text.html?slug=${encodeURIComponent(item.slug)}">${escapeHtml(item.title)}</a></h3>
+            <h3><a href="${item.url ? escapeHtml(item.url) : `text.html?slug=${encodeURIComponent(item.slug)}`}">${escapeHtml(item.title)}</a></h3>
             <p>${escapeHtml(item.summary || item.excerpt || "")}</p>
             <div class="tag-row">${formatTags(item.tags || [])}</div>
           </article>
