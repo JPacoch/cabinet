@@ -16,6 +16,16 @@
   <link rel="stylesheet" href="css/styles.css">
   <link rel="alternate" type="application/rss+xml" title="The Cabinet RSS" href="rss.xml">
   <script defer src="https://cloud.umami.is/script.js" data-website-id="4879fccc-2ad4-4153-8672-dd68782a4f40"></script>
+  <script>
+    (function() {
+      try {
+        var stored = localStorage.getItem("cabinet-theme");
+        var preferred = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        var theme = (stored === "dark" || stored === "light") ? stored : preferred;
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (e) {}
+    })();
+  </script>
 </head>
 
 <body>

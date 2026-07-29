@@ -733,6 +733,8 @@ window.toggleModal = function (show) {
   if (!modal) return;
 
   if (show) {
+    modal.style.display = 'flex';
+    void modal.offsetWidth; // Force reflow
     modal.classList.remove('closing');
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -741,6 +743,7 @@ window.toggleModal = function (show) {
     setTimeout(() => {
       modal.classList.remove('active');
       modal.classList.remove('closing');
+      modal.style.display = 'none';
       document.body.style.overflow = '';
     }, 300);
   }
