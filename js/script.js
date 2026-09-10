@@ -150,6 +150,14 @@
         return;
       }
 
+      if (/^[-*_]{3,}$/.test(trimmed.replace(/\s/g, ""))) {
+        flushParagraph();
+        flushQuote();
+        flushList();
+        blocks.push({ type: "hr" });
+        return;
+      }
+
       const headingMatch = trimmed.match(/^(#{1,3})\s+(.*)$/);
       if (headingMatch) {
         flushParagraph();
@@ -233,6 +241,13 @@
     return blocks
       .map((block) => {
         if (block.type === "p") {
+          const dialogueMatch = block.text.match(/^([A-ZÀ-Ž][a-zA-ZÀ-ž]*):\s*([\s\S]*)$/);
+          if (dialogueMatch) {
+            const speaker = escapeHtml(dialogueMatch[1]);
+            const speech = dialogueMatch[2].trim();
+            const rendered = speech ? renderInlineMarkdown(speech) : "";
+            return `<p class="dialogue-line"><strong class="dialogue-speaker">${speaker}:</strong>${rendered ? `<br>${processSidenotes(rendered)}` : ""}</p>`;
+          }
           const rendered = renderInlineMarkdown(block.text);
           return `<p>${processSidenotes(rendered)}</p>`;
         }
@@ -248,6 +263,9 @@
             })
             .join("");
           return `<${block.type}>${items}</${block.type}>`;
+        }
+        if (block.type === "hr") {
+          return `<hr>`;
         }
         const rendered = renderInlineMarkdown(block.text);
         return `<${block.type}>${processSidenotes(rendered)}</${block.type}>`;
@@ -697,7 +715,46 @@
         throw new Error("Unable to load text.");
       }
       const markdown = await response.text();
-      if (bodyEl) {
+      const langSeparator = "---lang:pl---";
+      const hasBilingual = markdown.includes(langSeparator);
+
+      if (hasBilingual && bodyEl) {
+        const parts = markdown.split(langSeparator);
+        const langContent = {
+          en: parts[0].trim(),
+          pl: parts.slice(1).join(langSeparator).trim(),
+        };
+        let activeLang = "en";
+
+        bodyEl.innerHTML = markdownToHtml(langContent.en);
+
+        const headerEl = article.querySelector(".article-header");
+        if (headerEl) {
+          const langToggle = document.createElement("div");
+          langToggle.className = "lang-toggle";
+          langToggle.setAttribute("role", "radiogroup");
+          langToggle.setAttribute("aria-label", "Content language");
+          langToggle.innerHTML = `
+            <button class="lang-toggle-btn is-active" type="button" data-lang="en" aria-pressed="true">EN</button>
+            <button class="lang-toggle-btn" type="button" data-lang="pl" aria-pressed="false">PL</button>
+          `;
+          headerEl.appendChild(langToggle);
+
+          langToggle.addEventListener("click", (event) => {
+            const btn = event.target.closest("button[data-lang]");
+            if (!btn) return;
+            const lang = btn.dataset.lang;
+            if (lang === activeLang) return;
+            activeLang = lang;
+            langToggle.querySelectorAll(".lang-toggle-btn").forEach((b) => {
+              const isActive = b.dataset.lang === lang;
+              b.classList.toggle("is-active", isActive);
+              b.setAttribute("aria-pressed", String(isActive));
+            });
+            bodyEl.innerHTML = markdownToHtml(langContent[lang]);
+          });
+        }
+      } else if (bodyEl) {
         bodyEl.innerHTML = markdownToHtml(markdown);
       }
     } catch (error) {

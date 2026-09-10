@@ -104,5 +104,26 @@
     ],
     "content": "texts/phenomenology-certainty.md",
     "url": "texts/phenomenology-certainty.html"
+  },
+  {
+    "slug": "dialogue1-on-socmed",
+    "title": "Timon, on authenticity.",
+    "type": "Dialogues from the Cabinet",
+    "readingTime": "5 min read",
+    "updated": "2026",
+    "date": "2026-09-10",
+    "excerpt": "How the gaze of others can shape not only how we present our passions, but what we come to desire in the first place.",
+    "summary": "What if you could take the journey of your dreams, see everything you ever wanted to see, and experience it all exactly as you wished—but no one could ever know you had been there? Would the journey still be worth the same?",
+    "tags": [
+      "Dialogue",
+      "Social Media",
+      "Authenticity",
+      "2026"
+    ],
+    "cardTags": [
+      "Dialogue",
+      "Social Media"
+    ],
+    "content": "texts/dialogue1-on-socmed.md"
   }
 ]

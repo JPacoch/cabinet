@@ -594,6 +594,61 @@ main {
   color: var(--muted);
 }
 
+.lang-toggle {
+  display: inline-flex;
+  gap: 0;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface-strong);
+  overflow: hidden;
+  justify-self: start;
+  width: fit-content;
+}
+
+.lang-toggle-btn {
+  padding: 8px 18px;
+  border: none;
+  background: transparent;
+  font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+  position: relative;
+}
+
+.lang-toggle-btn:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: var(--line);
+  transition: opacity 0.2s ease;
+}
+
+.lang-toggle-btn.is-active::after,
+.lang-toggle-btn.is-active + .lang-toggle-btn::after {
+  opacity: 0;
+}
+
+.lang-toggle-btn:hover:not(.is-active) {
+  color: var(--ink);
+}
+
+.lang-toggle-btn.is-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.lang-toggle-btn:focus-visible {
+  outline: 2px solid rgba(180, 81, 44, 0.4);
+  outline-offset: -2px;
+}
+
 .share-toolbar {
   display: flex;
   flex-wrap: wrap;
@@ -666,6 +721,19 @@ main {
   margin: 0 0 20px;
 }
 
+.article-body .dialogue-line {
+  margin: 0 0 24px;
+}
+
+.dialogue-speaker {
+  font-family: "Space Grotesk", "Trebuchet MS", sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+
 .article-body h2,
 .article-body h3 {
   margin: 32px 0 12px;
@@ -676,6 +744,13 @@ main {
 .article-body ul,
 .article-body ol {
   margin: 0 0 20px 24px;
+}
+
+.article-body hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 36px 0;
+  max-width: 12ch;
 }
 
 .article-body p:first-of-type::first-letter {
