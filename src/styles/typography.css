@@ -11,16 +11,17 @@
   overflow-wrap: break-word;
 }
 
-.prose > * + * {
-  margin-top: 1.35em;
-}
-
 .prose p {
   margin: 0;
   text-align: justify;
   text-justify: inter-word;
   hyphens: auto;
   -webkit-hyphens: auto;
+}
+
+.prose > * + *,
+.prose p + p {
+  margin-top: 1.35em;
 }
 
 .prose h2 {

@@ -29,7 +29,7 @@ export interface RenderedArticle {
 
 const marked = new Marked({
   gfm: true,
-  breaks: false,
+  breaks: true,
 });
 
 function slugify(text: string): string {
@@ -84,6 +84,8 @@ function renderPart(rawMarkdown: string, formatDialogue = false): RenderedArticl
 
   // 3. Format dialogue lines if enabled (e.g. "Alexander: Greetings...")
   if (formatDialogue) {
+    // Split single-newline dialogue speaker handoffs into distinct <p> blocks
+    html = html.replace(/<br\s*\/?>\s*(?=[A-ZÀ-Ž][a-zA-ZÀ-ž]*:\s)/g, '</p>\n<p>');
     html = html.replace(
       /<p>([A-ZÀ-Ž][a-zA-ZÀ-ž]*):\s*([\s\S]*?)<\/p>/g,
       (_m, speaker: string, speech: string) =>

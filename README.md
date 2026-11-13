@@ -1,36 +1,47 @@
 # From the Cabinet
 
-A living cabinet of essays, dialogues, and slow notes on philosophy, theology, and attention.
+**[fromthecabinet.com](https://fromthecabinet.com)** · [Writing](https://fromthecabinet.com/writing/) · [Quotes](https://quotes.fromthecabinet.com/) · [RSS](https://fromthecabinet.com/rss.xml)
 
-**https://fromthecabinet.com**
+---
 
-## Stack
+**From the Cabinet** is an independent reading space and personal archive written by [Jakub Pacocha](https://fromthecabinet.com/about/). It gathers essays, philosophical dialogues and brief field notes on phenomenology, theology, technology and human condition and experience.
 
-- **Framework:** [Astro](https://astro.build/) (static output)
+Every text is treated as a *finished draft* that can stay at a permanent address, carry its own message and be revisited over the years.
+
+### Inside the Cabinet
+
+- **Essays and Treatises** - longform arguments examining phenomenology, determinism, attention and ethics
+- **Dialogues** - Philosophical conversations written in theatrical exchange
+- **Notes** - Shorter reflections and sketches of thoughts
+- **Quotes** - Collected  passages curated separately at [quotes.fromthecabinet.com](https://quotes.fromthecabinet.com/).
+
+If you enjoy reading this way, you can follow new texts via [RSS](https://fromthecabinet.com/rss.xml) or write directly to [pacochp@gmail.com](mailto:pacochp@gmail.com).
+
+---
+
+<details>
+<summary><strong>Notes on the engine</strong> - technical stack, writing workflow &amp; deployment</summary>
+
+### Stack
+
+- **Framework:** [Astro](https://astro.build/) (static site generation, View Transitions)
 - **Runtime & Package Manager:** [Bun](https://bun.sh/)
-- **Content:** MDX files in `src/content/articles/` validated via Astro Content Collections (`src/content.config.ts`)
-- **Styling:** Custom CSS with design tokens (`src/styles/tokens.css`, `global.css`, `typography.css`)
-- **Hosting:** Netlify (`netlify.toml`)
+- **Content:** Pure `.mdx` files in `src/content/articles/` validated via `src/content.config.ts` and parsed via `src/lib/markdown.ts`
+- **Typography & Styling:** `Geist Variable` & `Geist Mono Variable` with semantic design tokens (`src/styles/tokens.css`, `global.css`, `typography.css`)
+- **Hosting & CI:** Netlify (`netlify.toml`), rebuilding static HTML, RSS, and sitemaps automatically on push
 
-## Development
+### Local Development
 
 ```bash
-# Install dependencies
 bun install
-
-# Start local development server
-bun run dev
-
-# Build static production site to dist/
-bun run build
-
-# Preview the production build locally
-bun run preview
+bun run dev      # Start local dev server
+bun run build    # Build production static site to dist/
+bun run preview  # Preview dist/ locally
 ```
 
-## Publishing a New Article
+### Adding a New Piece
 
-Create a new `.mdx` file in `src/content/articles/<slug>.mdx` with frontmatter:
+Create `src/content/articles/<slug>.mdx`:
 
 ```yaml
 ---
@@ -38,20 +49,24 @@ title: "Article Title"
 type: "Essay" # Essay | Note | Dialogues from the Cabinet | Post
 date: "2026-11-13"
 readingTime: "6 min read"
-excerpt: "One-sentence summary for the archive and metadata."
+excerpt: "One-sentence summary for the archive and search metadata."
 tags: ["Philosophy", "2026"]
 ---
 ```
 
 Optional frontmatter flags:
-- `isDialogue: true` — styles `Speaker: speech` paragraphs as editorial dialogue lines (and supports `---lang:pl---` for bilingual EN/PL switching).
-- `diagram: d2` — embeds the interactive pan/zoom diagram viewer.
+- `isDialogue: true` - styles `Speaker: speech` turns cleanly and supports `---lang:pl---` for bilingual EN/PL reading.
+- `diagram: d2` - embeds the interactive pan/zoom diagram component (`InteractiveDiagram.astro`).
+- Footnotes (`[^1]` inline, `[^1]: ...` at the bottom) automatically classify into *Citation*, *Commentary*, *Aside*, or *Note* popovers and endnotes.
+- Headings (`##`, `###`) automatically populate the margin Table of Contents on articles with 2 or more sections.
 
-Citations use standard footnote syntax (`[^1]` inline and `[^1]: Reference text` at the bottom). Headings (`##`, `###`) automatically populate the animated Table of Contents when an article has 2 or more headings.
+### SEO, RSS & Sitemaps
 
-RSS (`/rss.xml`) and the XML sitemap (`/sitemap-index.xml`) are generated automatically during `bun run build`.
+RSS (`/rss.xml`) and XML sitemaps (`/sitemap-index.xml`, `/sitemap-0.xml`, plus Netlify's `/sitemap.xml` rewrite) are generated strictly **at build time** (`bun run build`). That means zero runtime server overhead or slowdown for visitors, and automatic freshness on every Netlify production deploy.
+
+</details>
 
 ## License
 
-- **Code** (infrastructure, CSS, and logic): [MIT License](LICENSE)
-- **Content** (essays, dialogues, and prose): [CC BY-NC-SA 4.0](LICENSE)
+- **Code** (site engine, components, styles): [MIT License](LICENSE)
+- **Writing** (essays, dialogues, notes): [CC BY-NC-SA 4.0](LICENSE)

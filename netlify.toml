@@ -2,6 +2,16 @@
   command = "bun run build"
   publish = "dist"
 
+[build.environment]
+  NODE_VERSION = "22"
+  PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = "1"
+
+# Legacy URL & Sitemap Redirects
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 301
+
 [[redirects]]
   from = "/library.html"
   to = "/writing/"
@@ -26,3 +36,42 @@
   from = "/texts/phenomenology-certainty.html"
   to = "/writing/phenomenology-certainty/"
   status = 301
+
+[[redirects]]
+  from = "/texts"
+  to = "/writing/"
+  status = 301
+
+[[redirects]]
+  from = "/texts/*"
+  to = "/writing/"
+  status = 301
+
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap-index.xml"
+  status = 200
+
+# Security & Caching Headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/rss.xml"
+  [headers.values]
+    Content-Type = "application/rss+xml; charset=utf-8"
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/sitemap*.xml"
+  [headers.values]
+    Content-Type = "application/xml; charset=utf-8"
+    Cache-Control = "public, max-age=0, must-revalidate"

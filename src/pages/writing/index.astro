@@ -252,11 +252,15 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
   .type-filters {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 1.15rem;
   }
 
   .type-btn,
   .topic-toggle {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
     padding: 0 0 0.2rem;
     border: none;
     border-bottom: 1px solid transparent;
@@ -285,11 +289,13 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
     width: 1px;
     height: 11px;
     background: var(--line-strong);
-    margin-bottom: 0.15rem;
+    margin-bottom: 0.2rem;
   }
 
   .topic-pop-wrap {
     position: relative;
+    display: flex;
+    align-items: center;
   }
 
   .topic-toggle {
