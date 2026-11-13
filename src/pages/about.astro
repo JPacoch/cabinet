@@ -1,5 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ProfileCards from '../components/ProfileCards.astro';
+import { loadGitHubProfile } from '../lib/profiles';
+
+const githubProfile = await loadGitHubProfile('JPacoch');
 ---
 
 <BaseLayout
@@ -48,15 +52,41 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           If you want to share a response, recommendation, or critique, send a note to{' '}
           <a href="mailto:pacochp@gmail.com">pacochp@gmail.com</a>. Elsewhere on the web:{' '}
           <a href="https://www.jakubpacocha.com/" target="_blank" rel="noopener noreferrer">Website</a>,{' '}
-          <a href="https://jakubpacocha.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a>,{' '}
-          <a href="https://x.com/JakubPacocha" target="_blank" rel="noopener noreferrer">X</a>,{' '}
-          <a href="https://mastodon.social/@JakubPacocha" target="_blank" rel="noopener noreferrer">Mastodon</a>,{' '}
+          <a
+            href="https://jakubpacocha.substack.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-profile-card="substack"
+            data-no-tooltip
+          >Substack</a>,{' '}
+          <a
+            href="https://github.com/JPacoch"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-profile-card="github"
+            data-no-tooltip
+          >GitHub</a>,{' '}
+          <a
+            href="https://x.com/JakubPacocha"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-profile-card="x"
+            data-no-tooltip
+          >X</a>,{' '}
+          <a
+            href="https://mastodon.social/@JakubPacocha"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-profile-card="mastodon"
+            data-no-tooltip
+          >Mastodon</a>,{' '}
           and{' '}
           <a href="https://www.linkedin.com/in/jakubpacocha/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
         </p>
       </div>
     </div>
   </div>
+  <ProfileCards github={githubProfile} />
 </BaseLayout>
 
 <style>
