@@ -1,0 +1,233 @@
+---
+---
+
+<div id="link-tooltip" class="link-tooltip" role="tooltip" hidden></div>
+
+<style>
+  .link-tooltip {
+    position: fixed;
+    z-index: 120;
+    left: 0;
+    top: 0;
+    max-width: min(20rem, calc(100vw - 1.5rem));
+    padding: 0.36rem 0.72rem;
+    border-radius: 10px;
+    background: var(--tooltip-bg);
+    color: var(--tooltip-ink);
+    box-shadow: var(--tooltip-shadow);
+    -webkit-backdrop-filter: blur(18px) saturate(1.75);
+    backdrop-filter: blur(18px) saturate(1.75);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+    transform-origin: bottom center;
+    animation: tip-in 210ms var(--ease-spring) both;
+  }
+
+  .link-tooltip[data-pos='below'] {
+    transform-origin: top center;
+  }
+
+  .link-tooltip[hidden] {
+    display: none;
+  }
+
+  @keyframes tip-in {
+    from {
+      opacity: 0;
+      transform: translate(-50%, 4px) scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+  }
+
+  .link-tooltip[data-pos='below'] {
+    animation-name: tip-in-below;
+  }
+
+  @keyframes tip-in-below {
+    from {
+      opacity: 0;
+      transform: translate(-50%, -4px) scale(0.92);
+    }
+    to {
+      opacity: 1;
+      transform: translate(-50%, 0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .link-tooltip {
+      animation: none;
+      transform: translate(-50%, 0);
+    }
+  }
+</style>
+
+<script>
+  let tipAbort: AbortController | null = null;
+
+  function resolveTooltipLabel(el: HTMLElement): string | null {
+    const explicit = el.dataset.tooltip;
+    if (explicit) return explicit;
+
+    if (el instanceof HTMLAnchorElement) {
+      const href = el.getAttribute('href') ?? '';
+      if (href.startsWith('mailto:')) return 'Click to copy';
+      if (href === '/rss.xml') return 'RSS feed';
+      if (href.startsWith('http://') || href.startsWith('https://')) {
+        try {
+          const url = new URL(href);
+          return `${url.hostname.replace(/^www\./, '')} ↗`;
+        } catch {
+          return 'Open external link ↗';
+        }
+      }
+      if (el.closest('.prose') && href.startsWith('#')) return 'Jump to section';
+      if (el.closest('.prose') && href.startsWith('/')) return 'Open page';
+    }
+    return null;
+  }
+
+  function findTooltipTarget(node: EventTarget | null): HTMLElement | null {
+    if (!(node instanceof Element)) return null;
+    const candidate = node.closest(
+      'a, [data-tooltip], [data-copy-link], [data-copy-email]'
+    ) as HTMLElement | null;
+    if (!candidate) return null;
+    if (
+      candidate.matches('.citation-trigger, .toc-link, .entry-row, .archive-row') ||
+      candidate.hasAttribute('data-no-tooltip')
+    ) {
+      return null;
+    }
+    return resolveTooltipLabel(candidate) ? candidate : null;
+  }
+
+  function initLinkTooltip() {
+    tipAbort?.abort();
+    tipAbort = new AbortController();
+    const { signal } = tipAbort;
+
+    const tip = document.getElementById('link-tooltip') as HTMLElement | null;
+    if (!tip) return;
+
+    const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    let activeTarget: HTMLElement | null = null;
+    let showTimer: number | null = null;
+    let copiedTimer: number | null = null;
+
+    const hide = () => {
+      if (showTimer !== null) {
+        window.clearTimeout(showTimer);
+        showTimer = null;
+      }
+      activeTarget = null;
+      tip.hidden = true;
+    };
+
+    const positionTip = (el: HTMLElement) => {
+      const rect = el.getBoundingClientRect();
+      const margin = 10;
+      const tipHeight = tip.offsetHeight || 30;
+      const halfW = (tip.offsetWidth || 100) / 2;
+
+      let centerX = rect.left + rect.width / 2;
+      centerX = Math.max(margin + halfW, Math.min(centerX, window.innerWidth - margin - halfW));
+
+      let top = rect.top - tipHeight - 8;
+      let pos: 'above' | 'below' = 'above';
+      if (top < margin) {
+        top = rect.bottom + 8;
+        pos = 'below';
+      }
+
+      tip.dataset.pos = pos;
+      tip.style.left = `${centerX}px`;
+      tip.style.top = `${top}px`;
+    };
+
+    const showFor = (el: HTMLElement, textOverride?: string) => {
+      const text = textOverride ?? resolveTooltipLabel(el);
+      if (!text) return;
+      activeTarget = el;
+      tip.textContent = text;
+      const wasHidden = tip.hidden;
+      tip.hidden = false;
+      if (wasHidden) {
+        tip.style.animation = 'none';
+        void tip.offsetWidth;
+        tip.style.animation = '';
+      }
+      positionTip(el);
+    };
+
+    document.addEventListener(
+      'mouseover',
+      (e) => {
+        if (!canHover()) return;
+        const target = findTooltipTarget(e.target);
+        if (!target || target === activeTarget) return;
+        if (showTimer !== null) window.clearTimeout(showTimer);
+        showTimer = window.setTimeout(() => showFor(target), 85);
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'mouseout',
+      (e) => {
+        if (!activeTarget && showTimer === null) return;
+        const related = findTooltipTarget(e.relatedTarget);
+        if (related && related === activeTarget) return;
+        hide();
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'click',
+      async (e) => {
+        const el = e.target instanceof Element ? (e.target.closest('a, button') as HTMLElement | null) : null;
+        if (!el) return;
+
+        if (el instanceof HTMLAnchorElement && el.getAttribute('href')?.startsWith('mailto:')) {
+          e.preventDefault();
+          const email = el.getAttribute('href')!.slice(7).split('?')[0];
+          try {
+            await navigator.clipboard.writeText(email);
+            if (copiedTimer !== null) window.clearTimeout(copiedTimer);
+            showFor(el, 'Copied');
+            copiedTimer = window.setTimeout(hide, 1200);
+          } catch {
+            hide();
+          }
+          return;
+        }
+
+        if (el.hasAttribute('data-copy-link')) {
+          if (copiedTimer !== null) window.clearTimeout(copiedTimer);
+          showFor(el, 'Copied');
+          copiedTimer = window.setTimeout(hide, 1200);
+          return;
+        }
+
+        hide();
+      },
+      { signal }
+    );
+
+    window.addEventListener('scroll', hide, { passive: true, signal });
+    window.addEventListener('blur', hide, { signal });
+  }
+
+  document.addEventListener('astro:page-load', initLinkTooltip);
+</script>

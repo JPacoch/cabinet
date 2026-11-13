@@ -6,9 +6,12 @@ export interface TocHeading {
   level: 2 | 3;
 }
 
+export type CitationCategory = 'Citation' | 'Commentary' | 'Aside' | 'Note';
+
 export interface CitationReference {
   id: string;
   html: string;
+  category: CitationCategory;
   occurrences: number;
 }
 
@@ -41,6 +44,27 @@ function slugify(text: string): string {
 
 function stripTags(html: string): string {
   return html.replace(/<[^>]*>/g, '').trim();
+}
+
+function classifyReference(rawDef: string): CitationCategory {
+  const lower = rawDef.toLowerCase();
+  if (
+    /https?:\/\//i.test(rawDef) ||
+    /\*[^*]+\*/.test(rawDef) ||
+    /§|pp?\.|vol\.|ed\.|op\.\s*cit\.|cf\.|recommend reading/i.test(lower)
+  ) {
+    return 'Citation';
+  }
+  if (rawDef.length < 60 || /\blol\b|\bhaha\b/i.test(lower)) {
+    return 'Aside';
+  }
+  if (
+    /\b(i reckon|i think|i believe|came to me|month after|argue|would say)\b/i.test(lower) ||
+    rawDef.length >= 90
+  ) {
+    return 'Commentary';
+  }
+  return 'Note';
 }
 
 function renderPart(rawMarkdown: string, formatDialogue = false): RenderedArticlePart {
@@ -86,14 +110,16 @@ function renderPart(rawMarkdown: string, formatDialogue = false): RenderedArticl
   // 5. Replace inline citations [^N] with accessible triggers
   const occurrenceCounts = new Map<string, number>();
   html = html.replace(/\[\^(\d+)\]/g, (match, num: string) => {
-    if (!defMap.has(num)) {
+    const rawDef = defMap.get(num);
+    if (!rawDef) {
       return match;
     }
+    const category = classifyReference(rawDef);
     const occ = (occurrenceCounts.get(num) ?? 0) + 1;
     occurrenceCounts.set(num, occ);
     return (
       `<sup class="citation-ref" id="cite-${num}-${occ}">` +
-      `<a href="#ref-${num}" class="citation-trigger" data-citation-trigger data-citation-id="${num}" data-citation-occ="${occ}" aria-label="Citation ${num}" aria-expanded="false">${num}</a>` +
+      `<a href="#ref-${num}" class="citation-trigger" data-citation-trigger data-citation-id="${num}" data-citation-category="${category}" data-citation-occ="${occ}" aria-label="${category} ${num}" aria-expanded="false">${num}</a>` +
       `</sup>`
     );
   });
@@ -103,10 +129,12 @@ function renderPart(rawMarkdown: string, formatDialogue = false): RenderedArticl
   const sortedKeys = Array.from(defMap.keys()).sort((a, b) => Number(a) - Number(b));
   for (const num of sortedKeys) {
     const rawDef = defMap.get(num)!;
+    const category = classifyReference(rawDef);
     const renderedDef = marked.parseInline(rawDef) as string;
     references.push({
       id: num,
       html: renderedDef,
+      category,
       occurrences: occurrenceCounts.get(num) ?? 0,
     });
   }

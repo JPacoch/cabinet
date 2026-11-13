@@ -9,6 +9,7 @@ import '../styles/typography.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import NewsletterModal from '../components/NewsletterModal.astro';
+import LinkTooltip from '../components/LinkTooltip.astro';
 
 interface Props {
   title: string;
@@ -86,6 +87,7 @@ const currentPath = Astro.url.pathname;
     </main>
     <Footer width={footerWidth} />
     <NewsletterModal />
+    <LinkTooltip />
 
     <script>
       function syncThemeBeforeSwap(doc: Document) {

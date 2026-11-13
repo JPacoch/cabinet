@@ -14,7 +14,7 @@
   <div class="citation-popover__header">
     <span class="citation-popover__meta">
       <span class="citation-popover__dot" aria-hidden="true"></span>
-      <span id="citation-popover-label" class="citation-popover__title kicker">Note</span>
+      <span id="citation-popover-label" class="citation-popover__title">Note 01</span>
     </span>
     <button
       type="button"
@@ -29,8 +29,8 @@
   </div>
   <div class="citation-popover__body" data-citation-body></div>
   <div class="citation-popover__footer">
-    <a href="#references" class="citation-popover__jump kicker" data-citation-jump>
-      <span>Jump to references</span>
+    <a href="#references" class="citation-popover__jump" data-citation-jump data-no-tooltip>
+      <span>Jump to reference</span>
       <span class="citation-popover__arrow" aria-hidden="true">↓</span>
     </a>
   </div>
@@ -63,19 +63,19 @@
   .citation-popover {
     position: fixed;
     z-index: 100;
-    width: min(23.5rem, calc(100vw - 2rem));
-    background: var(--popover-bg);
-    -webkit-backdrop-filter: blur(22px) saturate(1.65);
-    backdrop-filter: blur(22px) saturate(1.65);
-    border-radius: 12px;
-    box-shadow: var(--shadow-float);
-    padding: 0.9rem 1.05rem;
+    width: min(21.5rem, calc(100vw - 2rem));
+    background: var(--tooltip-bg);
+    -webkit-backdrop-filter: blur(20px) saturate(1.75);
+    backdrop-filter: blur(20px) saturate(1.75);
+    border-radius: 13px;
+    box-shadow: var(--tooltip-shadow);
+    padding: 0.85rem 1rem;
     font-family: var(--font-sans);
     font-size: 0.84375rem;
-    line-height: 1.56;
-    color: var(--ink-soft);
+    line-height: 1.54;
+    color: var(--tooltip-ink);
     transform-origin: var(--pop-origin, top center);
-    animation: cite-pop-in 340ms var(--ease-spring) both;
+    animation: cite-pop-in 320ms var(--ease-spring) both;
   }
 
   .citation-popover[hidden] {
@@ -131,8 +131,11 @@
   }
 
   .citation-popover__title {
-    color: var(--ink-2);
-    font-weight: 500;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--ink);
   }
 
   .citation-popover__close {
@@ -170,7 +173,7 @@
   }
 
   .citation-popover__footer {
-    margin-top: 0.75rem;
+    margin-top: 0.7rem;
     padding-top: 0.55rem;
     border-top: 1px solid var(--line);
     display: flex;
@@ -180,7 +183,11 @@
   .citation-popover__jump {
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.3rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: -0.012em;
     color: var(--accent);
     text-decoration: none;
     transition: color var(--dur-1) ease;
@@ -379,6 +386,7 @@
 
       const id = trigger.dataset.citationId;
       if (!id) return;
+      const category = trigger.dataset.citationCategory || 'Note';
 
       const refContent = document.querySelector(`#ref-${CSS.escape(id)} [data-ref-content]`);
       if (!refContent || !bodyEl || !titleEl || !jumpEl) return;
@@ -392,7 +400,7 @@
       isPinned = pin;
       trigger.setAttribute('aria-expanded', String(pin));
       trigger.classList.toggle('is-peeking', !pin);
-      titleEl.textContent = `Note ${id.padStart(2, '0')}`;
+      titleEl.textContent = `${category} ${id.padStart(2, '0')}`;
       bodyEl.innerHTML = refContent.innerHTML;
       jumpEl.href = `#ref-${id}`;
 

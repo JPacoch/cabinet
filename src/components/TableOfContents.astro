@@ -177,12 +177,12 @@ const showToc = headings.length >= 2;
     opacity: 1;
   }
 
-  /* Desktop margin rail — detached in wide left space */
+  /* Desktop margin rail — only shown when left margin has generous clearance */
   .toc-desktop {
     display: none;
   }
 
-  @media (min-width: 1080px) {
+  @media (min-width: 1260px) {
     .toc-mobile {
       display: none;
     }
@@ -191,24 +191,12 @@ const showToc = headings.length >= 2;
       display: block;
       position: fixed;
       top: 50%;
-      left: clamp(1.25rem, 3.2vw, 3.25rem);
+      left: clamp(1.25rem, 2.5vw, 3rem);
       transform: translateY(-50%);
-      width: min(12.5rem, calc((100vw - var(--prose)) / 2 - 2.5rem));
+      width: min(12rem, calc((100vw - var(--prose)) / 2 - 4.5rem));
       max-height: 62svh;
       overflow-y: auto;
       z-index: 20;
-    }
-  }
-
-  @media (min-width: 1080px) and (max-width: 1179px) {
-    .toc-desktop {
-      position: sticky;
-      top: 5rem;
-      transform: none;
-      left: auto;
-      width: auto;
-      align-self: start;
-      max-height: calc(100svh - 8rem);
     }
   }
 </style>
