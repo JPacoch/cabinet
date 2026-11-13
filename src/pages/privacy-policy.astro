@@ -1,0 +1,46 @@
+---
+import fs from 'node:fs';
+import { Marked } from 'marked';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const rawPolicy = fs.readFileSync('src/data/privacy-policy.md', 'utf8');
+const marked = new Marked({ gfm: true, breaks: false });
+const policyHtml = marked.parse(rawPolicy) as string;
+---
+
+<BaseLayout
+  title="Privacy Policy — From the Cabinet"
+  description="Privacy Policy for From the Cabinet and its newsletter."
+>
+  <div class="wrap policy-page">
+    <div class="col-wide">
+      <header class="policy-head">
+        <span class="kicker enter" style="--d: 0">Legal &amp; GDPR</span>
+        <h1 class="policy-head__title enter" style="--d: 1">Privacy Policy</h1>
+      </header>
+      <div class="prose enter" style="--d: 2" set:html={policyHtml} />
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .policy-page {
+    padding-top: clamp(2.5rem, 6vh, 4.75rem);
+  }
+
+  .policy-head {
+    margin-bottom: var(--s-6);
+    padding-bottom: var(--s-5);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .policy-head__title {
+    margin: 0.75rem 0 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-article-title);
+    font-weight: 550;
+    letter-spacing: -0.035em;
+    line-height: 1.08;
+    color: var(--ink);
+  }
+</style>

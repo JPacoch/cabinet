@@ -1,0 +1,327 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSortedArticles, formatShortDate, normalizeTypeLabel } from '../../lib/articles';
+
+const articles = await getSortedArticles();
+const types = ['All', 'Essay', 'Dialogue', 'Note'];
+---
+
+<BaseLayout
+  title="Writing — From the Cabinet"
+  description="Complete archive of essays, dialogues, and notes from From the Cabinet."
+>
+  <div class="wrap archive-page">
+    <div class="col-wide">
+      <header class="archive-head">
+        <span class="kicker enter" style="--d: 0">
+          Archive · <span data-archive-count>{String(articles.length).padStart(2, '0')}</span> Entries
+        </span>
+        <h1 class="archive-head__title enter" style="--d: 1">Writing</h1>
+        <p class="archive-head__desc enter" style="--d: 2">
+          Essays, dialogues, and field notes on philosophy, theology, and attention.
+        </p>
+      </header>
+
+      <div class="archive-controls enter" style="--d: 3">
+        <div class="search-wrap">
+          <label class="sr-only" for="archive-search">Search writing</label>
+          <input
+            id="archive-search"
+            type="search"
+            class="archive-search"
+            placeholder="Filter by title or keyword…"
+            data-archive-search
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="type-filters" role="group" aria-label="Filter by format">
+          {
+            types.map((t, i) => (
+              <button
+                type="button"
+                class={`type-btn kicker${i === 0 ? ' is-active' : ''}`}
+                data-type-filter={t}
+                aria-pressed={i === 0 ? 'true' : 'false'}
+              >
+                {t}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+
+      <ul class="archive-list" data-archive-list>
+        {
+          articles.map((article) => {
+            const displayType = normalizeTypeLabel(article.data.type);
+            const searchable = [
+              article.data.title,
+              article.data.excerpt,
+              article.data.summary ?? '',
+              article.data.tags.join(' '),
+              displayType,
+            ]
+              .join(' ')
+              .toLowerCase();
+
+            return (
+              <li
+                class="archive-item"
+                data-archive-item
+                data-type={displayType}
+                data-search={searchable}
+              >
+                <a href={`/writing/${article.id}/`} class="archive-row">
+                  <div class="archive-row__main">
+                    <h2 class="archive-row__title" transition:name={`title-${article.id}`}>
+                      {article.data.title}
+                    </h2>
+                    <p class="archive-row__excerpt">
+                      {article.data.summary || article.data.excerpt}
+                    </p>
+                  </div>
+
+                  <div class="archive-row__meta kicker">
+                    <span>{displayType}</span>
+                    <span aria-hidden="true">·</span>
+                    <time datetime={article.data.date.toISOString().slice(0, 10)}>
+                      {formatShortDate(article.data.date)}
+                    </time>
+                    <span aria-hidden="true">·</span>
+                    <span>{article.data.readingTime}</span>
+                  </div>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <p class="archive-empty" data-archive-empty hidden>
+        No texts match that query. Clear the search or pick another format.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .archive-page {
+    padding-top: clamp(2.5rem, 6vh, 4.75rem);
+  }
+
+  .archive-head {
+    margin-bottom: var(--s-6);
+  }
+
+  .archive-head__title {
+    margin: 0.75rem 0 0.85rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-display);
+    font-weight: 550;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+
+  .archive-head__desc {
+    margin: 0;
+    font-size: var(--text-lede);
+    color: var(--ink-2);
+    max-width: 44ch;
+  }
+
+  .archive-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .search-wrap {
+    flex: 1 1 220px;
+    max-width: 19rem;
+  }
+
+  .archive-search {
+    width: 100%;
+    padding: 0.4rem 0;
+    font-size: var(--text-sm);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: var(--ink);
+  }
+
+  .archive-search::placeholder {
+    color: var(--muted);
+  }
+
+  .archive-search:focus {
+    outline: none;
+  }
+
+  .type-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.15rem;
+  }
+
+  .type-btn {
+    padding: 0 0 0.2rem;
+    border: none;
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    transition: color var(--dur-1) ease, border-color var(--dur-1) ease;
+  }
+
+  .type-btn:hover {
+    color: var(--ink);
+  }
+
+  .type-btn.is-active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+
+  .archive-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .archive-item {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .archive-item[hidden] {
+    display: none;
+  }
+
+  .archive-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-block: 1.45rem;
+  }
+
+  .archive-row:hover .archive-row__title {
+    color: var(--accent);
+  }
+
+  .archive-row__main {
+    min-width: 0;
+  }
+
+  .archive-row__title {
+    margin: 0 0 0.35rem;
+    width: fit-content;
+    max-width: 100%;
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 550;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    transition: color var(--dur-1) ease;
+  }
+
+  .archive-row__excerpt {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 54ch;
+  }
+
+  .archive-row__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 780px) {
+    .archive-row {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-6);
+    }
+  }
+
+  .archive-empty {
+    margin-top: var(--s-6);
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  let archiveAbort: AbortController | null = null;
+
+  function initArchiveFilter() {
+    archiveAbort?.abort();
+    archiveAbort = new AbortController();
+    const { signal } = archiveAbort;
+
+    const searchInput = document.querySelector('[data-archive-search]') as HTMLInputElement | null;
+    const typeButtons = document.querySelectorAll('[data-type-filter]');
+    const items = Array.from(document.querySelectorAll('[data-archive-item]')) as HTMLElement[];
+    const emptyState = document.querySelector('[data-archive-empty]') as HTMLElement | null;
+    const countEl = document.querySelector('[data-archive-count]') as HTMLElement | null;
+
+    if (items.length === 0) return;
+
+    let activeType = 'All';
+
+    const applyFilter = () => {
+      const query = (searchInput?.value ?? '').trim().toLowerCase();
+      let visibleCount = 0;
+
+      items.forEach((item) => {
+        const itemType = item.dataset.type ?? '';
+        const haystack = item.dataset.search ?? '';
+        const matchesType = activeType === 'All' || itemType === activeType;
+        const matchesQuery = query === '' || haystack.includes(query);
+        const visible = matchesType && matchesQuery;
+        item.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+
+      if (countEl) {
+        countEl.textContent = String(visibleCount).padStart(2, '0');
+      }
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount > 0;
+      }
+    };
+
+    typeButtons.forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        () => {
+          activeType = (btn as HTMLElement).dataset.typeFilter ?? 'All';
+          typeButtons.forEach((b) => {
+            const active = (b as HTMLElement).dataset.typeFilter === activeType;
+            b.classList.toggle('is-active', active);
+            b.setAttribute('aria-pressed', String(active));
+          });
+          applyFilter();
+        },
+        { signal }
+      );
+    });
+
+    searchInput?.addEventListener('input', applyFilter, { signal });
+  }
+
+  document.addEventListener('astro:page-load', initArchiveFilter);
+</script>

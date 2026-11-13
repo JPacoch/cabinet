@@ -1,42 +1,57 @@
-# The Cabinet
+# From the Cabinet
 
-Welcome to The Cabinet - A living cabinet of essays, treatises, and longform notes.
-This site is a home for slow reading: careful arguments, field notes, and reflective drafts. Each piece was written to be read without distraction :) 
+A living cabinet of essays, dialogues, and slow notes on philosophy, theology, and attention.
 
-A static website hosted on **Netlify**. This project uses plain HTML, CSS, and JS with no built-in tools.
+**https://fromthecabinet.com**
 
-##  Built with simplicity
-- 0 dependencies: no react, no tailwind, no bundlers
-- RSS optimized: pure XML generation
-- Markdown as a base for articles
+## Stack
 
-##  License
-This project is a "hybrid" repository containing both the engine and the articles
+- **Framework:** [Astro](https://astro.build/) (static output)
+- **Runtime & Package Manager:** [Bun](https://bun.sh/)
+- **Content:** MDX files in `src/content/articles/` validated via Astro Content Collections (`src/content.config.ts`)
+- **Styling:** Custom CSS with design tokens (`src/styles/tokens.css`, `global.css`, `typography.css`)
+- **Hosting:** Netlify (`netlify.toml`)
 
-* **The Code** (infrastructure, CSS, and logic) is licensed under the [MIT License](LICENSE#1-code).
-* **The Content** (essays, philosophical reflections, and prose) is licensed under [CC BY-NC-SA 4.0](LICENSE#2-content-essays--philosophical-works).
+## Development
 
-By contributing to this repository, you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md) and license your contributions under these same terms.
-
-##  Structure
-- `index.html`: Home page.
-- `about.html`: About page.
-- `library.html`: List of all articles.
-- `text.html`: The master template for articles. It fetches data from `data/texts.json` and parses Markdown from the `texts/` folder.
-- `texts/`: Contains the actual article content in `.md` files.
-- `data/texts.json`: Metadata for articles (title, date, reading time, etc.).
-- `scripts/`: Utility scripts.
-
-##  RSS feed
-The `rss.xml` file is generated via a Python script. No external libraries needed.
-To update the feed, run:
 ```bash
-python3 scripts/generate_rss.py
+# Install dependencies
+bun install
+
+# Start local development server
+bun run dev
+
+# Build static production site to dist/
+bun run build
+
+# Preview the production build locally
+bun run preview
 ```
 
-##  Visual content workflow
-| Task     | Action                                                 |
-|----------|--------------------------------------------------------|
-| Write    | Create new-post.md in /texts/                          |
-| Register | Add metadata entry to data/texts.json                  |
-| Sync     | Run python3 scripts/generate_rss.py to update the feed |
+## Publishing a New Article
+
+Create a new `.mdx` file in `src/content/articles/<slug>.mdx` with frontmatter:
+
+```yaml
+---
+title: "Article Title"
+type: "Essay" # Essay | Note | Dialogues from the Cabinet | Post
+date: "2026-11-13"
+readingTime: "6 min read"
+excerpt: "One-sentence summary for the archive and metadata."
+tags: ["Philosophy", "2026"]
+---
+```
+
+Optional frontmatter flags:
+- `isDialogue: true` — styles `Speaker: speech` paragraphs as editorial dialogue lines (and supports `---lang:pl---` for bilingual EN/PL switching).
+- `diagram: d2` — embeds the interactive pan/zoom diagram viewer.
+
+Citations use standard footnote syntax (`[^1]` inline and `[^1]: Reference text` at the bottom). Headings (`##`, `###`) automatically populate the animated Table of Contents when an article has 2 or more headings.
+
+RSS (`/rss.xml`) and the XML sitemap (`/sitemap-index.xml`) are generated automatically during `bun run build`.
+
+## License
+
+- **Code** (infrastructure, CSS, and logic): [MIT License](LICENSE)
+- **Content** (essays, dialogues, and prose): [CC BY-NC-SA 4.0](LICENSE)

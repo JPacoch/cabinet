@@ -1,0 +1,811 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import CitationPopover from '../components/CitationPopover.astro';
+import InteractiveDiagram from '../components/InteractiveDiagram.astro';
+import type { RenderedArticle } from '../lib/markdown';
+import { formatFullDate, formatShortDate, normalizeTypeLabel, type ArticleEntry } from '../lib/articles';
+
+interface Props {
+  entry: ArticleEntry;
+  rendered: RenderedArticle;
+  prevArticle?: ArticleEntry;
+  nextArticle?: ArticleEntry;
+}
+
+const { entry, rendered, prevArticle, nextArticle } = Astro.props;
+const { title, type, date, readingTime, excerpt, summary, tags, diagram } = entry.data;
+const displayType = normalizeTypeLabel(type);
+const hasToc = rendered.en.headings.length >= 2;
+const description = summary || excerpt;
+---
+
+<BaseLayout
+  title={`${title} — From the Cabinet`}
+  description={description}
+  ogType="article"
+  publishedTime={date.toISOString()}
+  hideHeader={true}
+  footerWidth="prose"
+>
+  <article class="wrap article-shell">
+    <div class="col-prose">
+      <!-- Top restrained breadcrumb + theme toggle bar -->
+      <div class="article-topbar">
+        <nav class="article-crumb" aria-label="Breadcrumb">
+          <a href="/" class="crumb-brand" transition:name="brand-mark">From the Cabinet</a>
+          <span class="crumb-trail enter" style="--d: 0">
+            <span class="kicker" aria-hidden="true">/</span>
+            <a href="/writing/" class="crumb-link kicker">Writing</a>
+            <span class="kicker" aria-hidden="true">/</span>
+            <span class="kicker crumb-current">{displayType}</span>
+          </span>
+        </nav>
+
+        <button
+          class="theme-toggle"
+          type="button"
+          data-theme-toggle
+          aria-label="Toggle color theme"
+          title="Toggle color theme"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="4.5" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg>
+        </button>
+      </div>
+
+      <header class="article-head">
+        <div class="article-meta kicker enter" style="--d: 1">
+          <time datetime={date.toISOString().slice(0, 10)}>{formatFullDate(date)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{readingTime}</span>
+          {
+            rendered.en.references.length > 0 && (
+              <>
+                <span aria-hidden="true">·</span>
+                <a href="#references" class="meta-ref-link">
+                  {rendered.en.references.length} {rendered.en.references.length === 1 ? 'note' : 'notes'}
+                </a>
+              </>
+            )
+          }
+        </div>
+
+        <h1 class="article-title" transition:name={`title-${entry.id}`}>
+          {title}
+        </h1>
+
+        {
+          rendered.isBilingual && (
+            <div
+              class="lang-switch enter"
+              style="--d: 2"
+              role="group"
+              aria-label="Article language"
+              data-lang="en"
+              data-lang-switch
+            >
+              <span class="lang-switch__thumb" aria-hidden="true"></span>
+              <button
+                type="button"
+                class="lang-switch__btn is-active"
+                data-lang-btn="en"
+                aria-pressed="true"
+              >
+                <span class="lang-switch__dot" aria-hidden="true"></span>
+                <span>English</span>
+              </button>
+              <button
+                type="button"
+                class="lang-switch__btn"
+                data-lang-btn="pl"
+                aria-pressed="false"
+              >
+                <span class="lang-switch__dot" aria-hidden="true"></span>
+                <span>Polski</span>
+              </button>
+            </div>
+          )
+        }
+      </header>
+
+      {hasToc && <TableOfContents headings={rendered.en.headings} />}
+
+      <div class="article-column" data-article-column>
+        <div class="prose" data-lang-panel="en" set:html={rendered.en.html} />
+
+        {
+          rendered.isBilingual && rendered.pl && (
+            <div class="prose" data-lang-panel="pl" lang="pl" hidden set:html={rendered.pl.html} />
+          )
+        }
+
+        {
+          diagram === 'd2' && (
+            <InteractiveDiagram
+              src="/images/d2.svg"
+              alt="Diagram mapping the Phenomenology and Certainty pipeline from the Life-World through phenomenological reduction to naturalism, metaphysics, and local synthesis."
+              caption="Interactive diagram — scroll or use controls to zoom, drag to pan."
+            />
+          )
+        }
+
+        {
+          rendered.en.references.length > 0 && (
+            <section id="references" class="article-references" aria-labelledby="references-heading">
+              <h2 id="references-heading" class="references-heading kicker">
+                References &amp; Notes
+              </h2>
+              <ol class="references-list">
+                {rendered.en.references.map((ref) => (
+                  <li id={`ref-${ref.id}`} class="reference-item">
+                    <span class="reference-num mono">{ref.id.padStart(2, '0')}</span>
+                    <div class="reference-body">
+                      <span data-ref-content set:html={ref.html} />
+                      {ref.occurrences > 0 && (
+                        <span class="reference-backlinks">
+                          {Array.from({ length: ref.occurrences }, (_, i) => i + 1).map((occ) => (
+                            <a
+                              href={`#cite-${ref.id}-${occ}`}
+                              class="ref-backlink"
+                              data-ref-backlink
+                              aria-label={`Return to citation ${ref.id}${ref.occurrences > 1 ? ` (occurrence ${occ})` : ''}`}
+                              title="Return to text"
+                            >
+                              ↩{ref.occurrences > 1 ? occ : ''}
+                            </a>
+                          ))}
+                        </span>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            </section>
+          )
+        }
+
+        <footer class="article-foot">
+          <div class="article-foot__meta">
+            {
+              tags.length > 0 && (
+                <p class="article-tags kicker" aria-label="Topics">
+                  {tags.join(' · ')}
+                </p>
+              )
+            }
+            <button type="button" class="copy-link-btn kicker" data-copy-link>
+              Copy link
+            </button>
+          </div>
+
+          {
+            (nextArticle || prevArticle) && (
+              <nav class="more-writing" aria-label="More writing">
+                <span class="kicker more-writing__label">More writing</span>
+                <ul class="more-writing__list">
+                  {nextArticle && (
+                    <li>
+                      <a href={`/writing/${nextArticle.id}/`} class="more-writing__row">
+                        <span class="more-writing__title">{nextArticle.data.title}</span>
+                        <span class="more-writing__date kicker">
+                          {formatShortDate(nextArticle.data.date)}
+                        </span>
+                      </a>
+                    </li>
+                  )}
+                  {prevArticle && (
+                    <li>
+                      <a href={`/writing/${prevArticle.id}/`} class="more-writing__row">
+                        <span class="more-writing__title">{prevArticle.data.title}</span>
+                        <span class="more-writing__date kicker">
+                          {formatShortDate(prevArticle.data.date)}
+                        </span>
+                      </a>
+                    </li>
+                  )}
+                </ul>
+              </nav>
+            )
+          }
+        </footer>
+      </div>
+    </div>
+  </article>
+
+  <CitationPopover />
+</BaseLayout>
+
+<style>
+  .article-shell {
+    padding-top: clamp(2rem, 5vw, 3.75rem);
+  }
+
+  .article-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-bottom: clamp(2rem, 5vw, 3.25rem);
+  }
+
+  .article-crumb {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+
+  .crumb-brand {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 550;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+    color: var(--ink);
+    white-space: nowrap;
+    transition: opacity var(--dur-1) ease;
+  }
+
+  .crumb-brand:hover {
+    opacity: 0.7;
+  }
+
+  .crumb-trail {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+
+  .crumb-link {
+    transition: color var(--dur-1) ease;
+  }
+
+  .crumb-link:hover {
+    color: var(--ink);
+  }
+
+  .crumb-current {
+    color: var(--ink-2);
+  }
+
+  .article-head {
+    margin-bottom: clamp(2rem, 4.5vw, 3rem);
+  }
+
+  .article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .meta-ref-link {
+    color: var(--accent);
+    transition: opacity var(--dur-1) ease;
+  }
+
+  .meta-ref-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .article-title {
+    margin: 0;
+    width: fit-content;
+    max-width: 100%;
+    font-family: var(--font-sans);
+    font-size: var(--text-article-title);
+    font-weight: 550;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+  }
+
+  .lang-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 3px;
+    margin-top: 1.25rem;
+    border-radius: var(--r-pill);
+    background: var(--bg-raised);
+    box-shadow:
+      inset 0 0 0 1px var(--line),
+      inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  .lang-switch__thumb {
+    position: absolute;
+    top: 3px;
+    bottom: 3px;
+    left: 0;
+    border-radius: var(--r-pill);
+    background: var(--surface);
+    box-shadow:
+      0 0 0 1px var(--line),
+      0 1px 3px rgba(0, 0, 0, 0.08);
+    width: var(--ind-w, 0px);
+    transform: translateX(var(--ind-x, 3px));
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform 400ms var(--ease-spring),
+      width 400ms var(--ease-spring),
+      opacity 180ms ease;
+  }
+
+  :global(:root[data-theme='dark']) .lang-switch__thumb {
+    box-shadow:
+      0 0 0 1px var(--line-strong),
+      0 2px 6px rgba(0, 0, 0, 0.35);
+  }
+
+  .lang-switch.has-bar .lang-switch__thumb {
+    opacity: 1;
+  }
+
+  .lang-switch__btn {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    padding: 0.34rem 0.85rem;
+    border: none;
+    border-radius: var(--r-pill);
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--muted);
+    transition: color var(--dur-1) ease;
+  }
+
+  .lang-switch__btn:hover {
+    color: var(--ink-2);
+  }
+
+  .lang-switch__btn.is-active {
+    color: var(--ink);
+  }
+
+  .lang-switch:not(.has-bar) .lang-switch__btn.is-active {
+    background: var(--surface);
+    box-shadow: 0 0 0 1px var(--line);
+  }
+
+  .lang-switch__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    transform: scale(0.4);
+    transition:
+      opacity 220ms ease,
+      transform 340ms var(--ease-spring),
+      box-shadow 220ms ease;
+  }
+
+  .lang-switch__btn.is-active .lang-switch__dot {
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 8px var(--glow);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lang-switch__thumb,
+    .lang-switch__dot {
+      transition: none;
+    }
+  }
+
+  .article-column {
+    min-width: 0;
+  }
+
+  /* References */
+  .article-references {
+    margin-top: clamp(3.5rem, 6vw, 5rem);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .references-heading {
+    margin: 0 0 var(--s-5);
+  }
+
+  .references-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .reference-item {
+    display: grid;
+    grid-template-columns: 1.75rem 1fr;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+    margin-inline: -0.5rem;
+    font-size: 0.90625rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+    scroll-margin-top: 3rem;
+  }
+
+  .reference-num {
+    color: var(--accent);
+    padding-top: 0.14rem;
+    font-size: var(--text-2xs);
+  }
+
+  .reference-body :global(a:not(.ref-backlink)) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .reference-backlinks {
+    display: inline-flex;
+    gap: 0.35rem;
+    margin-left: 0.45rem;
+  }
+
+  .ref-backlink {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--muted);
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
+    transition: color var(--dur-1) ease, background-color var(--dur-1) ease;
+  }
+
+  .ref-backlink:hover {
+    color: var(--accent);
+    background: var(--accent-tint);
+  }
+
+  /* Article Footer */
+  .article-foot {
+    margin-top: clamp(3.5rem, 6vw, 5rem);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .article-foot__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+
+  .article-tags {
+    margin: 0;
+  }
+
+  .copy-link-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: var(--muted);
+    transition: color var(--dur-1) ease;
+  }
+
+  .copy-link-btn:hover {
+    color: var(--accent);
+  }
+
+  .more-writing {
+    margin-top: var(--s-7);
+    padding-top: var(--s-5);
+    border-top: 1px solid var(--line);
+  }
+
+  .more-writing__label {
+    display: block;
+    margin-bottom: var(--s-3);
+  }
+
+  .more-writing__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .more-writing__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-block: 0.5rem;
+    transition: opacity var(--dur-1) ease;
+  }
+
+  .more-writing__row:hover {
+    opacity: 0.68;
+  }
+
+  .more-writing__title {
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .more-writing__date {
+    flex-shrink: 0;
+  }
+</style>
+
+<script>
+  let articleAbort: AbortController | null = null;
+  let decodeRaf: number | null = null;
+  let activeTextEntries: Array<{ node: Text; orig: string }> = [];
+
+  function restoreDecodedText() {
+    if (decodeRaf !== null) {
+      cancelAnimationFrame(decodeRaf);
+      decodeRaf = null;
+    }
+    for (const entry of activeTextEntries) {
+      if (entry.node.nodeValue !== entry.orig) {
+        entry.node.nodeValue = entry.orig;
+      }
+    }
+    activeTextEntries = [];
+  }
+
+  const FOLD_MAP: Record<string, string> = {
+    ą: 'a', ć: 'c', ę: 'e', ł: 'l', ń: 'n', ó: 'o', ś: 's', ź: 'z', ż: 'z',
+    Ą: 'A', Ć: 'C', Ę: 'E', Ł: 'L', Ń: 'N', Ó: 'O', Ś: 'S', Ź: 'Z', Ż: 'Z',
+  };
+  const NARROW_LOWER = 'iljftr';
+  const WIDE_LOWER = 'mw';
+  const MED_LOWER = 'abcdeghknopqsuvxyz';
+  const NARROW_UPPER = 'ILJTF';
+  const WIDE_UPPER = 'MW';
+  const MED_UPPER = 'ABCDEGHKNOPQSUVXYZ';
+
+  function rotateGlyph(ch: string, stepOffset: number): string {
+    const base = FOLD_MAP[ch] ?? ch;
+    const lower = base.toLowerCase();
+    const isUpper = base !== lower;
+    let ring: string;
+    if (isUpper) {
+      if (NARROW_UPPER.includes(base)) ring = NARROW_UPPER;
+      else if (WIDE_UPPER.includes(base)) ring = WIDE_UPPER;
+      else ring = MED_UPPER;
+    } else {
+      if (NARROW_LOWER.includes(base)) ring = NARROW_LOWER;
+      else if (WIDE_LOWER.includes(base)) ring = WIDE_LOWER;
+      else ring = MED_LOWER;
+    }
+    const idx = ring.indexOf(base);
+    if (idx === -1) return ch;
+    return ring[(idx + stepOffset) % ring.length];
+  }
+
+  function revolveLetters(panel: HTMLElement) {
+    restoreDecodedText();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const viewBottom = window.innerHeight + 80;
+    const blocks = Array.from(
+      panel.querySelectorAll<HTMLElement>('p, h2, h3, li, blockquote')
+    )
+      .filter((el) => {
+        const rect = el.getBoundingClientRect();
+        return rect.bottom > -40 && rect.top < viewBottom;
+      })
+      .slice(0, 14);
+
+    if (blocks.length === 0) return;
+
+    interface Segment {
+      node: Text;
+      orig: string;
+      offset: number;
+    }
+
+    const animBlocks: Array<{ segments: Segment[]; totalLen: number; delay: number; done: boolean }> = [];
+
+    blocks.forEach((block, blockIndex) => {
+      const walker = document.createTreeWalker(block, NodeFilter.SHOW_TEXT);
+      const segments: Segment[] = [];
+      let totalLen = 0;
+      let cur: Node | null;
+
+      while ((cur = walker.nextNode())) {
+        const textNode = cur as Text;
+        const parentEl = textNode.parentElement;
+        if (!parentEl || parentEl.closest('sup.citation-ref')) continue;
+        const val = textNode.nodeValue ?? '';
+        if (!val.trim()) continue;
+        activeTextEntries.push({ node: textNode, orig: val });
+        segments.push({ node: textNode, orig: val, offset: totalLen });
+        totalLen += val.length;
+      }
+
+      if (segments.length > 0) {
+        animBlocks.push({
+          segments,
+          totalLen,
+          delay: blockIndex * 48,
+          done: false,
+        });
+      }
+    });
+
+    if (animBlocks.length === 0) return;
+
+    const blockDuration = 820;
+    const waveWidth = 0.34;
+    const start = performance.now();
+
+    const renderFrame = (now: number) => {
+      const elapsed = now - start;
+      let anyPending = false;
+
+      for (const blk of animBlocks) {
+        if (blk.done) continue;
+        const local = Math.max(0, elapsed - blk.delay);
+        const progress = Math.min(1, local / blockDuration);
+
+        if (progress >= 1) {
+          for (const seg of blk.segments) {
+            if (seg.node.nodeValue !== seg.orig) seg.node.nodeValue = seg.orig;
+          }
+          blk.done = true;
+          continue;
+        }
+
+        anyPending = true;
+        const invLen = blk.totalLen > 1 ? 1 / (blk.totalLen - 1) : 0;
+
+        for (const seg of blk.segments) {
+          const orig = seg.orig;
+          let out = '';
+          for (let i = 0; i < orig.length; i++) {
+            const ch = orig[i];
+            if (!/\p{L}/u.test(ch)) {
+              out += ch;
+              continue;
+            }
+            const gIdx = seg.offset + i;
+            const settleAt = gIdx * invLen * (1 - waveWidth) + waveWidth;
+            const remaining = settleAt - progress;
+            if (remaining <= 0) {
+              out += ch;
+            } else {
+              const steps = Math.max(1, Math.ceil((remaining / waveWidth) * 9));
+              out += rotateGlyph(ch, steps);
+            }
+          }
+          seg.node.nodeValue = out;
+        }
+      }
+
+      if (anyPending) {
+        decodeRaf = requestAnimationFrame(renderFrame);
+      } else {
+        decodeRaf = null;
+        activeTextEntries = [];
+      }
+    };
+
+    renderFrame(start);
+  }
+
+  function initArticleInteractions() {
+    articleAbort?.abort();
+    articleAbort = new AbortController();
+    const { signal } = articleAbort;
+
+    restoreDecodedText();
+
+    // Bilingual toggle with in-place per-letter revolving code transition
+    const langSwitch = document.querySelector('[data-lang-switch]') as HTMLElement | null;
+    const langBtns = document.querySelectorAll('[data-lang-btn]');
+    const langPanels = Array.from(
+      document.querySelectorAll('[data-lang-panel]')
+    ) as HTMLElement[];
+
+    const updateIndicator = (activeBtn: HTMLElement | null) => {
+      if (!langSwitch || !activeBtn) return;
+      langSwitch.style.setProperty('--ind-x', `${activeBtn.offsetLeft}px`);
+      langSwitch.style.setProperty('--ind-w', `${activeBtn.offsetWidth}px`);
+      langSwitch.classList.add('has-bar');
+    };
+
+    if (langSwitch) {
+      const activeInit = langSwitch.querySelector('.lang-switch__btn.is-active') as HTMLElement | null;
+      updateIndicator(activeInit);
+      window.addEventListener(
+        'resize',
+        () => updateIndicator(langSwitch.querySelector('.lang-switch__btn.is-active') as HTMLElement | null),
+        { signal }
+      );
+    }
+
+    let currentLang = langSwitch?.dataset.lang ?? 'en';
+
+    langBtns.forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        () => {
+          const targetLang = (btn as HTMLElement).dataset.langBtn ?? 'en';
+          if (targetLang === currentLang) return;
+          currentLang = targetLang;
+
+          if (langSwitch) {
+            langSwitch.dataset.lang = targetLang;
+          }
+
+          langBtns.forEach((b) => {
+            const btnEl = b as HTMLElement;
+            const active = btnEl.dataset.langBtn === targetLang;
+            btnEl.classList.toggle('is-active', active);
+            btnEl.setAttribute('aria-pressed', String(active));
+            if (active) updateIndicator(btnEl);
+          });
+
+          restoreDecodedText();
+
+          const incoming = langPanels.find((p) => p.dataset.langPanel === targetLang);
+          if (!incoming) return;
+
+          langPanels.forEach((p) => {
+            p.hidden = p !== incoming;
+          });
+
+          revolveLetters(incoming);
+        },
+        { signal }
+      );
+    });
+
+    // Copy link button
+    const copyBtn = document.querySelector('[data-copy-link]') as HTMLButtonElement | null;
+    if (copyBtn) {
+      copyBtn.addEventListener(
+        'click',
+        async () => {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            copyBtn.textContent = 'Copied ✓';
+            window.setTimeout(() => {
+              copyBtn.textContent = 'Copy link';
+            }, 1800);
+          } catch {
+            copyBtn.textContent = 'Copy failed';
+          }
+        },
+        { signal }
+      );
+    }
+  }
+
+  document.addEventListener('astro:page-load', initArticleInteractions);
+</script>

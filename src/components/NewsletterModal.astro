@@ -1,0 +1,289 @@
+---
+---
+
+<div
+  id="newsletter-modal"
+  class="modal-backdrop"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="newsletter-modal-title"
+  hidden
+>
+  <div class="modal-panel">
+    <button
+      type="button"
+      class="modal-close"
+      data-close-newsletter
+      aria-label="Close newsletter dialog"
+    >
+      ×
+    </button>
+
+    <div class="mono modal-eyebrow">Monthly dispatch</div>
+    <h2 id="newsletter-modal-title" class="modal-title">The Cabinet Newsletter</h2>
+    <p class="modal-desc">
+      Slow delivery. Receive new essays and notes in your inbox once a month—no noise.
+    </p>
+
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" title="Newsletter submission"></iframe>
+
+    <form
+      action="https://assets.mailerlite.com/jsonp/2129775/forms/179945752443749576/subscribe"
+      method="POST"
+      id="mailerlite-form"
+      target="hidden_iframe"
+      class="modal-form"
+    >
+      <input type="hidden" name="ml-submit" value="1" />
+      <input type="hidden" name="anticsrf" value="true" />
+
+      <label class="sr-only" for="newsletter-email">Email address</label>
+      <input
+        id="newsletter-email"
+        type="email"
+        name="fields[email]"
+        placeholder="you@example.com"
+        required
+        class="modal-input"
+      />
+
+      <label class="modal-consent">
+        <input type="checkbox" id="marketing-consent" required />
+        <span>
+          I agree to receive emails from From the Cabinet and accept the
+          <a href="/privacy-policy/" class="modal-link">Privacy Policy</a>.
+        </span>
+      </label>
+
+      <button type="submit" id="newsletter-submit-btn" class="modal-submit">
+        Subscribe
+      </button>
+
+      <p class="modal-legal">
+        Data controller: Jakub Pacocha. Processed solely for delivering the newsletter.
+      </p>
+
+      <p id="newsletter-success-msg" class="modal-success" hidden>
+        Thank you for signing up. Please check your inbox to confirm your address.
+      </p>
+    </form>
+  </div>
+</div>
+
+<style>
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s-4);
+    background: rgba(8, 10, 10, 0.56);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    animation: fade-up var(--dur-2) var(--ease-out);
+  }
+
+  .modal-backdrop[hidden] {
+    display: none;
+  }
+
+  .modal-panel {
+    position: relative;
+    width: 100%;
+    max-width: 28rem;
+    padding: var(--s-6);
+    background: var(--surface);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-float);
+  }
+
+  .modal-close {
+    position: absolute;
+    top: var(--s-4);
+    right: var(--s-4);
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    font-size: 1.35rem;
+    line-height: 1;
+    border-radius: var(--r-pill);
+    transition: color var(--dur-1) ease, border-color var(--dur-1) ease;
+  }
+
+  .modal-close:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+
+  .modal-eyebrow {
+    color: var(--accent);
+    margin-bottom: var(--s-2);
+  }
+
+  .modal-title {
+    margin: 0 0 var(--s-2);
+    font-family: var(--font-sans);
+    font-size: 1.5rem;
+    font-weight: 550;
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+  }
+
+  .modal-desc {
+    margin: 0 0 var(--s-5);
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+
+  .modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .modal-input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    background: var(--bg);
+    border: 1px solid var(--line-strong);
+    border-radius: var(--r-sm);
+    font-size: var(--text-sm);
+    transition: border-color var(--dur-1) ease;
+  }
+
+  .modal-input:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+
+  .modal-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .modal-consent input {
+    margin-top: 0.18rem;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .modal-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .modal-submit {
+    width: 100%;
+    padding: 0.72rem 1.2rem;
+    border: none;
+    border-radius: var(--r-sm);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    transition: background-color var(--dur-1) ease, transform var(--dur-1) ease;
+  }
+
+  .modal-submit:hover {
+    background: var(--accent-strong);
+  }
+
+  .modal-legal {
+    margin: 0;
+    font-size: var(--text-2xs);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .modal-success {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--accent);
+  }
+</style>
+
+<script>
+  let modalAbort: AbortController | null = null;
+
+  function initNewsletterModal() {
+    modalAbort?.abort();
+    modalAbort = new AbortController();
+    const { signal } = modalAbort;
+
+    const modal = document.getElementById('newsletter-modal');
+    if (!modal) return;
+
+    const openers = document.querySelectorAll('[data-open-newsletter]');
+    const closers = modal.querySelectorAll('[data-close-newsletter]');
+    const form = document.getElementById('mailerlite-form') as HTMLFormElement | null;
+    const submitBtn = document.getElementById('newsletter-submit-btn') as HTMLButtonElement | null;
+    const successMsg = document.getElementById('newsletter-success-msg');
+    let lastFocused: HTMLElement | null = null;
+
+    const open = () => {
+      lastFocused = document.activeElement as HTMLElement | null;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      document.getElementById('newsletter-email')?.focus();
+    };
+
+    const close = () => {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      lastFocused?.focus();
+    };
+
+    openers.forEach((btn) => btn.addEventListener('click', open, { signal }));
+    closers.forEach((btn) => btn.addEventListener('click', close, { signal }));
+
+    modal.addEventListener(
+      'click',
+      (e) => {
+        if (e.target === modal) close();
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'Escape' && !modal.hidden) close();
+      },
+      { signal }
+    );
+
+    if (form && submitBtn) {
+      form.addEventListener(
+        'submit',
+        () => {
+          submitBtn.textContent = 'Sending…';
+          submitBtn.disabled = true;
+          window.setTimeout(() => {
+            if (successMsg) successMsg.hidden = false;
+            submitBtn.textContent = 'Subscribe';
+            submitBtn.disabled = false;
+            form.reset();
+          }, 1200);
+        },
+        { signal }
+      );
+    }
+  }
+
+  document.addEventListener('astro:page-load', initNewsletterModal);
+</script>

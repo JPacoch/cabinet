@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About — From the Cabinet"
+  description="About From the Cabinet and its author, Jakub Pacocha."
+>
+  <div class="wrap about-page">
+    <div class="col-wide">
+      <header class="about-head">
+        <span class="kicker enter" style="--d: 0">About</span>
+        <h1 class="about-head__title enter" style="--d: 1">
+          On slow writing &amp; revisited arguments.
+        </h1>
+        <p class="about-meta kicker enter" style="--d: 2">
+          <span>Jakub Pacocha</span>
+          <span aria-hidden="true">·</span>
+          <a href="mailto:pacochp@gmail.com">pacochp@gmail.com</a>
+          <span aria-hidden="true">·</span>
+          <a href="/rss.xml">RSS</a>
+        </p>
+      </header>
+
+      <div class="prose enter" style="--d: 3">
+        <p>
+          I write essays and treatises to map the edges of attention, technology, and
+          personal ethics. The goal is not to achieve maximum clarity, but rather snapshot a
+          thought; the slow construction of arguments that can be revisited over the years.
+        </p>
+        <p>
+          I am a true agnostic, though you will find some takes on theology here as well.
+        </p>
+
+        <h2>Writing practice</h2>
+        <p>
+          My drafts begin as brief notes. I collect observations, then compress them into
+          essays once the theme reveals itself. Every piece here is a finished draft, but
+          not a final work.
+        </p>
+        <p>
+          Each text stands alone with its references and a stable URL, so the archive can
+          live on the web without losing its shape.
+        </p>
+
+        <h2>Contact &amp; Elsewhere</h2>
+        <p>
+          If you want to share a response, recommendation, or critique, send a note to{' '}
+          <a href="mailto:pacochp@gmail.com">pacochp@gmail.com</a>. Elsewhere on the web:{' '}
+          <a href="https://www.jakubpacocha.com/" target="_blank" rel="noopener noreferrer">Website</a>,{' '}
+          <a href="https://jakubpacocha.substack.com/" target="_blank" rel="noopener noreferrer">Substack</a>,{' '}
+          <a href="https://x.com/JakubPacocha" target="_blank" rel="noopener noreferrer">X</a>,{' '}
+          <a href="https://mastodon.social/@JakubPacocha" target="_blank" rel="noopener noreferrer">Mastodon</a>,{' '}
+          and{' '}
+          <a href="https://www.linkedin.com/in/jakubpacocha/" target="_blank" rel="noopener noreferrer">LinkedIn</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page {
+    padding-top: clamp(2.5rem, 6vh, 4.75rem);
+  }
+
+  .about-head {
+    margin-bottom: clamp(2.25rem, 5vw, 3.25rem);
+    padding-bottom: var(--s-5);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about-head__title {
+    margin: 0.75rem 0 1rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-display);
+    font-weight: 550;
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+
+  .about-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 0;
+  }
+
+  .about-meta a {
+    transition: color var(--dur-1) ease;
+  }
+
+  .about-meta a:hover {
+    color: var(--accent);
+  }
+</style>

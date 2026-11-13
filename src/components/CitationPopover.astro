@@ -1,0 +1,548 @@
+---
+---
+
+<div id="citation-backdrop" class="citation-backdrop" hidden></div>
+
+<div
+  id="citation-popover"
+  class="citation-popover"
+  role="dialog"
+  aria-modal="false"
+  aria-labelledby="citation-popover-label"
+  hidden
+>
+  <div class="citation-popover__header">
+    <span class="citation-popover__meta">
+      <span class="citation-popover__dot" aria-hidden="true"></span>
+      <span id="citation-popover-label" class="citation-popover__title kicker">Note</span>
+    </span>
+    <button
+      type="button"
+      class="citation-popover__close"
+      data-citation-close
+      aria-label="Close reference"
+    >
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+        <path d="M4.5 4.5l7 7M11.5 4.5l-7 7" />
+      </svg>
+    </button>
+  </div>
+  <div class="citation-popover__body" data-citation-body></div>
+  <div class="citation-popover__footer">
+    <a href="#references" class="citation-popover__jump kicker" data-citation-jump>
+      <span>Jump to references</span>
+      <span class="citation-popover__arrow" aria-hidden="true">↓</span>
+    </a>
+  </div>
+</div>
+
+<style>
+  .citation-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(10, 10, 10, 0.34);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    animation: bd-fade-in var(--dur-2) var(--ease-out);
+  }
+
+  .citation-backdrop[hidden] {
+    display: none;
+  }
+
+  @keyframes bd-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  .citation-popover {
+    position: fixed;
+    z-index: 100;
+    width: min(23.5rem, calc(100vw - 2rem));
+    background: var(--popover-bg);
+    -webkit-backdrop-filter: blur(22px) saturate(1.65);
+    backdrop-filter: blur(22px) saturate(1.65);
+    border-radius: 12px;
+    box-shadow: var(--shadow-float);
+    padding: 0.9rem 1.05rem;
+    font-family: var(--font-sans);
+    font-size: 0.84375rem;
+    line-height: 1.56;
+    color: var(--ink-soft);
+    transform-origin: var(--pop-origin, top center);
+    animation: cite-pop-in 340ms var(--ease-spring) both;
+  }
+
+  .citation-popover[hidden] {
+    display: none;
+  }
+
+  .citation-popover.is-closing {
+    animation: cite-pop-out 200ms var(--ease-out) both;
+    pointer-events: none;
+  }
+
+  @keyframes cite-pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--pop-y, 6px)) scale(0.94);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes cite-pop-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(var(--pop-y, 4px)) scale(0.96);
+    }
+  }
+
+  .citation-popover__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+  }
+
+  .citation-popover__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .citation-popover__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-tint);
+  }
+
+  .citation-popover__title {
+    color: var(--ink-2);
+    font-weight: 500;
+  }
+
+  .citation-popover__close {
+    width: 1.45rem;
+    height: 1.45rem;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--muted);
+    transition: background-color var(--dur-1) ease, color var(--dur-1) ease,
+      transform var(--dur-1) var(--ease-spring);
+  }
+
+  .citation-popover__close svg {
+    width: 0.78rem;
+    height: 0.78rem;
+  }
+
+  .citation-popover__close:hover {
+    background: var(--bg-raised);
+    color: var(--ink);
+  }
+
+  .citation-popover__close:active {
+    transform: scale(0.9);
+  }
+
+  .citation-popover__body :global(a) {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .citation-popover__footer {
+    margin-top: 0.75rem;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .citation-popover__jump {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--accent);
+    text-decoration: none;
+    transition: color var(--dur-1) ease;
+  }
+
+  .citation-popover__arrow {
+    display: inline-block;
+    transition: transform var(--dur-1) var(--ease-spring);
+  }
+
+  .citation-popover__jump:hover {
+    color: var(--accent-strong);
+  }
+
+  .citation-popover__jump:hover .citation-popover__arrow {
+    transform: translateY(2px);
+  }
+
+  @media (max-width: 767px) {
+    .citation-popover {
+      left: 0 !important;
+      right: 0 !important;
+      top: auto !important;
+      bottom: 0 !important;
+      width: 100%;
+      max-width: 100%;
+      background: var(--surface);
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+      border-radius: 18px 18px 0 0;
+      padding: 0.85rem 1.35rem calc(1.35rem + env(safe-area-inset-bottom, 0px));
+      transform-origin: bottom center;
+      animation: rise-sheet var(--dur-2) var(--ease-out) both;
+    }
+
+    .citation-popover::before {
+      content: '';
+      display: block;
+      width: 2.25rem;
+      height: 3.5px;
+      border-radius: var(--r-pill);
+      background: var(--line-strong);
+      margin: 0 auto 0.85rem;
+    }
+
+    .citation-popover.is-closing {
+      animation: drop-sheet 220ms var(--ease-in-out) both;
+    }
+
+    @keyframes rise-sheet {
+      from {
+        opacity: 0.4;
+        transform: translateY(100%);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes drop-sheet {
+      from {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      to {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+    }
+  }
+</style>
+
+<script>
+  let citeAbort: AbortController | null = null;
+
+  function initCitations() {
+    citeAbort?.abort();
+    citeAbort = new AbortController();
+    const { signal } = citeAbort;
+
+    const popover = document.getElementById('citation-popover') as HTMLElement | null;
+    const backdrop = document.getElementById('citation-backdrop') as HTMLElement | null;
+    if (!popover) return;
+
+    const titleEl = document.getElementById('citation-popover-label');
+    const bodyEl = popover.querySelector('[data-citation-body]');
+    const jumpEl = popover.querySelector('[data-citation-jump]') as HTMLAnchorElement | null;
+    const closeBtn = popover.querySelector('[data-citation-close]') as HTMLButtonElement | null;
+
+    let activeTrigger: HTMLElement | null = null;
+    let isPinned = false;
+    let hoverOpenTimer: number | null = null;
+    let hoverCloseTimer: number | null = null;
+    let hideFinishTimer: number | null = null;
+
+    const isMobile = () => window.matchMedia('(max-width: 767px)').matches;
+    const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    const clearTimers = () => {
+      if (hoverOpenTimer !== null) {
+        window.clearTimeout(hoverOpenTimer);
+        hoverOpenTimer = null;
+      }
+      if (hoverCloseTimer !== null) {
+        window.clearTimeout(hoverCloseTimer);
+        hoverCloseTimer = null;
+      }
+      if (hideFinishTimer !== null) {
+        window.clearTimeout(hideFinishTimer);
+        hideFinishTimer = null;
+      }
+    };
+
+    const flashElement = (el: HTMLElement | null) => {
+      if (!el) return;
+      el.classList.remove('is-highlighted');
+      void el.offsetWidth;
+      el.classList.add('is-highlighted');
+    };
+
+    const finishHide = () => {
+      popover.hidden = true;
+      popover.classList.remove('is-closing');
+      if (backdrop) backdrop.hidden = true;
+      if (activeTrigger) {
+        activeTrigger.setAttribute('aria-expanded', 'false');
+        activeTrigger.classList.remove('is-peeking');
+      }
+      activeTrigger = null;
+      isPinned = false;
+    };
+
+    const closePopover = (restoreFocus = false) => {
+      clearTimers();
+      if (popover.hidden) return;
+      const prevTrigger = activeTrigger;
+      isPinned = false;
+
+      if (prevTrigger) {
+        prevTrigger.setAttribute('aria-expanded', 'false');
+        prevTrigger.classList.remove('is-peeking');
+        if (restoreFocus) prevTrigger.focus();
+      }
+
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        finishHide();
+        return;
+      }
+
+      popover.classList.add('is-closing');
+      if (backdrop && !backdrop.hidden) {
+        backdrop.hidden = true;
+      }
+      hideFinishTimer = window.setTimeout(finishHide, 200);
+    };
+
+    const positionPopover = (trigger: HTMLElement) => {
+      if (isMobile()) {
+        if (backdrop) backdrop.hidden = false;
+        popover.style.removeProperty('--pop-y');
+        popover.style.removeProperty('--pop-origin');
+        return;
+      }
+      if (backdrop) backdrop.hidden = true;
+
+      const rect = trigger.getBoundingClientRect();
+      const popWidth = popover.offsetWidth || 368;
+      const popHeight = popover.offsetHeight || 150;
+      const margin = 12;
+
+      let left = rect.left + rect.width / 2 - popWidth / 2;
+      left = Math.max(margin, Math.min(left, window.innerWidth - popWidth - margin));
+
+      let top = rect.bottom + 10;
+      let placedAbove = false;
+      if (top + popHeight > window.innerHeight - margin) {
+        top = Math.max(margin, rect.top - popHeight - 10);
+        placedAbove = true;
+      }
+
+      const anchorX = Math.max(16, Math.min(popWidth - 16, rect.left + rect.width / 2 - left));
+      popover.style.setProperty('--pop-y', placedAbove ? '-6px' : '6px');
+      popover.style.setProperty(
+        '--pop-origin',
+        `${anchorX}px ${placedAbove ? 'bottom' : 'top'}`
+      );
+      popover.style.left = `${left}px`;
+      popover.style.top = `${top}px`;
+    };
+
+    const openPopover = (trigger: HTMLElement, pin = true) => {
+      clearTimers();
+      popover.classList.remove('is-closing');
+
+      const id = trigger.dataset.citationId;
+      if (!id) return;
+
+      const refContent = document.querySelector(`#ref-${CSS.escape(id)} [data-ref-content]`);
+      if (!refContent || !bodyEl || !titleEl || !jumpEl) return;
+
+      if (activeTrigger && activeTrigger !== trigger) {
+        activeTrigger.setAttribute('aria-expanded', 'false');
+        activeTrigger.classList.remove('is-peeking');
+      }
+
+      activeTrigger = trigger;
+      isPinned = pin;
+      trigger.setAttribute('aria-expanded', String(pin));
+      trigger.classList.toggle('is-peeking', !pin);
+      titleEl.textContent = `Note ${id.padStart(2, '0')}`;
+      bodyEl.innerHTML = refContent.innerHTML;
+      jumpEl.href = `#ref-${id}`;
+
+      const wasHidden = popover.hidden;
+      popover.hidden = false;
+      if (wasHidden) {
+        // Restart cute spring entrance cleanly when switching notes
+        popover.style.animation = 'none';
+        void popover.offsetWidth;
+        popover.style.animation = '';
+      }
+      positionPopover(trigger);
+    };
+
+    const scheduleHoverClose = () => {
+      if (isPinned) return;
+      if (hoverCloseTimer !== null) window.clearTimeout(hoverCloseTimer);
+      hoverCloseTimer = window.setTimeout(() => {
+        if (!isPinned) closePopover(false);
+      }, 200);
+    };
+
+    // Desktop hover preview + pointer bridge into the floating card
+    document.querySelectorAll('[data-citation-trigger]').forEach((el) => {
+      const trigger = el as HTMLElement;
+
+      trigger.addEventListener(
+        'mouseenter',
+        () => {
+          if (!canHover() || isMobile()) return;
+          if (hoverCloseTimer !== null) {
+            window.clearTimeout(hoverCloseTimer);
+            hoverCloseTimer = null;
+          }
+          if (activeTrigger === trigger && !popover.hidden) return;
+          if (hoverOpenTimer !== null) window.clearTimeout(hoverOpenTimer);
+          hoverOpenTimer = window.setTimeout(() => {
+            openPopover(trigger, false);
+          }, 75);
+        },
+        { signal }
+      );
+
+      trigger.addEventListener(
+        'mouseleave',
+        () => {
+          if (hoverOpenTimer !== null) {
+            window.clearTimeout(hoverOpenTimer);
+            hoverOpenTimer = null;
+          }
+          scheduleHoverClose();
+        },
+        { signal }
+      );
+    });
+
+    popover.addEventListener(
+      'mouseenter',
+      () => {
+        if (hoverCloseTimer !== null) {
+          window.clearTimeout(hoverCloseTimer);
+          hoverCloseTimer = null;
+        }
+        if (hideFinishTimer !== null) {
+          window.clearTimeout(hideFinishTimer);
+          hideFinishTimer = null;
+          popover.classList.remove('is-closing');
+        }
+      },
+      { signal }
+    );
+
+    popover.addEventListener(
+      'mouseleave',
+      () => {
+        scheduleHoverClose();
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'click',
+      (e) => {
+        const target = e.target as HTMLElement;
+        const trigger = target.closest('[data-citation-trigger]') as HTMLElement | null;
+
+        if (trigger) {
+          e.preventDefault();
+          e.stopPropagation();
+          if (activeTrigger === trigger && !popover.hidden && isPinned) {
+            closePopover(false);
+          } else {
+            openPopover(trigger, true);
+          }
+          return;
+        }
+
+        const backlink = target.closest('[data-ref-backlink]') as HTMLAnchorElement | null;
+        if (backlink) {
+          const href = backlink.getAttribute('href');
+          if (href && href.startsWith('#')) {
+            const citeTarget = document.getElementById(href.slice(1));
+            flashElement(citeTarget);
+          }
+          return;
+        }
+
+        if (!popover.hidden && !popover.contains(target)) {
+          closePopover(false);
+        }
+      },
+      { capture: true, signal }
+    );
+
+    jumpEl?.addEventListener(
+      'click',
+      () => {
+        const href = jumpEl.getAttribute('href');
+        closePopover(false);
+        if (href && href.startsWith('#')) {
+          const refEl = document.getElementById(href.slice(1));
+          flashElement(refEl);
+        }
+      },
+      { signal }
+    );
+
+    closeBtn?.addEventListener('click', () => closePopover(true), { signal });
+    backdrop?.addEventListener('click', () => closePopover(true), { signal });
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'Escape' && !popover.hidden) {
+          closePopover(true);
+        }
+      },
+      { signal }
+    );
+
+    window.addEventListener(
+      'resize',
+      () => {
+        if (!popover.hidden && activeTrigger) {
+          positionPopover(activeTrigger);
+        }
+      },
+      { signal }
+    );
+  }
+
+  document.addEventListener('astro:page-load', initCitations);
+</script>

@@ -1,0 +1,36 @@
+---
+interface Props {
+  width?: 'prose' | 'wide';
+}
+
+const { width = 'wide' } = Astro.props;
+const colClass = width === 'prose' ? 'col-prose' : 'col-wide';
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class={`${colClass} site-footer__inner`}>
+      <p class="site-footer__legal">
+        © 2026 Jakub Pacocha · fromthecabinet.com
+      </p>
+
+      <nav class="site-footer__nav" aria-label="Footer">
+        <a href="/writing/">Writing</a>
+        <a href="/about/">About</a>
+        <a href="https://quotes.fromthecabinet.com/" target="_blank" rel="noopener noreferrer">Quotes ↗</a>
+        <button type="button" class="footer-btn" data-open-newsletter>Newsletter</button>
+        <a href="/rss.xml">RSS</a>
+        <a href="/privacy-policy/">Privacy</a>
+      </nav>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+</style>

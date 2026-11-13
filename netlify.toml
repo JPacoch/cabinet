@@ -1,5 +1,28 @@
+[build]
+  command = "bun run build"
+  publish = "dist"
+
 [[redirects]]
-  from = "/*"
-  to = "/:splat.html"
-  status = 200
-  force = false
+  from = "/library.html"
+  to = "/writing/"
+  status = 301
+
+[[redirects]]
+  from = "/library"
+  to = "/writing/"
+  status = 301
+
+[[redirects]]
+  from = "/about.html"
+  to = "/about/"
+  status = 301
+
+[[redirects]]
+  from = "/privacy-policy.html"
+  to = "/privacy-policy/"
+  status = 301
+
+[[redirects]]
+  from = "/texts/phenomenology-certainty.html"
+  to = "/writing/phenomenology-certainty/"
+  status = 301
