@@ -1,0 +1,553 @@
+---
+import type { GitHubProfileData } from '../lib/profiles';
+
+interface Props {
+  github: GitHubProfileData;
+}
+
+const { github } = Astro.props;
+---
+
+<div id="profile-card" class="profile-card" role="status" aria-hidden="true" hidden>
+  <div class="profile-card__inner" data-profile-body></div>
+</div>
+
+<template data-profile-tpl="github">
+  <div class="pc-gh">
+    <div class="pc-gh__months">
+      {github.months.map((m) => <span>{m}</span>)}
+    </div>
+    <div class="pc-gh__grid" aria-hidden="true">
+      {
+        github.weeks.map((week) => (
+          <div class="pc-gh__col">
+            {week.map((lvl) => (
+              <span class="pc-gh__cell" data-level={lvl} />
+            ))}
+          </div>
+        ))
+      }
+    </div>
+    <div class="pc-gh__foot">
+      <div class="pc-avatar pc-avatar--cabinet" aria-hidden="true">JP</div>
+      <div class="pc-gh__meta">
+        <div class="pc-identity">
+          <span class="pc-name">{github.name}</span>
+          <span class="pc-handle">{github.username}</span>
+        </div>
+        <p class="pc-bio">{github.bio}</p>
+        <div class="pc-sub">
+          {
+            typeof github.repos === 'number'
+              ? `${github.repos} public repos · github.com/${github.username} ↗`
+              : `github.com/${github.username} ↗`
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<template data-profile-tpl="x">
+  <div class="pc-social">
+    <div class="pc-social__top">
+      <div class="pc-avatar pc-avatar--warm" aria-hidden="true">JP</div>
+      <span class="pc-badge" aria-label="X profile">𝕏</span>
+    </div>
+    <div class="pc-identity">
+      <span class="pc-name">Jakub Pacocha</span>
+      <svg class="pc-verified" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" fill="currentColor" />
+        <path d="M8.5 12.3l2.3 2.3 4.8-5.1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      </svg>
+      <span class="pc-handle">@JakubPacocha</span>
+    </div>
+    <p class="pc-bio">
+      Krajniak.
+
+Geografia, F1, polityka, Atalanta, Polska.
+    </p>
+    <div class="pc-stats">
+      <span>x.com/JakubPacocha ↗</span>
+    </div>
+  </div>
+</template>
+
+<template data-profile-tpl="substack">
+  <div class="pc-social">
+    <div class="pc-social__top">
+      <div class="pc-avatar pc-avatar--oxblood" aria-hidden="true">C</div>
+      <span class="pc-badge pc-badge--substack" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M2 2h12v2H2V2zm0 3.5h12v2H2v-2zM2 9h12v5.5l-6-3.2-6 3.2V9z" />
+        </svg>
+      </span>
+    </div>
+    <div class="pc-identity">
+      <span class="pc-name">From the Cabinet</span>
+      <span class="pc-handle">@jakubpacocha</span>
+    </div>
+    <p class="pc-bio">Monthly dispatches, quiet reading notes &amp; new essays delivered to your inbox.</p>
+    <div class="pc-stats">
+      <span><strong>Newsletter</strong></span>
+      <span class="pc-dot" aria-hidden="true">·</span>
+      <span>jakubpacocha.substack.com ↗</span>
+    </div>
+  </div>
+</template>
+
+<template data-profile-tpl="mastodon">
+  <div class="pc-social">
+    <div class="pc-social__top">
+      <div class="pc-avatar pc-avatar--indigo" aria-hidden="true">JP</div>
+      <span class="pc-badge" aria-hidden="true">@</span>
+    </div>
+    <div class="pc-identity">
+      <span class="pc-name">Jakub Pacocha</span>
+      <span class="pc-handle">@JakubPacocha@mastodon.social</span>
+    </div>
+    <p class="pc-bio">#philosophy, #genai and local #activism. Writing for fromthecabinet.com/</p>
+    <div class="pc-stats">
+      <span><strong>Fediverse</strong></span>
+      <span class="pc-dot" aria-hidden="true">·</span>
+      <span>mastodon.social ↗</span>
+    </div>
+  </div>
+</template>
+
+<style>
+  .profile-card {
+    position: fixed;
+    z-index: 125;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .profile-card[hidden] {
+    display: none;
+  }
+
+  .profile-card__inner {
+    width: min(17.75rem, calc(100vw - 1.5rem));
+    padding: 0.9rem;
+    border-radius: 16px;
+    background: var(--tooltip-bg);
+    color: var(--tooltip-ink);
+    box-shadow: var(--tooltip-shadow), var(--shadow-float);
+    -webkit-backdrop-filter: blur(22px) saturate(1.85);
+    backdrop-filter: blur(22px) saturate(1.85);
+    font-family: var(--font-sans);
+    transform-origin: 50% 100%;
+    will-change: transform, opacity;
+  }
+
+  .profile-card[data-pos='below'] .profile-card__inner {
+    transform-origin: 50% 0%;
+  }
+
+  :global(.pc-gh__months) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-bottom: 0.35rem;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  :global(.pc-gh__grid) {
+    display: grid;
+    grid-template-columns: repeat(14, 1fr);
+    gap: 3px;
+    margin-bottom: 0.8rem;
+  }
+
+  :global(.pc-gh__col) {
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    gap: 3px;
+  }
+
+  :global(.pc-gh__cell) {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 2.5px;
+    background: rgba(128, 128, 124, 0.14);
+  }
+
+  :global(.pc-gh__cell[data-level='1']) {
+    background: #9be9a8;
+  }
+  :global(.pc-gh__cell[data-level='2']) {
+    background: #40c463;
+  }
+  :global(.pc-gh__cell[data-level='3']) {
+    background: #30a14e;
+  }
+  :global(.pc-gh__cell[data-level='4']) {
+    background: #216e39;
+  }
+
+  :global(:root[data-theme='dark'] .pc-gh__cell) {
+    background: rgba(255, 255, 255, 0.08);
+  }
+  :global(:root[data-theme='dark'] .pc-gh__cell[data-level='1']) {
+    background: #0e4429;
+  }
+  :global(:root[data-theme='dark'] .pc-gh__cell[data-level='2']) {
+    background: #006d32;
+  }
+  :global(:root[data-theme='dark'] .pc-gh__cell[data-level='3']) {
+    background: #26a641;
+  }
+  :global(:root[data-theme='dark'] .pc-gh__cell[data-level='4']) {
+    background: #39d353;
+  }
+
+  :global(.pc-gh__foot) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+  }
+
+  :global(.pc-gh__meta) {
+    min-width: 0;
+  }
+
+  :global(.pc-avatar) {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--r-pill);
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: -0.02em;
+    color: #fff;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+
+  :global(.pc-avatar--cabinet) {
+    background: linear-gradient(135deg, #27272a, #881337 85%);
+  }
+
+  :global(.pc-avatar--warm) {
+    background: radial-gradient(circle at 28% 28%, #fb7185, #881337 62%, #1f2937 100%);
+  }
+
+  :global(.pc-avatar--oxblood) {
+    background: linear-gradient(145deg, #9f1239, #4c0519);
+  }
+
+  :global(.pc-avatar--indigo) {
+    background: linear-gradient(135deg, #4f46e5, #881337);
+  }
+
+  :global(.pc-social__top) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.55rem;
+  }
+
+  :global(.pc-badge) {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--r-pill);
+    background: var(--line);
+    color: var(--ink-2);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  :global(.pc-badge--substack) {
+    color: #ff6719;
+  }
+
+  :global(.pc-identity) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.28rem;
+    margin-bottom: 0.28rem;
+    line-height: 1.25;
+  }
+
+  :global(.pc-name) {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--tooltip-ink);
+  }
+
+  :global(.pc-verified) {
+    color: #1d9bf0;
+    flex-shrink: 0;
+  }
+
+  :global(.pc-handle) {
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: -0.01em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  :global(.pc-bio) {
+    margin: 0 0 0.55rem;
+    font-size: 0.78rem;
+    line-height: 1.42;
+    color: var(--ink-soft);
+  }
+
+  :global(.pc-accent) {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  :global(.pc-stats),
+  :global(.pc-sub) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    color: var(--muted);
+  }
+
+  :global(.pc-stats strong) {
+    font-weight: 600;
+    color: var(--tooltip-ink);
+  }
+</style>
+
+<script>
+  let pcAbort: AbortController | null = null;
+  let pcRafId: number | null = null;
+
+  function clamp(val: number, min: number, max: number): number {
+    return Math.max(min, Math.min(val, max));
+  }
+
+  function initProfileCards() {
+    pcAbort?.abort();
+    if (pcRafId !== null) {
+      cancelAnimationFrame(pcRafId);
+      pcRafId = null;
+    }
+    pcAbort = new AbortController();
+    const { signal } = pcAbort;
+
+    const card = document.getElementById('profile-card') as HTMLElement | null;
+    const body = card?.querySelector('[data-profile-body]') as HTMLElement | null;
+    if (!card || !body) return;
+
+    const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let activeLink: HTMLElement | null = null;
+    let showTimer: number | null = null;
+
+    let lastMouseX: number | null = null;
+    let lastMouseY: number | null = null;
+    let lastMoveTime = performance.now();
+    let pointerVx = 0;
+
+    let currentX = 0;
+    let targetX = 0;
+    let velX = 0;
+    let anchorY = 0;
+    let posMode: 'above' | 'below' = 'above';
+
+    let sway = 0;
+    let velSway = 0;
+    let scale = 1;
+    let velScale = 0;
+    let opacity = 0;
+    let lastFrameTime = performance.now();
+
+    const computeBounds = (el: HTMLElement, clientX: number | null) => {
+      const rect = el.getBoundingClientRect();
+      const margin = 12;
+      const cardH = body.offsetHeight || 160;
+      const halfW = (body.offsetWidth || 260) / 2;
+
+      const rawX = clientX !== null && clientX > 0 ? clientX : rect.left + rect.width / 2;
+      const clampedX = clamp(
+        rawX,
+        margin + halfW,
+        Math.max(margin + halfW, window.innerWidth - margin - halfW)
+      );
+
+      let top = rect.top - cardH - 12;
+      let pos: 'above' | 'below' = 'above';
+      if (top < margin) {
+        top = rect.bottom + 12;
+        pos = 'below';
+      }
+      return { clampedX, top, pos };
+    };
+
+    const applyTransform = () => {
+      const dir = posMode === 'above' ? 1 : -1;
+      const rotateDeg = prefersReduced() ? 0 : clamp(-sway * 0.36 * dir, -3.8, 3.8);
+      const skewDeg = prefersReduced() ? 0 : clamp(sway * 0.55 * dir, -5.2, 5.2);
+      const sc = prefersReduced() ? 1 : scale;
+
+      card.dataset.pos = posMode;
+      card.style.transform = `translate3d(${currentX.toFixed(2)}px, ${anchorY.toFixed(2)}px, 0) translateX(-50%)`;
+      body.style.transform = `rotate(${rotateDeg.toFixed(2)}deg) skewX(${skewDeg.toFixed(2)}deg) scale(${sc.toFixed(4)})`;
+      body.style.opacity = `${opacity.toFixed(3)}`;
+    };
+
+    const stepLoop = (now: number) => {
+      pcRafId = null;
+      if (card.hidden || !activeLink) return;
+
+      const dt = clamp((now - lastFrameTime) / 1000, 0.004, 0.032);
+      lastFrameTime = now;
+
+      if (prefersReduced()) {
+        currentX = targetX;
+        velX = 0;
+        sway = 0;
+        velSway = 0;
+        scale = 1;
+        velScale = 0;
+        opacity = 1;
+        applyTransform();
+        return;
+      }
+
+      const posF = 230 * (targetX - currentX) - 20 * velX;
+      velX += posF * dt;
+      currentX += velX * dt;
+
+      const targetSway = clamp((targetX - currentX) * 0.32 + velX * 0.015, -8, 8);
+      const swayF = 195 * (targetSway - sway) - 12.5 * velSway;
+      velSway += swayF * dt;
+      sway += velSway * dt;
+
+      const scaleF = 360 * (1 - scale) - 21 * velScale;
+      velScale += scaleF * dt;
+      scale += velScale * dt;
+
+      opacity = Math.min(1, opacity + dt * 9);
+      applyTransform();
+
+      const settled =
+        Math.abs(targetX - currentX) < 0.06 &&
+        Math.abs(velX) < 0.25 &&
+        Math.abs(sway) < 0.06 &&
+        Math.abs(velSway) < 0.15 &&
+        Math.abs(1 - scale) < 0.002 &&
+        opacity >= 0.999;
+
+      if (!settled) {
+        pcRafId = requestAnimationFrame(stepLoop);
+      }
+    };
+
+    const ensureLoop = () => {
+      if (pcRafId === null && !card.hidden) {
+        lastFrameTime = performance.now();
+        pcRafId = requestAnimationFrame(stepLoop);
+      }
+    };
+
+    const hide = () => {
+      if (showTimer !== null) {
+        window.clearTimeout(showTimer);
+        showTimer = null;
+      }
+      if (pcRafId !== null) {
+        cancelAnimationFrame(pcRafId);
+        pcRafId = null;
+      }
+      activeLink = null;
+      body.textContent = '';
+      card.hidden = true;
+    };
+
+    const showFor = (link: HTMLElement) => {
+      const key = link.dataset.profileCard;
+      const tpl = key ? (document.querySelector(`[data-profile-tpl="${key}"]`) as HTMLTemplateElement | null) : null;
+      if (!tpl) return;
+
+      const wasHidden = card.hidden || activeLink !== link;
+      activeLink = link;
+      body.replaceChildren(tpl.content.cloneNode(true));
+      card.hidden = false;
+
+      const { clampedX, top, pos } = computeBounds(link, lastMouseX);
+      targetX = clampedX;
+      anchorY = top;
+      posMode = pos;
+
+      if (wasHidden) {
+        currentX = clampedX;
+        velX = clamp(pointerVx * 0.3, -300, 300);
+        sway = prefersReduced() ? 0 : clamp(pointerVx * 0.008, -3.5, 3.5);
+        velSway = 0;
+        scale = prefersReduced() ? 1 : 0.88;
+        velScale = prefersReduced() ? 0 : 1.2;
+        opacity = prefersReduced() ? 1 : 0;
+      }
+
+      applyTransform();
+      ensureLoop();
+    };
+
+    const links = Array.from(document.querySelectorAll('[data-profile-card]')) as HTMLElement[];
+    links.forEach((link) => {
+      link.addEventListener(
+        'mouseenter',
+        (e) => {
+          if (!canHover()) return;
+          lastMouseX = e.clientX;
+          lastMouseY = e.clientY;
+          if (showTimer !== null) window.clearTimeout(showTimer);
+          showTimer = window.setTimeout(() => showFor(link), 70);
+        },
+        { signal }
+      );
+
+      link.addEventListener(
+        'mousemove',
+        (e) => {
+          const now = performance.now();
+          const elapsed = Math.max(4, now - lastMoveTime);
+          if (lastMouseX !== null) {
+            pointerVx = clamp(((e.clientX - lastMouseX) / elapsed) * 1000, -1400, 1400);
+          }
+          lastMouseX = e.clientX;
+          lastMouseY = e.clientY;
+          lastMoveTime = now;
+
+          if (activeLink === link && !card.hidden) {
+            const { clampedX, top, pos } = computeBounds(link, lastMouseX);
+            targetX = clampedX;
+            anchorY = top;
+            posMode = pos;
+            ensureLoop();
+          }
+        },
+        { passive: true, signal }
+      );
+
+      link.addEventListener('mouseleave', hide, { signal });
+      link.addEventListener('click', hide, { signal });
+    });
+
+    window.addEventListener('scroll', hide, { passive: true, signal });
+    window.addEventListener('blur', hide, { signal });
+    document.addEventListener('astro:before-swap', hide, { signal });
+  }
+
+  document.addEventListener('astro:page-load', initProfileCards);
+</script>

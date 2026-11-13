@@ -1,0 +1,244 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import '@fontsource-variable/geist/wght.css';
+import '@fontsource-variable/geist/wght-italic.css';
+import '@fontsource-variable/geist-mono/wght.css';
+import '../styles/tokens.css';
+import '../styles/global.css';
+import '../styles/typography.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import NewsletterModal from '../components/NewsletterModal.astro';
+import LinkTooltip from '../components/LinkTooltip.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
+  articleSection?: string;
+  tags?: string[];
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown> | Array<Record<string, unknown>>;
+  hideHeader?: boolean;
+  footerWidth?: 'prose' | 'wide';
+}
+
+const {
+  title,
+  description = 'From the Cabinet — Essays, dialogues, and slow notes on philosophy, theology, and attention by Jakub Pacocha.',
+  ogType = 'website',
+  publishedTime,
+  articleSection,
+  tags = [],
+  noindex = false,
+  jsonLd,
+  hideHeader = false,
+  footerWidth = 'wide',
+} = Astro.props;
+
+const siteOrigin = (Astro.site ?? new URL('https://fromthecabinet.com')).toString().replace(/\/$/, '');
+const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).href;
+const currentPath = Astro.url.pathname;
+
+const defaultJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'From the Cabinet',
+  url: `${siteOrigin}/`,
+  description:
+    'A living cabinet of essays, dialogues, and slow notes on philosophy, theology, and attention.',
+  author: {
+    '@type': 'Person',
+    name: 'Jakub Pacocha',
+    url: `${siteOrigin}/about/`,
+  },
+};
+
+const structuredData = jsonLd ?? defaultJsonLd;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Jakub Pacocha" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" type="image/png" href="/images/favicon.png" />
+    <link rel="alternate" type="application/rss+xml" title="From the Cabinet RSS" href="/rss.xml" />
+
+    <!-- Open Graph -->
+    <meta property="og:site_name" content="From the Cabinet" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    {ogType === 'article' && <meta property="article:author" content="Jakub Pacocha" />}
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {articleSection && <meta property="article:section" content={articleSection} />}
+    {tags.map((t) => <meta property="article:tag" content={t} />)}
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    <!-- Analytics -->
+    <script
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="4879fccc-2ad4-4153-8672-dd68782a4f40"
+    ></script>
+
+    <!-- Zero-FOUC theme + js class -->
+    <script is:inline>
+      (function () {
+        document.documentElement.classList.add('js');
+        try {
+          var stored = localStorage.getItem('cabinet-theme');
+          var preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          var theme = stored === 'dark' || stored === 'light' ? stored : preferred;
+          document.documentElement.setAttribute('data-theme', theme);
+        } catch (e) {}
+      })();
+    </script>
+
+    <ClientRouter />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    {!hideHeader && <Header currentPath={currentPath} />}
+    <main id="main-content">
+      <slot />
+    </main>
+    <Footer width={footerWidth} />
+    <NewsletterModal />
+    <LinkTooltip />
+
+    <script>
+      function syncThemeBeforeSwap(doc: Document) {
+        try {
+          const stored = localStorage.getItem('cabinet-theme');
+          const preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+          const theme = stored === 'dark' || stored === 'light' ? stored : preferred;
+          doc.documentElement.setAttribute('data-theme', theme);
+          doc.documentElement.classList.add('js');
+        } catch {}
+      }
+
+      document.addEventListener('astro:before-swap', (e) => {
+        const nextDoc = (e as CustomEvent & { newDocument: Document }).newDocument;
+        syncThemeBeforeSwap(nextDoc);
+        nextDoc.documentElement.classList.add('is-spa-nav');
+      });
+
+      let chromeAbort: AbortController | null = null;
+
+      function setupChrome() {
+        chromeAbort?.abort();
+        chromeAbort = new AbortController();
+        const { signal } = chromeAbort;
+
+        // Theme toggle (supports multiple buttons e.g. header + article bar)
+        const toggleBtns = Array.from(document.querySelectorAll('[data-theme-toggle]')) as HTMLButtonElement[];
+        const updatePressed = () => {
+          const isDark = (document.documentElement.getAttribute('data-theme') || 'light') === 'dark';
+          toggleBtns.forEach((b) => b.setAttribute('aria-pressed', String(isDark)));
+        };
+        updatePressed();
+
+        toggleBtns.forEach((toggleBtn) => {
+          toggleBtn.addEventListener(
+            'click',
+            (e) => {
+              const prev = document.documentElement.getAttribute('data-theme') || 'light';
+              const next = prev === 'dark' ? 'light' : 'dark';
+
+              const apply = () => {
+                document.documentElement.setAttribute('data-theme', next);
+                updatePressed();
+                try {
+                  localStorage.setItem('cabinet-theme', next);
+                } catch {}
+              };
+
+              const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+              const docAny = document as Document & {
+                startViewTransition?: (cb: () => void) => { ready: Promise<void>; finished: Promise<void> };
+              };
+
+              if (!docAny.startViewTransition || reduced) {
+                apply();
+                return;
+              }
+
+              const rect = toggleBtn.getBoundingClientRect();
+              const x = (e as MouseEvent).clientX || rect.left + rect.width / 2;
+              const y = (e as MouseEvent).clientY || rect.top + rect.height / 2;
+              const endRadius = Math.hypot(
+                Math.max(x, window.innerWidth - x),
+                Math.max(y, window.innerHeight - y)
+              );
+
+              document.documentElement.classList.add('theme-vt');
+              const transition = docAny.startViewTransition(apply);
+
+              transition.ready.then(() => {
+                document.documentElement.animate(
+                  {
+                    clipPath: [
+                      `circle(0px at ${x}px ${y}px)`,
+                      `circle(${endRadius}px at ${x}px ${y}px)`,
+                    ],
+                  },
+                  {
+                    duration: 640,
+                    easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                    pseudoElement: '::view-transition-new(root)',
+                  }
+                );
+              });
+
+              transition.finished.finally(() => {
+                document.documentElement.classList.remove('theme-vt');
+              });
+            },
+            { signal }
+          );
+        });
+
+        // Reveal on scroll
+        const revealEls = Array.from(document.querySelectorAll('[data-reveal]'));
+        if (revealEls.length > 0) {
+          if (!('IntersectionObserver' in window)) {
+            revealEls.forEach((el) => el.classList.add('is-in'));
+          } else {
+            const io = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.classList.add('is-in');
+                    io.unobserve(entry.target);
+                  }
+                });
+              },
+              { threshold: 0.06, rootMargin: '0px 0px -16px 0px' }
+            );
+            revealEls.forEach((el) => io.observe(el));
+          }
+        }
+      }
+
+      document.addEventListener('astro:page-load', setupChrome);
+    </script>
+  </body>
+</html>

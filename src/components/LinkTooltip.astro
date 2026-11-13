@@ -1,0 +1,411 @@
+---
+---
+
+<div id="link-tooltip" class="link-tooltip" role="tooltip" hidden>
+  <div class="link-tooltip__inner"></div>
+</div>
+
+<style>
+  .link-tooltip {
+    position: fixed;
+    z-index: 120;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  .link-tooltip[hidden] {
+    display: none;
+  }
+
+  .link-tooltip__inner {
+    max-width: min(26rem, calc(100vw - 1.5rem));
+    padding: 0.36rem 0.72rem;
+    border-radius: 10px;
+    background: var(--tooltip-bg);
+    color: var(--tooltip-ink);
+    box-shadow: var(--tooltip-shadow);
+    -webkit-backdrop-filter: blur(18px) saturate(1.75);
+    backdrop-filter: blur(18px) saturate(1.75);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transform-origin: 50% 100%;
+    will-change: transform, opacity;
+  }
+
+  .link-tooltip[data-pos='below'] .link-tooltip__inner {
+    transform-origin: 50% 0%;
+  }
+</style>
+
+<script>
+  let tipAbort: AbortController | null = null;
+  let rafId: number | null = null;
+
+  function normText(s: string | null | undefined): string {
+    return (s ?? '').trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  function isRedundant(label: string, el: HTMLElement): boolean {
+    const a = normText(label);
+    const b = normText(el.textContent);
+    if (!a) return true;
+    if (b && (a === b || b.includes(a))) return true;
+    return false;
+  }
+
+  function formatExternalHref(rawHref: string): string | null {
+    if (!rawHref) return null;
+    if (rawHref.startsWith('mailto:')) return 'Click to copy';
+
+    if (rawHref.startsWith('http://') || rawHref.startsWith('https://')) {
+      try {
+        const url = new URL(rawHref);
+        const host = url.hostname.replace(/^www\./, '');
+        const path = url.pathname === '/' ? '' : url.pathname.replace(/\/$/, '');
+        return `${host}${path}${url.search}${url.hash} ↗`;
+      } catch {
+        return rawHref;
+      }
+    }
+
+    return null;
+  }
+
+  function resolveTooltipLabel(el: HTMLElement): string | null {
+    // 4. Dark / light mode switch
+    if (el.hasAttribute('data-theme-toggle')) {
+      const explicit = document.documentElement.dataset.theme;
+      const isDark = explicit
+        ? explicit === 'dark'
+        : window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return isDark ? 'Light mode' : 'Dark mode';
+    }
+
+    const inFooter = Boolean(el.closest('.site-footer'));
+
+    // 3. Newsletter signup (not on footer)
+    if (el.hasAttribute('data-open-newsletter')) {
+      if (inFooter) return null;
+      const explicit = el.dataset.tooltip || 'Newsletter signup';
+      return isRedundant(explicit, el) ? null : explicit;
+    }
+
+    if (el instanceof HTMLAnchorElement) {
+      const href = el.getAttribute('href') ?? '';
+
+      // 2. RSS (not on footer)
+      if (href === '/rss.xml') {
+        return inFooter ? null : '/rss.xml';
+      }
+
+      // 1. External links (+ mailto copy action)
+      const formatted = formatExternalHref(href);
+      if (!formatted) return null;
+      if (href.startsWith('mailto:')) return formatted;
+      const comparable = formatted.replace(/\s*↗$/, '');
+      if (normText(el.textContent) === normText(comparable) || normText(el.textContent) === normText(href)) {
+        return null;
+      }
+      return formatted;
+    }
+
+    return null;
+  }
+
+  function findTooltipTarget(node: EventTarget | null): HTMLElement | null {
+    if (!(node instanceof Element)) return null;
+    const candidate = node.closest(
+      'a, [data-theme-toggle], [data-open-newsletter]'
+    ) as HTMLElement | null;
+    if (!candidate) return null;
+    if (candidate.hasAttribute('data-no-tooltip')) {
+      return null;
+    }
+    return resolveTooltipLabel(candidate) ? candidate : null;
+  }
+
+  function getActiveRect(el: HTMLElement, clientY: number | null): DOMRect {
+    if (clientY !== null) {
+      const rects = Array.from(el.getClientRects());
+      const hit = rects.find((r) => clientY >= r.top - 5 && clientY <= r.bottom + 5);
+      if (hit) return hit;
+    }
+    return el.getBoundingClientRect();
+  }
+
+  function clamp(val: number, min: number, max: number): number {
+    return Math.max(min, Math.min(val, max));
+  }
+
+  function initLinkTooltip() {
+    tipAbort?.abort();
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    tipAbort = new AbortController();
+    const { signal } = tipAbort;
+
+    const tip = document.getElementById('link-tooltip') as HTMLElement | null;
+    const inner = tip?.querySelector('.link-tooltip__inner') as HTMLElement | null;
+    if (!tip || !inner) return;
+
+    const canHover = () => window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const prefersReduced = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let activeTarget: HTMLElement | null = null;
+    let showTimer: number | null = null;
+    let copiedTimer: number | null = null;
+
+    let lastMouseX: number | null = null;
+    let lastMouseY: number | null = null;
+    let lastMoveTime = performance.now();
+    let pointerVx = 0;
+
+    let currentX = 0;
+    let targetX = 0;
+    let velX = 0;
+    let anchorY = 0;
+    let posMode: 'above' | 'below' = 'above';
+
+    let sway = 0;
+    let velSway = 0;
+    let scale = 1;
+    let velScale = 0;
+    let opacity = 0;
+    let lastFrameTime = performance.now();
+
+    const computeBounds = (el: HTMLElement, clientX: number | null, clientY: number | null) => {
+      const rect = getActiveRect(el, clientY);
+      const margin = 10;
+      const tipHeight = inner.offsetHeight || 30;
+      const halfW = (inner.offsetWidth || 100) / 2;
+
+      const rawX = clientX !== null && clientX > 0 ? clientX : rect.left + rect.width / 2;
+      const clampedX = clamp(
+        rawX,
+        margin + halfW,
+        Math.max(margin + halfW, window.innerWidth - margin - halfW)
+      );
+
+      let top = rect.top - tipHeight - 8;
+      let pos: 'above' | 'below' = 'above';
+      if (top < margin) {
+        top = rect.bottom + 8;
+        pos = 'below';
+      }
+      return { clampedX, top, pos, rect };
+    };
+
+    const applyTransform = () => {
+      const dir = posMode === 'above' ? 1 : -1;
+      const rotateDeg = prefersReduced() ? 0 : clamp(-sway * 0.48 * dir, -5.5, 5.5);
+      const skewDeg = prefersReduced() ? 0 : clamp(sway * 0.82 * dir, -8.5, 8.5);
+      const sc = prefersReduced() ? 1 : scale;
+
+      tip.dataset.pos = posMode;
+      tip.style.transform = `translate3d(${currentX.toFixed(2)}px, ${anchorY.toFixed(2)}px, 0) translateX(-50%)`;
+      inner.style.transform = `rotate(${rotateDeg.toFixed(2)}deg) skewX(${skewDeg.toFixed(2)}deg) scale(${sc.toFixed(4)})`;
+      inner.style.opacity = `${opacity.toFixed(3)}`;
+    };
+
+    const stepLoop = (now: number) => {
+      rafId = null;
+      if (tip.hidden || !activeTarget) return;
+
+      const dt = clamp((now - lastFrameTime) / 1000, 0.004, 0.032);
+      lastFrameTime = now;
+
+      if (prefersReduced()) {
+        currentX = targetX;
+        velX = 0;
+        sway = 0;
+        velSway = 0;
+        scale = 1;
+        velScale = 0;
+        opacity = 1;
+        applyTransform();
+        return;
+      }
+
+      // Position spring following cursor horizontally
+      const posF = 240 * (targetX - currentX) - 20 * velX;
+      velX += posF * dt;
+      currentX += velX * dt;
+
+      // Aerodynamic sway tied to lag + travel velocity
+      const targetSway = clamp((targetX - currentX) * 0.42 + velX * 0.019, -11, 11);
+      const swayF = 200 * (targetSway - sway) - 12.5 * velSway;
+      velSway += swayF * dt;
+      sway += velSway * dt;
+
+      // Crisp Apple spring pop-in on scale
+      const scaleF = 380 * (1 - scale) - 22 * velScale;
+      velScale += scaleF * dt;
+      scale += velScale * dt;
+
+      opacity = Math.min(1, opacity + dt * 9.5);
+
+      applyTransform();
+
+      const settled =
+        Math.abs(targetX - currentX) < 0.06 &&
+        Math.abs(velX) < 0.25 &&
+        Math.abs(sway) < 0.06 &&
+        Math.abs(velSway) < 0.15 &&
+        Math.abs(1 - scale) < 0.002 &&
+        opacity >= 0.999;
+
+      if (!settled) {
+        rafId = requestAnimationFrame(stepLoop);
+      }
+    };
+
+    const ensureLoop = () => {
+      if (rafId === null && !tip.hidden) {
+        lastFrameTime = performance.now();
+        rafId = requestAnimationFrame(stepLoop);
+      }
+    };
+
+    const hide = () => {
+      if (showTimer !== null) {
+        window.clearTimeout(showTimer);
+        showTimer = null;
+      }
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+        rafId = null;
+      }
+      activeTarget = null;
+      inner.textContent = '';
+      tip.hidden = true;
+    };
+
+    const showFor = (el: HTMLElement, textOverride?: string) => {
+      const text = textOverride ?? resolveTooltipLabel(el);
+      if (!text) return;
+
+      const wasHidden = tip.hidden || activeTarget !== el;
+      activeTarget = el;
+      inner.textContent = text;
+      tip.hidden = false;
+
+      const { clampedX, top, pos } = computeBounds(el, lastMouseX, lastMouseY);
+      targetX = clampedX;
+      anchorY = top;
+      posMode = pos;
+
+      if (wasHidden) {
+        currentX = clampedX;
+        velX = clamp(pointerVx * 0.35, -360, 360);
+        sway = prefersReduced() ? 0 : clamp(pointerVx * 0.01, -4.5, 4.5);
+        velSway = 0;
+        scale = prefersReduced() ? 1 : 0.86;
+        velScale = prefersReduced() ? 0 : 1.4;
+        opacity = prefersReduced() ? 1 : 0;
+      }
+
+      applyTransform();
+      ensureLoop();
+    };
+
+    document.addEventListener(
+      'mousemove',
+      (e) => {
+        const now = performance.now();
+        const elapsed = Math.max(4, now - lastMoveTime);
+        if (lastMouseX !== null) {
+          pointerVx = clamp(((e.clientX - lastMouseX) / elapsed) * 1000, -1600, 1600);
+        }
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        lastMoveTime = now;
+
+        if (activeTarget && !tip.hidden) {
+          const { clampedX, top, pos } = computeBounds(activeTarget, lastMouseX, lastMouseY);
+          targetX = clampedX;
+          anchorY = top;
+          posMode = pos;
+          ensureLoop();
+        }
+      },
+      { passive: true, signal }
+    );
+
+    document.addEventListener(
+      'mouseover',
+      (e) => {
+        if (!canHover()) return;
+        const me = e as MouseEvent;
+        lastMouseX = me.clientX;
+        lastMouseY = me.clientY;
+        const target = findTooltipTarget(e.target);
+        if (!target || target === activeTarget) return;
+        if (showTimer !== null) window.clearTimeout(showTimer);
+        showTimer = window.setTimeout(() => showFor(target), 50);
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'mouseout',
+      (e) => {
+        if (!activeTarget && showTimer === null) return;
+        const related = findTooltipTarget(e.relatedTarget);
+        if (related && related === activeTarget) return;
+        hide();
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'click',
+      async (e) => {
+        const el = e.target instanceof Element ? (e.target.closest('a, button') as HTMLElement | null) : null;
+        if (!el) return;
+
+        if (el instanceof HTMLAnchorElement && el.getAttribute('href')?.startsWith('mailto:')) {
+          e.preventDefault();
+          const email = el.getAttribute('href')!.slice(7).split('?')[0];
+          try {
+            await navigator.clipboard.writeText(email);
+            if (copiedTimer !== null) window.clearTimeout(copiedTimer);
+            showFor(el, 'Copied');
+            copiedTimer = window.setTimeout(hide, 1200);
+          } catch {
+            hide();
+          }
+          return;
+        }
+
+        if (el.hasAttribute('data-theme-toggle')) {
+          window.requestAnimationFrame(() => {
+            if (activeTarget === el && !tip.hidden) {
+              const updated = resolveTooltipLabel(el);
+              if (updated) showFor(el, updated);
+            }
+          });
+          return;
+        }
+
+        hide();
+      },
+      { signal }
+    );
+
+    window.addEventListener('scroll', hide, { passive: true, signal });
+    window.addEventListener('blur', hide, { signal });
+    document.addEventListener('astro:before-swap', hide, { signal });
+  }
+
+  document.addEventListener('astro:page-load', initLinkTooltip);
+</script>

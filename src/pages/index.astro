@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSortedArticles, formatShortDate, normalizeTypeLabel } from '../lib/articles';
+
+const articles = await getSortedArticles();
+---
+
+<BaseLayout title="From the Cabinet — Essays, Dialogues & Slow Notes">
+  <div class="wrap home">
+    <div class="col-wide">
+      <section class="intro">
+        <h1 class="intro__title enter" style="--d: 1">
+          A living cabinet of essays, treatises, and longform notes
+        </h1>
+        <p class="intro__lede enter" style="--d: 2">
+          This site is a home for slow reading: careful arguments, field notes, and reflective drafts. Each piece was written to be read without distraction
+        </p>
+      </section>
+
+      <section class="writing-index enter" style="--d: 3" aria-labelledby="writing-heading">
+        <div class="writing-index__head">
+          <h2 id="writing-heading" class="kicker">Writing</h2>
+          <a href="/writing/" class="kicker writing-index__all">All {articles.length} →</a>
+        </div>
+
+        <ul class="entry-list">
+          {
+            articles.map((article) => (
+              <li class="entry-item">
+                <a href={`/writing/${article.id}/`} class="entry-row">
+                  <div class="entry-row__main">
+                    <span class="entry-row__title" transition:name={`title-${article.id}`}>
+                      {article.data.title}
+                    </span>
+                    <span class="entry-row__desc">{article.data.excerpt}</span>
+                  </div>
+                  <span class="entry-row__meta kicker">
+                    {normalizeTypeLabel(article.data.type)} · {formatShortDate(article.data.date)}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section class="home-notes" data-reveal aria-label="Dispatches">
+        <p class="home-notes__line">
+          <span>New essays once a month (or so 😭) - </span>
+          <button type="button" class="text-action" data-open-newsletter data-tooltip="Newsletter signup">
+            subscribe by email
+          </button>
+          <span> or follow via </span>
+          <a href="/rss.xml" class="text-action">RSS</a>.
+        </p>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .home {
+    padding-top: clamp(3rem, 8vh, 5.75rem);
+  }
+
+  .intro__title {
+    margin: 0.9rem 0 1.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-display);
+    font-weight: 550;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    max-width: 16ch;
+  }
+
+  .intro__lede {
+    margin: 0;
+    font-size: var(--text-lede);
+    line-height: 1.55;
+    letter-spacing: -0.012em;
+    color: var(--ink-2);
+    max-width: 44ch;
+  }
+
+  .writing-index {
+    margin-top: clamp(3.5rem, 8vh, 5.5rem);
+  }
+
+  .writing-index__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .writing-index__head h2 {
+    margin: 0;
+  }
+
+  .writing-index__all {
+    transition: color var(--dur-1) ease;
+  }
+
+  .writing-index__all:hover {
+    color: var(--ink);
+  }
+
+  .entry-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .entry-item {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .entry-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-block: 1.25rem;
+    transition: opacity var(--dur-1) ease;
+  }
+
+  .entry-row:hover .entry-row__title {
+    color: var(--accent);
+  }
+
+  .entry-row__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .entry-row__title {
+    width: fit-content;
+    max-width: 100%;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    transition: color var(--dur-1) ease;
+  }
+
+  .entry-row__desc {
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 56ch;
+  }
+
+  .entry-row__meta {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 720px) {
+    .entry-row {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-6);
+    }
+  }
+
+  .home-notes {
+    margin-top: clamp(2.75rem, 6vh, 4rem);
+  }
+
+  .home-notes__line {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+
+  .text-action {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--ink-2);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 3px;
+    transition: color var(--dur-1) ease, text-decoration-color var(--dur-1) ease;
+  }
+
+  .text-action:hover {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+  }
+</style>

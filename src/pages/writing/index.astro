@@ -1,0 +1,695 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getSortedArticles, formatShortDate, normalizeTypeLabel } from '../../lib/articles';
+
+const articles = await getSortedArticles();
+const types = ['All', 'Essay', 'Dialogue', 'Note'];
+
+const tagCounts = new Map<string, number>();
+for (const a of articles) {
+  for (const t of a.data.tags) {
+    tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
+  }
+}
+const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
+  const aIsYear = /^\d{4}$/.test(a);
+  const bIsYear = /^\d{4}$/.test(b);
+  if (aIsYear && !bIsYear) return -1;
+  if (!aIsYear && bIsYear) return 1;
+  if (aIsYear && bIsYear) return b.localeCompare(a);
+  return a.localeCompare(b);
+});
+---
+
+<BaseLayout
+  title="Writing — From the Cabinet"
+  description="Complete archive of essays, dialogues, and notes from From the Cabinet."
+>
+  <div class="wrap archive-page">
+    <div class="col-wide">
+      <header class="archive-head">
+        <span class="kicker enter" style="--d: 0">
+          Archive · <span data-archive-count>{String(articles.length).padStart(2, '0')}</span> Entries
+        </span>
+        <h1 class="archive-head__title enter" style="--d: 1">Writing</h1>
+        <p class="archive-head__desc enter" style="--d: 2">
+          Essays, dialogues, and field notes on philosophy.
+        </p>
+      </header>
+
+      <div class="archive-controls enter" style="--d: 3">
+        <div class="search-wrap">
+          <label class="sr-only" for="archive-search">Search writing</label>
+          <input
+            id="archive-search"
+            type="search"
+            class="archive-search"
+            placeholder="Filter by title or keyword…"
+            data-archive-search
+            autocomplete="off"
+          />
+        </div>
+
+        <div class="archive-controls__right">
+          <div class="type-filters" role="group" aria-label="Filter by format">
+            {
+              types.map((t, i) => (
+                <button
+                  type="button"
+                  class={`type-btn kicker${i === 0 ? ' is-active' : ''}`}
+                  data-type-filter={t}
+                  aria-pressed={i === 0 ? 'true' : 'false'}
+                >
+                  {t}
+                </button>
+              ))
+            }
+          </div>
+
+          <span class="filter-divider" aria-hidden="true"></span>
+
+          <div class="topic-pop-wrap">
+            <button
+              type="button"
+              class="topic-toggle kicker"
+              data-topic-toggle
+              aria-expanded="false"
+              aria-controls="topic-popover"
+            >
+              <span data-topic-label>Topics</span>
+              <svg class="topic-toggle__chev" width="10" height="10" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+
+            <div
+              id="topic-popover"
+              class="topic-popover"
+              role="dialog"
+              aria-label="Filter by topic or year"
+              data-topic-popover
+              hidden
+            >
+              <div class="topic-popover__head">
+                <span class="topic-popover__title">Topics & years</span>
+                <button type="button" class="topic-popover__clear" data-topic-clear hidden>
+                  Clear
+                </button>
+              </div>
+              <div class="topic-popover__grid" role="group" aria-label="Topics and years">
+                <button
+                  type="button"
+                  class="tag-filter-btn is-active"
+                  data-tag-filter="All"
+                  aria-pressed="true"
+                >
+                  All topics
+                </button>
+                {
+                  allTags.map((tag) => (
+                    <button
+                      type="button"
+                      class="tag-filter-btn"
+                      data-tag-filter={tag}
+                      aria-pressed="false"
+                    >
+                      {tag}
+                    </button>
+                  ))
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <ul class="archive-list" data-archive-list>
+        {
+          articles.map((article) => {
+            const displayType = normalizeTypeLabel(article.data.type);
+            const searchable = [
+              article.data.title,
+              article.data.excerpt,
+              article.data.summary ?? '',
+              article.data.tags.join(' '),
+              displayType,
+            ]
+              .join(' ')
+              .toLowerCase();
+
+            return (
+              <li
+                class="archive-item"
+                data-archive-item
+                data-type={displayType}
+                data-tags={article.data.tags.map((t) => t.toLowerCase()).join('|')}
+                data-search={searchable}
+              >
+                <a href={`/writing/${article.id}/`} class="archive-row">
+                  <div class="archive-row__main">
+                    <h2 class="archive-row__title" transition:name={`title-${article.id}`}>
+                      {article.data.title}
+                    </h2>
+                    <p class="archive-row__excerpt">
+                      {article.data.summary || article.data.excerpt}
+                    </p>
+                  </div>
+
+                  <div class="archive-row__meta kicker">
+                    <span>{displayType}</span>
+                    <span aria-hidden="true">·</span>
+                    <time datetime={article.data.date.toISOString().slice(0, 10)}>
+                      {formatShortDate(article.data.date)}
+                    </time>
+                    <span aria-hidden="true">·</span>
+                    <span>{article.data.readingTime}</span>
+                  </div>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <p class="archive-empty" data-archive-empty hidden>
+        No texts match that query.{' '}
+        <button type="button" class="archive-reset" data-archive-reset>
+          Reset filters
+        </button>
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .archive-page {
+    padding-top: clamp(2.5rem, 6vh, 4.75rem);
+  }
+
+  .archive-head {
+    margin-bottom: var(--s-6);
+  }
+
+  .archive-head__title {
+    margin: 0.75rem 0 0.85rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-display);
+    font-weight: 550;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+  }
+
+  .archive-head__desc {
+    margin: 0;
+    font-size: var(--text-lede);
+    color: var(--ink-2);
+    max-width: 44ch;
+  }
+
+  .archive-controls {
+    position: relative;
+    z-index: 20;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .search-wrap {
+    flex: 1 1 220px;
+    max-width: 19rem;
+  }
+
+  .archive-search {
+    width: 100%;
+    padding: 0.4rem 0;
+    font-size: var(--text-sm);
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: var(--ink);
+  }
+
+  .archive-search::placeholder {
+    color: var(--muted);
+  }
+
+  .archive-search:focus {
+    outline: none;
+  }
+
+  .archive-controls__right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  .type-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.15rem;
+  }
+
+  .type-btn,
+  .topic-toggle {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1.2;
+    padding: 0 0 0.2rem;
+    border: none;
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    transition: color var(--dur-1) ease, border-color var(--dur-1) ease;
+  }
+
+  .type-btn:hover,
+  .topic-toggle:hover,
+  .topic-toggle[aria-expanded='true'] {
+    color: var(--ink);
+  }
+
+  .type-btn.is-active,
+  .topic-toggle.is-active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+
+  .topic-toggle.is-active {
+    color: var(--accent);
+  }
+
+  .filter-divider {
+    width: 1px;
+    height: 11px;
+    background: var(--line-strong);
+    margin-bottom: 0.2rem;
+  }
+
+  .topic-pop-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .topic-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    cursor: pointer;
+  }
+
+  .topic-toggle__chev {
+    transition: transform 200ms var(--ease-out);
+  }
+
+  .topic-toggle[aria-expanded='true'] .topic-toggle__chev {
+    transform: rotate(180deg);
+  }
+
+  .topic-popover {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.65rem);
+    z-index: 50;
+    width: min(21rem, calc(100vw - 2 * var(--gutter)));
+    padding: 0.9rem;
+    border-radius: 13px;
+    background: var(--tooltip-bg);
+    color: var(--tooltip-ink);
+    box-shadow: var(--tooltip-shadow);
+    -webkit-backdrop-filter: blur(22px) saturate(1.8);
+    backdrop-filter: blur(22px) saturate(1.8);
+    transform-origin: top right;
+    animation: topic-pop-in 240ms var(--ease-spring) both;
+  }
+
+  .topic-popover[hidden] {
+    display: none;
+  }
+
+  @keyframes topic-pop-in {
+    from {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .topic-popover__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .topic-popover__title {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--tooltip-ink);
+  }
+
+  .topic-popover__clear {
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--accent);
+    cursor: pointer;
+  }
+
+  .topic-popover__clear[hidden] {
+    display: none;
+  }
+
+  .topic-popover__grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.42rem;
+  }
+
+  .tag-filter-btn {
+    padding: 0.24rem 0.64rem;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--line-strong);
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition:
+      color var(--dur-1) ease,
+      border-color var(--dur-1) ease,
+      background-color var(--dur-1) ease;
+  }
+
+  .tag-filter-btn:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+  }
+
+  .tag-filter-btn.is-active {
+    color: var(--accent);
+    border-color: var(--accent-line);
+    background: var(--accent-tint);
+    font-weight: 600;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .topic-popover {
+      animation: none;
+    }
+  }
+
+  .archive-reset {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .archive-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .archive-item {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .archive-item[hidden] {
+    display: none;
+  }
+
+  .archive-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    padding-block: 1.45rem;
+  }
+
+  .archive-row:hover .archive-row__title {
+    color: var(--accent);
+  }
+
+  .archive-row__main {
+    min-width: 0;
+  }
+
+  .archive-row__title {
+    margin: 0 0 0.35rem;
+    width: fit-content;
+    max-width: 100%;
+    font-family: var(--font-sans);
+    font-size: 1.25rem;
+    font-weight: 550;
+    line-height: 1.25;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+    transition: color var(--dur-1) ease;
+  }
+
+  .archive-row__excerpt {
+    margin: 0;
+    font-size: var(--text-sm);
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 54ch;
+  }
+
+  .archive-row__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 780px) {
+    .archive-row {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-6);
+    }
+  }
+
+  .archive-empty {
+    margin-top: var(--s-6);
+    font-size: var(--text-sm);
+    color: var(--muted);
+  }
+</style>
+
+<script>
+  let archiveAbort: AbortController | null = null;
+
+  function initArchiveFilter() {
+    archiveAbort?.abort();
+    archiveAbort = new AbortController();
+    const { signal } = archiveAbort;
+
+    const searchInput = document.querySelector('[data-archive-search]') as HTMLInputElement | null;
+    const typeButtons = Array.from(document.querySelectorAll('[data-type-filter]')) as HTMLElement[];
+    const tagButtons = Array.from(document.querySelectorAll('[data-tag-filter]')) as HTMLElement[];
+    const topicToggle = document.querySelector('[data-topic-toggle]') as HTMLElement | null;
+    const topicLabel = document.querySelector('[data-topic-label]') as HTMLElement | null;
+    const topicPopover = document.querySelector('[data-topic-popover]') as HTMLElement | null;
+    const topicClear = document.querySelector('[data-topic-clear]') as HTMLElement | null;
+    const items = Array.from(document.querySelectorAll('[data-archive-item]')) as HTMLElement[];
+    const emptyState = document.querySelector('[data-archive-empty]') as HTMLElement | null;
+    const countEl = document.querySelector('[data-archive-count]') as HTMLElement | null;
+    const resetBtn = document.querySelector('[data-archive-reset]') as HTMLElement | null;
+
+    if (items.length === 0) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const initialTypeParam = params.get('type');
+    const initialTagParam = params.get('tag');
+
+    let activeType =
+      typeButtons.find((b) => (b.dataset.typeFilter ?? '').toLowerCase() === initialTypeParam?.toLowerCase())
+        ?.dataset.typeFilter ?? 'All';
+    let activeTag =
+      tagButtons.find((b) => (b.dataset.tagFilter ?? '').toLowerCase() === initialTagParam?.toLowerCase())
+        ?.dataset.tagFilter ?? 'All';
+
+    const setPopoverOpen = (open: boolean) => {
+      if (!topicPopover || !topicToggle) return;
+      topicPopover.hidden = !open;
+      topicToggle.setAttribute('aria-expanded', String(open));
+      if (open) {
+        topicPopover.style.animation = 'none';
+        void topicPopover.offsetWidth;
+        topicPopover.style.animation = '';
+      }
+    };
+
+    const syncButtons = () => {
+      typeButtons.forEach((b) => {
+        const active = b.dataset.typeFilter === activeType;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      tagButtons.forEach((b) => {
+        const active = b.dataset.tagFilter === activeTag;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
+      if (topicToggle) {
+        topicToggle.classList.toggle('is-active', activeTag !== 'All');
+      }
+      if (topicLabel) {
+        topicLabel.textContent = activeTag === 'All' ? 'Topics' : `Topics · ${activeTag}`;
+      }
+      if (topicClear) {
+        topicClear.hidden = activeTag === 'All';
+      }
+    };
+
+    const syncUrl = () => {
+      const nextParams = new URLSearchParams();
+      if (activeType !== 'All') nextParams.set('type', activeType);
+      if (activeTag !== 'All') nextParams.set('tag', activeTag);
+      const qs = nextParams.toString();
+      const targetUrl = qs ? `${window.location.pathname}?${qs}` : window.location.pathname;
+      window.history.replaceState(null, '', targetUrl);
+    };
+
+    const applyFilter = (pushUrl = true) => {
+      const query = (searchInput?.value ?? '').trim().toLowerCase();
+      const tagNeedle = activeTag.toLowerCase();
+      let visibleCount = 0;
+
+      items.forEach((item) => {
+        const itemType = item.dataset.type ?? '';
+        const itemTags = (item.dataset.tags ?? '').split('|');
+        const haystack = item.dataset.search ?? '';
+        const matchesType = activeType === 'All' || itemType === activeType;
+        const matchesTag = activeTag === 'All' || itemTags.includes(tagNeedle);
+        const matchesQuery = query === '' || haystack.includes(query);
+        const visible = matchesType && matchesTag && matchesQuery;
+        item.hidden = !visible;
+        if (visible) visibleCount += 1;
+      });
+
+      if (countEl) {
+        countEl.textContent = String(visibleCount).padStart(2, '0');
+      }
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount > 0;
+      }
+
+      if (pushUrl) syncUrl();
+    };
+
+    topicToggle?.addEventListener(
+      'click',
+      (e) => {
+        e.stopPropagation();
+        setPopoverOpen(topicPopover?.hidden ?? true);
+      },
+      { signal }
+    );
+
+    topicClear?.addEventListener(
+      'click',
+      () => {
+        activeTag = 'All';
+        syncButtons();
+        applyFilter();
+        setPopoverOpen(false);
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'click',
+      (e) => {
+        if (!topicPopover || topicPopover.hidden) return;
+        const target = e.target as Node | null;
+        if (target && !topicPopover.contains(target) && !topicToggle?.contains(target)) {
+          setPopoverOpen(false);
+        }
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'Escape' && topicPopover && !topicPopover.hidden) {
+          setPopoverOpen(false);
+          topicToggle?.focus();
+        }
+      },
+      { signal }
+    );
+
+    typeButtons.forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        () => {
+          activeType = btn.dataset.typeFilter ?? 'All';
+          syncButtons();
+          applyFilter();
+        },
+        { signal }
+      );
+    });
+
+    tagButtons.forEach((btn) => {
+      btn.addEventListener(
+        'click',
+        () => {
+          const clicked = btn.dataset.tagFilter ?? 'All';
+          activeTag = clicked === activeTag && clicked !== 'All' ? 'All' : clicked;
+          syncButtons();
+          applyFilter();
+          setPopoverOpen(false);
+        },
+        { signal }
+      );
+    });
+
+    resetBtn?.addEventListener(
+      'click',
+      () => {
+        activeType = 'All';
+        activeTag = 'All';
+        if (searchInput) searchInput.value = '';
+        syncButtons();
+        applyFilter();
+        setPopoverOpen(false);
+      },
+      { signal }
+    );
+
+    searchInput?.addEventListener('input', () => applyFilter(false), { signal });
+
+    syncButtons();
+    applyFilter(false);
+  }
+
+  document.addEventListener('astro:page-load', initArchiveFilter);
+</script>

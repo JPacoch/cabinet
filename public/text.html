@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Redirecting… | From the Cabinet</title>
+  <meta name="robots" content="noindex">
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var slug = params.get("slug");
+      var target = slug ? "/writing/" + encodeURIComponent(slug) + "/" : "/writing/";
+      window.location.replace(target);
+    })();
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=/writing/">
+  </noscript>
+</head>
+<body>
+  <p>Redirecting to <a href="/writing/">Writing archive</a>…</p>
+</body>
+</html>

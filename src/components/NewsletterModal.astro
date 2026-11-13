@@ -1,0 +1,540 @@
+---
+---
+
+<div
+  id="newsletter-modal"
+  class="modal-backdrop"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="newsletter-modal-title"
+  hidden
+>
+  <div class="modal-panel">
+    <button
+      type="button"
+      class="modal-close"
+      data-close-newsletter
+      aria-label="Close newsletter dialog"
+    >
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M2.5 2.5L11.5 11.5M11.5 2.5L2.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+    </button>
+
+
+
+    <h2 id="newsletter-modal-title" class="modal-title">The Cabinet Newsletter</h2>
+    <p class="modal-desc">
+      Slow delivery. Receive new essays and notes in your inbox once a month.
+    </p>
+
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" title="Newsletter submission"></iframe>
+
+    <form
+      action="https://assets.mailerlite.com/jsonp/2129775/forms/179945752443749576/subscribe"
+      method="POST"
+      id="mailerlite-form"
+      target="hidden_iframe"
+      class="modal-form"
+    >
+      <input type="hidden" name="ml-submit" value="1" />
+      <input type="hidden" name="anticsrf" value="true" />
+
+      <div class="modal-field">
+        <label class="sr-only" for="newsletter-email">Email address</label>
+        <input
+          id="newsletter-email"
+          type="email"
+          name="fields[email]"
+          placeholder="you@example.com"
+          required
+          autocomplete="email"
+          class="modal-input"
+        />
+      </div>
+
+      <label class="modal-consent">
+        <span class="modal-check-wrap">
+          <input type="checkbox" id="marketing-consent" class="modal-checkbox" required />
+          <svg class="modal-check-icon" width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+            <path d="M2.5 6.3L5 8.8L9.5 3.4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="modal-consent__text">
+          I agree to receive emails from From the Cabinet and accept the{' '}
+          <a href="/privacy-policy/" class="modal-link">Privacy Policy</a>.
+        </span>
+      </label>
+
+      <button type="submit" id="newsletter-submit-btn" class="modal-submit">
+        <span class="modal-submit__label">Subscribe</span>
+      </button>
+
+      <div id="newsletter-success-msg" class="modal-success" role="status" hidden>
+        <svg class="modal-success__icon" width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.4" />
+          <path d="M5.2 8.2L7.1 10.1L10.8 5.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Thank you for signing up. Please check your inbox to confirm your address.</span>
+      </div>
+
+      <p class="modal-legal">
+        Data controller: Jakub Pacocha. Processed solely for delivering the newsletter.
+      </p>
+    </form>
+  </div>
+</div>
+
+<style>
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 120;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--s-4);
+    background: rgba(17, 17, 17, 0.28);
+    -webkit-backdrop-filter: blur(14px) saturate(1.4);
+    backdrop-filter: blur(14px) saturate(1.4);
+    animation: modal-fade-in 240ms var(--ease-out) both;
+  }
+
+  :global(:root[data-theme='dark']) .modal-backdrop {
+    background: rgba(0, 0, 0, 0.56);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme])) .modal-backdrop {
+      background: rgba(0, 0, 0, 0.56);
+    }
+  }
+
+  .modal-backdrop[hidden] {
+    display: none;
+  }
+
+  .modal-backdrop.is-closing {
+    animation: modal-fade-out 180ms var(--ease-in-out) forwards;
+  }
+
+  .modal-panel {
+    position: relative;
+    width: 100%;
+    max-width: 26.5rem;
+    padding: clamp(1.5rem, 4vw, 1.95rem);
+    border-radius: 18px;
+    background: var(--tooltip-bg);
+    color: var(--tooltip-ink);
+    box-shadow: var(--tooltip-shadow), var(--shadow-float);
+    -webkit-backdrop-filter: blur(26px) saturate(1.85);
+    backdrop-filter: blur(26px) saturate(1.85);
+    transform-origin: center;
+    animation: modal-card-in 320ms var(--ease-spring) both;
+  }
+
+  .modal-backdrop.is-closing .modal-panel {
+    animation: modal-card-out 180ms var(--ease-in-out) forwards;
+  }
+
+  @keyframes modal-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes modal-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  @keyframes modal-card-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes modal-card-out {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(6px) scale(0.96);
+    }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.1rem;
+    width: 1.85rem;
+    height: 1.85rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    border-radius: var(--r-pill);
+    cursor: pointer;
+    transition:
+      color var(--dur-1) ease,
+      border-color var(--dur-1) ease,
+      background-color var(--dur-1) ease,
+      transform 180ms var(--ease-spring);
+  }
+
+  .modal-close:hover {
+    color: var(--ink);
+    border-color: var(--line-strong);
+    background: var(--accent-tint);
+    transform: scale(1.06);
+  }
+
+  .modal-close:active {
+    transform: scale(0.94);
+  }
+
+  .modal-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.42rem;
+    margin-bottom: 0.65rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--accent);
+  }
+
+  .modal-eyebrow__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--r-pill);
+    background: var(--accent);
+  }
+
+  .modal-title {
+    margin: 0 0 0.45rem;
+    font-family: var(--font-sans);
+    font-size: 1.425rem;
+    font-weight: 600;
+    line-height: 1.14;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+
+  .modal-desc {
+    margin: 0 0 1.35rem;
+    font-size: var(--text-sm);
+    color: var(--ink-2);
+    line-height: 1.55;
+  }
+
+  .modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.95rem;
+  }
+
+  .modal-input {
+    width: 100%;
+    padding: 0.72rem 0.92rem;
+    background: var(--bg);
+    color: var(--ink);
+    border: 1px solid var(--line-strong);
+    border-radius: 11px;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    letter-spacing: -0.008em;
+    transition:
+      border-color var(--dur-1) ease,
+      box-shadow var(--dur-1) ease,
+      background-color var(--dur-1) ease;
+  }
+
+  .modal-input::placeholder {
+    color: var(--muted);
+  }
+
+  .modal-input:hover {
+    border-color: var(--muted);
+  }
+
+  .modal-input:focus {
+    outline: none;
+    background: var(--surface);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-tint);
+  }
+
+  .modal-consent {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    font-size: var(--text-xs);
+    color: var(--ink-2);
+    line-height: 1.48;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .modal-check-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    margin-top: 0.14rem;
+    flex-shrink: 0;
+  }
+
+  .modal-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    border-radius: 5px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg);
+    cursor: pointer;
+    transition:
+      border-color var(--dur-1) ease,
+      background-color var(--dur-1) ease,
+      box-shadow var(--dur-1) ease;
+  }
+
+  .modal-checkbox:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--accent-tint);
+    border-color: var(--accent);
+  }
+
+  .modal-checkbox:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .modal-check-icon {
+    position: absolute;
+    pointer-events: none;
+    color: var(--on-accent);
+    opacity: 0;
+    transform: scale(0.65);
+    transition:
+      opacity 140ms ease,
+      transform 200ms var(--ease-spring);
+  }
+
+  .modal-checkbox:checked + .modal-check-icon {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .modal-link {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-line);
+    text-underline-offset: 2px;
+    transition: color var(--dur-1) ease;
+  }
+
+  .modal-link:hover {
+    color: var(--accent-strong);
+  }
+
+  .modal-submit {
+    width: 100%;
+    padding: 0.74rem 1.2rem;
+    border: none;
+    border-radius: 11px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.18),
+      0 4px 12px -4px var(--glow);
+    cursor: pointer;
+    transition:
+      background-color var(--dur-1) ease,
+      transform 180ms var(--ease-spring),
+      box-shadow var(--dur-1) ease,
+      opacity var(--dur-1) ease;
+  }
+
+  .modal-submit:hover:not(:disabled) {
+    background: var(--accent-strong);
+    transform: translateY(-1px);
+  }
+
+  .modal-submit:active:not(:disabled) {
+    transform: translateY(0) scale(0.985);
+  }
+
+  .modal-submit:disabled {
+    opacity: 0.72;
+    cursor: default;
+  }
+
+  .modal-success {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.65rem 0.8rem;
+    border-radius: 10px;
+    background: var(--accent-tint);
+    border: 1px solid var(--accent-line);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    line-height: 1.45;
+    color: var(--accent);
+    animation: modal-card-in 260ms var(--ease-spring) both;
+  }
+
+  .modal-success[hidden] {
+    display: none;
+  }
+
+  .modal-success__icon {
+    flex-shrink: 0;
+    margin-top: 0.08rem;
+  }
+
+  .modal-legal {
+    margin: 0;
+    font-size: var(--text-2xs);
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .modal-backdrop,
+    .modal-panel,
+    .modal-success {
+      animation: none;
+    }
+    .modal-backdrop.is-closing,
+    .modal-backdrop.is-closing .modal-panel {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  let modalAbort: AbortController | null = null;
+  let closeTimer: number | null = null;
+
+  function initNewsletterModal() {
+    modalAbort?.abort();
+    if (closeTimer !== null) {
+      window.clearTimeout(closeTimer);
+      closeTimer = null;
+    }
+    modalAbort = new AbortController();
+    const { signal } = modalAbort;
+
+    const modal = document.getElementById('newsletter-modal');
+    if (!modal) return;
+
+    const openers = document.querySelectorAll('[data-open-newsletter]');
+    const closers = modal.querySelectorAll('[data-close-newsletter]');
+    const form = document.getElementById('mailerlite-form') as HTMLFormElement | null;
+    const submitBtn = document.getElementById('newsletter-submit-btn') as HTMLButtonElement | null;
+    const submitLabel = submitBtn?.querySelector('.modal-submit__label') as HTMLElement | null;
+    const successMsg = document.getElementById('newsletter-success-msg');
+    let lastFocused: HTMLElement | null = null;
+
+    const open = () => {
+      if (closeTimer !== null) {
+        window.clearTimeout(closeTimer);
+        closeTimer = null;
+      }
+      lastFocused = document.activeElement as HTMLElement | null;
+      modal.classList.remove('is-closing');
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      window.requestAnimationFrame(() => {
+        document.getElementById('newsletter-email')?.focus();
+      });
+    };
+
+    const finishClose = () => {
+      modal.classList.remove('is-closing');
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      lastFocused?.focus();
+    };
+
+    const close = () => {
+      if (modal.hidden || modal.classList.contains('is-closing')) return;
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        finishClose();
+        return;
+      }
+      modal.classList.add('is-closing');
+      closeTimer = window.setTimeout(() => {
+        closeTimer = null;
+        finishClose();
+      }, 175);
+    };
+
+    openers.forEach((btn) => btn.addEventListener('click', open, { signal }));
+    closers.forEach((btn) => btn.addEventListener('click', close, { signal }));
+
+    modal.addEventListener(
+      'click',
+      (e) => {
+        if (e.target === modal) close();
+      },
+      { signal }
+    );
+
+    document.addEventListener(
+      'keydown',
+      (e) => {
+        if (e.key === 'Escape' && !modal.hidden) close();
+      },
+      { signal }
+    );
+
+    if (form && submitBtn) {
+      form.addEventListener(
+        'submit',
+        () => {
+          if (submitLabel) submitLabel.textContent = 'Sending…';
+          else submitBtn.textContent = 'Sending…';
+          submitBtn.disabled = true;
+          window.setTimeout(() => {
+            if (successMsg) successMsg.hidden = false;
+            if (submitLabel) submitLabel.textContent = 'Subscribe';
+            else submitBtn.textContent = 'Subscribe';
+            submitBtn.disabled = false;
+            form.reset();
+          }, 1200);
+        },
+        { signal }
+      );
+    }
+  }
+
+  document.addEventListener('astro:page-load', initNewsletterModal);
+</script>

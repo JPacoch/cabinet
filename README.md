@@ -1,42 +1,72 @@
-# The Cabinet
+# From the Cabinet
 
-Welcome to The Cabinet - A living cabinet of essays, treatises, and longform notes.
-This site is a home for slow reading: careful arguments, field notes, and reflective drafts. Each piece was written to be read without distraction :) 
+**[fromthecabinet.com](https://fromthecabinet.com)** · [Writing](https://fromthecabinet.com/writing/) · [Quotes](https://quotes.fromthecabinet.com/) · [RSS](https://fromthecabinet.com/rss.xml)
 
-A static website hosted on **Netlify**. This project uses plain HTML, CSS, and JS with no built-in tools.
+---
 
-##  Built with simplicity
-- 0 dependencies: no react, no tailwind, no bundlers
-- RSS optimized: pure XML generation
-- Markdown as a base for articles
+**From the Cabinet** is an independent reading space and personal archive written by [Jakub Pacocha](https://fromthecabinet.com/about/). It gathers essays, philosophical dialogues and brief field notes on phenomenology, theology, technology and human condition and experience.
 
-##  License
-This project is a "hybrid" repository containing both the engine and the articles
+Every text is treated as a *finished draft* that can stay at a permanent address, carry its own message and be revisited over the years.
 
-* **The Code** (infrastructure, CSS, and logic) is licensed under the [MIT License](LICENSE#1-code).
-* **The Content** (essays, philosophical reflections, and prose) is licensed under [CC BY-NC-SA 4.0](LICENSE#2-content-essays--philosophical-works).
+### Inside the Cabinet
 
-By contributing to this repository, you agree to abide by the [Code of Conduct](CODE_OF_CONDUCT.md) and license your contributions under these same terms.
+- **Essays and Treatises** - longform arguments examining phenomenology, determinism, attention and ethics
+- **Dialogues** - Philosophical conversations written in theatrical exchange
+- **Notes** - Shorter reflections and sketches of thoughts
+- **Quotes** - Collected  passages curated separately at [quotes.fromthecabinet.com](https://quotes.fromthecabinet.com/).
 
-##  Structure
-- `index.html`: Home page.
-- `about.html`: About page.
-- `library.html`: List of all articles.
-- `text.html`: The master template for articles. It fetches data from `data/texts.json` and parses Markdown from the `texts/` folder.
-- `texts/`: Contains the actual article content in `.md` files.
-- `data/texts.json`: Metadata for articles (title, date, reading time, etc.).
-- `scripts/`: Utility scripts.
+If you enjoy reading this way, you can follow new texts via [RSS](https://fromthecabinet.com/rss.xml) or write directly to [pacochp@gmail.com](mailto:pacochp@gmail.com).
 
-##  RSS feed
-The `rss.xml` file is generated via a Python script. No external libraries needed.
-To update the feed, run:
+---
+
+<details>
+<summary><strong>Notes on the engine</strong> - technical stack, writing workflow &amp; deployment</summary>
+
+### Stack
+
+- **Framework:** [Astro](https://astro.build/) (static site generation, View Transitions)
+- **Runtime & Package Manager:** [Bun](https://bun.sh/)
+- **Content:** Pure `.mdx` files in `src/content/articles/` validated via `src/content.config.ts` and parsed via `src/lib/markdown.ts`
+- **Typography & Styling:** `Geist Variable` & `Geist Mono Variable` with semantic design tokens (`src/styles/tokens.css`, `global.css`, `typography.css`)
+- **Hosting & CI:** Netlify (`netlify.toml`), rebuilding static HTML, RSS, and sitemaps automatically on push
+
+### Local Development
+
 ```bash
-python3 scripts/generate_rss.py
+bun install
+bun run dev      # Start local dev server
+bun run build    # Build production static site to dist/
+bun run preview  # Preview dist/ locally
 ```
 
-##  Visual content workflow
-| Task     | Action                                                 |
-|----------|--------------------------------------------------------|
-| Write    | Create new-post.md in /texts/                          |
-| Register | Add metadata entry to data/texts.json                  |
-| Sync     | Run python3 scripts/generate_rss.py to update the feed |
+### Adding a New Piece
+
+Create `src/content/articles/<slug>.mdx`:
+
+```yaml
+---
+title: "Article Title"
+type: "Essay" # Essay | Note | Dialogues from the Cabinet | Post
+date: "2026-11-13"
+readingTime: "6 min read"
+excerpt: "One-sentence summary for the archive and search metadata."
+tags: ["Philosophy", "2026"]
+---
+```
+
+Optional frontmatter flags:
+- `isDialogue: true` - styles `Speaker: speech` turns cleanly and supports `---lang:pl---` for bilingual EN/PL reading.
+- `diagram: d2` - embeds the interactive pan/zoom diagram component (`InteractiveDiagram.astro`).
+- Footnotes (`[^1]` inline, `[^1]: ...` at the bottom) automatically classify into *Citation*, *Commentary*, *Aside*, or *Note* popovers and endnotes.
+- Headings (`##`, `###`) automatically populate the margin Table of Contents on articles with 2 or more sections.
+
+### SEO, RSS & Sitemaps
+
+RSS (`/rss.xml`) and XML sitemaps (`/sitemap-index.xml`, `/sitemap-0.xml`, plus Netlify's `/sitemap.xml` rewrite) are generated strictly **at build time** (`bun run build`). That means zero runtime server overhead or slowdown for visitors, and automatic freshness on every Netlify production deploy.
+
+</details>
+
+## License
+
+- **Code** (site engine, components, styles): [MIT License](LICENSE)
+- **Writing** (essays, dialogues, notes): [CC BY-NC-SA 4.0](LICENSE)

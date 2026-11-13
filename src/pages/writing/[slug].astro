@@ -1,0 +1,29 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getSortedArticles } from '../../lib/articles';
+import { renderArticleMarkdown } from '../../lib/markdown';
+
+export async function getStaticPaths() {
+  const articles = await getSortedArticles();
+  return articles.map((entry, index) => ({
+    params: { slug: entry.id },
+    props: {
+      entry,
+      nextArticle: index > 0 ? articles[index - 1] : undefined,
+      prevArticle: index < articles.length - 1 ? articles[index + 1] : undefined,
+    },
+  }));
+}
+
+const { entry, prevArticle, nextArticle } = Astro.props;
+const rendered = renderArticleMarkdown(entry.body ?? '', {
+  formatDialogue: entry.data.isDialogue,
+});
+---
+
+<ArticleLayout
+  entry={entry}
+  rendered={rendered}
+  prevArticle={prevArticle}
+  nextArticle={nextArticle}
+/>
