@@ -36,12 +36,11 @@ const description = summary || excerpt;
           <a href="/" class="crumb-brand" transition:name="brand-mark">From the Cabinet</a>
           <span class="crumb-trail enter" style="--d: 0">
             <span class="kicker" aria-hidden="true">/</span>
-            <a href="/writing/" class="crumb-link kicker" data-tooltip="Browse all writing">Writing</a>
+            <a href="/writing/" class="crumb-link kicker">Writing</a>
             <span class="kicker" aria-hidden="true">/</span>
             <a
               href={`/writing/?type=${encodeURIComponent(displayType)}`}
               class="crumb-link crumb-current kicker"
-              data-tooltip={`Filter by ${displayType}`}
             >
               {displayType}
             </a>
@@ -53,7 +52,6 @@ const description = summary || excerpt;
           type="button"
           data-theme-toggle
           aria-label="Toggle color theme"
-          data-tooltip="Toggle theme"
         >
           <svg
             viewBox="0 0 24 24"
@@ -76,7 +74,6 @@ const description = summary || excerpt;
             <a
               href={`/writing/?tag=${encodeURIComponent(String(date.getUTCFullYear()))}`}
               class="meta-link"
-              data-tooltip={`Browse ${date.getUTCFullYear()} archive`}
             >
               {formatFullDate(date)}
             </a>
@@ -87,7 +84,7 @@ const description = summary || excerpt;
             rendered.en.references.length > 0 && (
               <>
                 <span aria-hidden="true">·</span>
-                <a href="#references" class="meta-ref-link" data-tooltip="Jump to references">
+                <a href="#references" class="meta-ref-link">
                   {rendered.en.references.length} {rendered.en.references.length === 1 ? 'note' : 'notes'}
                 </a>
               </>
@@ -148,7 +145,7 @@ const description = summary || excerpt;
             <InteractiveDiagram
               src="/images/d2.svg"
               alt="Diagram mapping the Phenomenology and Certainty pipeline from the Life-World through phenomenological reduction to naturalism, metaphysics, and local synthesis."
-              caption="Interactive diagram — scroll or use controls to zoom, drag to pan."
+              caption="Scroll or use controls to zoom, drag to pan."
             />
           )
         }
@@ -173,7 +170,6 @@ const description = summary || excerpt;
                               href={`#cite-${ref.id}-${occ}`}
                               class="ref-backlink"
                               data-ref-backlink
-                              data-tooltip="Back to text"
                               aria-label={`Return to citation ${ref.id}${ref.occurrences > 1 ? ` (occurrence ${occ})` : ''}`}
                             >
                               ↩{ref.occurrences > 1 ? occ : ''}
@@ -198,7 +194,6 @@ const description = summary || excerpt;
                     <a
                       href={`/writing/?tag=${encodeURIComponent(tag)}`}
                       class="tag-pill"
-                      data-tooltip={`Filter by ${tag}`}
                     >
                       {tag}
                     </a>
@@ -206,7 +201,7 @@ const description = summary || excerpt;
                 </nav>
               )
             }
-            <button type="button" class="copy-link-btn kicker" data-copy-link data-tooltip="Click to copy">
+            <button type="button" class="copy-link-btn kicker" data-copy-link>
               Copy link
             </button>
           </div>

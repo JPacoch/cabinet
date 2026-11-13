@@ -9,20 +9,18 @@ const articles = await getSortedArticles();
   <div class="wrap home">
     <div class="col-wide">
       <section class="intro">
-        <span class="kicker enter" style="--d: 0">Independent Publication</span>
         <h1 class="intro__title enter" style="--d: 1">
-          A living cabinet of slow reading and thought.
+          A living cabinet of essays, treatises, and longform notes
         </h1>
         <p class="intro__lede enter" style="--d: 2">
-          Careful arguments, philosophical dialogues, and unfinished inquiries into
-          phenomenology, theology, and attention—written to be read without distraction.
+          This site is a home for slow reading: careful arguments, field notes, and reflective drafts. Each piece was written to be read without distraction
         </p>
       </section>
 
       <section class="writing-index enter" style="--d: 3" aria-labelledby="writing-heading">
         <div class="writing-index__head">
           <h2 id="writing-heading" class="kicker">Writing</h2>
-          <a href="/writing/" class="kicker writing-index__all" data-tooltip="Browse full archive">All {articles.length} →</a>
+          <a href="/writing/" class="kicker writing-index__all">All {articles.length} →</a>
         </div>
 
         <ul class="entry-list">
@@ -48,8 +46,8 @@ const articles = await getSortedArticles();
 
       <section class="home-notes" data-reveal aria-label="Dispatches">
         <p class="home-notes__line">
-          <span>New essays once a month, without noise — </span>
-          <button type="button" class="text-action" data-open-newsletter data-tooltip="Subscribe by email">
+          <span>New essays once a month (or so 😭) - </span>
+          <button type="button" class="text-action" data-open-newsletter data-tooltip="Newsletter signup">
             subscribe by email
           </button>
           <span> or follow via </span>
