@@ -1,0 +1,387 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getSortedArticles, formatShortDate, normalizeTypeLabel } from '../lib/articles';
+
+const articles = await getSortedArticles();
+const recentArticles = articles.slice(0, 3);
+---
+
+<BaseLayout
+  title="404 — From the Cabinet"
+  description="The requested page could not be found in From the Cabinet."
+  noindex={true}
+>
+  <div class="wrap not-found">
+    <div class="col-wide">
+      <section class="not-found__hero" data-twitch-scope aria-labelledby="not-found-title">
+        <span class="kicker enter" style="--d: 0">Error 404 / Uncatalogued</span>
+        <h1 id="not-found-title" class="not-found__title enter" style="--d: 1">
+          Nothing found at this address.
+        </h1>
+        <p class="not-found__lede enter" style="--d: 2">
+          The essay, note or drawer you requested has been moved, renamed or never existed.
+        </p>
+
+        <nav class="not-found__controls enter" style="--d: 3" aria-label="Recovery navigation">
+          <div class="not-found__chooser">
+            <a href="/" class="chooser-btn kicker is-active">Return home</a>
+            <a href="/writing/" class="chooser-btn kicker">Browse writing</a>
+          </div>
+        </nav>
+      </section>
+
+      <section class="writing-index enter" style="--d: 4" aria-labelledby="recent-heading">
+        <div class="writing-index__head">
+          <h2 id="recent-heading" class="kicker">Recent from the cabinet</h2>
+          <a href="/writing/" class="kicker writing-index__all">All {articles.length} →</a>
+        </div>
+
+        <ul class="entry-list">
+          {
+            recentArticles.map((article) => (
+              <li class="entry-item">
+                <a href={`/writing/${article.id}/`} class="entry-row">
+                  <div class="entry-row__main">
+                    <span class="entry-row__title" transition:name={`title-${article.id}`}>
+                      {article.data.title}
+                    </span>
+                    <span class="entry-row__desc">{article.data.excerpt}</span>
+                  </div>
+                  <span class="entry-row__meta kicker">
+                    {normalizeTypeLabel(article.data.type)} · {formatShortDate(article.data.date)}
+                  </span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-top: clamp(3rem, 8vh, 5.75rem);
+  }
+
+  :global(main:has(.not-found)) {
+    flex: 0 0 auto;
+  }
+
+  :global(main:has(.not-found) + .site-footer) {
+    margin-top: 0;
+  }
+
+  .not-found__title {
+    margin: 0.9rem 0 1.25rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-display);
+    font-weight: 550;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    max-width: 15ch;
+  }
+
+  .not-found__lede {
+    margin: 0;
+    font-size: var(--text-lede);
+    line-height: 1.55;
+    letter-spacing: -0.012em;
+    color: var(--ink-2);
+    max-width: 44ch;
+  }
+
+  .not-found__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    margin-top: var(--s-6);
+  }
+
+  .not-found__chooser {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.15rem;
+  }
+
+  .chooser-btn {
+    display: inline-block;
+    line-height: 1.2;
+    padding: 0 0 0.2rem;
+    border: none;
+    border-bottom: 1px solid transparent;
+    background: transparent;
+    color: var(--muted);
+    transition: color var(--dur-1) ease, border-color var(--dur-1) ease;
+  }
+
+  .chooser-btn:hover {
+    color: var(--ink);
+  }
+
+  .chooser-btn.is-active {
+    color: var(--ink);
+    border-bottom-color: var(--accent);
+  }
+
+  :global(.twitch-word) {
+    cursor: default;
+  }
+
+  a :global(.twitch-word) {
+    cursor: inherit;
+  }
+
+  .writing-index {
+    margin-top: clamp(3.5rem, 8vh, 5.5rem);
+  }
+
+  .writing-index__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .writing-index__head h2 {
+    margin: 0;
+  }
+
+  .writing-index__all {
+    transition: color var(--dur-1) ease;
+  }
+
+  .writing-index__all:hover {
+    color: var(--ink);
+  }
+
+  .entry-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .entry-item {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .entry-item:last-child {
+    border-bottom: none;
+  }
+
+  .entry-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding-block: 1.25rem;
+    transition: opacity var(--dur-1) ease;
+  }
+
+  .entry-row:hover .entry-row__title {
+    color: var(--accent);
+  }
+
+  .entry-row__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+  }
+
+  .entry-row__title {
+    width: fit-content;
+    max-width: 100%;
+    font-size: 1.125rem;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    transition: color var(--dur-1) ease;
+  }
+
+  .entry-row__desc {
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--ink-2);
+    max-width: 56ch;
+  }
+
+  .entry-row__meta {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 720px) {
+    .entry-row {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: var(--s-6);
+    }
+  }
+</style>
+
+<script>
+  const NARROW_LOWER = 'iljftr';
+  const WIDE_LOWER = 'mw';
+  const MED_LOWER = 'abcdeghknopqsuvxyz';
+  const NARROW_UPPER = 'ILJTF';
+  const WIDE_UPPER = 'MW';
+  const MED_UPPER = 'ABCDEGHKNOPQSUVXYZ';
+  const DIGITS = '0123456789';
+
+  const NARROW_SIGNS = '!:|/·';
+  const MED_SIGNS = '§†‡×÷~*?+=_';
+  const WIDE_SIGNS = '#%@&';
+
+  function getPool(ch: string): string | null {
+    if (DIGITS.includes(ch)) return DIGITS + MED_SIGNS;
+    if (NARROW_LOWER.includes(ch)) return NARROW_LOWER + NARROW_SIGNS;
+    if (WIDE_LOWER.includes(ch)) return WIDE_LOWER + WIDE_SIGNS;
+    if (MED_LOWER.includes(ch)) return MED_LOWER + MED_SIGNS;
+    if (NARROW_UPPER.includes(ch)) return NARROW_UPPER + NARROW_SIGNS;
+    if (WIDE_UPPER.includes(ch)) return WIDE_UPPER + WIDE_SIGNS;
+    if (MED_UPPER.includes(ch)) return MED_UPPER + MED_SIGNS;
+    return null;
+  }
+
+  function pickReplacement(ch: string): string | null {
+    const pool = getPool(ch);
+    if (!pool || pool.length < 2) return null;
+    let next = ch;
+    for (let attempt = 0; attempt < 4 && next === ch; attempt++) {
+      next = pool[Math.floor(Math.random() * pool.length)];
+    }
+    return next === ch ? null : next;
+  }
+
+  let twitchAbort: AbortController | null = null;
+  let activeIntervals = new Set<number>();
+  let restoreCallbacks: Array<() => void> = [];
+
+  function teardownHoverTwitch() {
+    twitchAbort?.abort();
+    twitchAbort = null;
+    activeIntervals.forEach((id) => window.clearInterval(id));
+    activeIntervals.clear();
+    restoreCallbacks.forEach((fn) => fn());
+    restoreCallbacks = [];
+  }
+
+  function wrapWordsInScope(scope: HTMLElement) {
+    if (scope.dataset.twitchWrapped === 'true') return;
+    scope.dataset.twitchWrapped = 'true';
+
+    const textNodes: Text[] = [];
+    const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT);
+    let node: Node | null;
+
+    while ((node = walker.nextNode())) {
+      const textNode = node as Text;
+      const parent = textNode.parentElement;
+      if (!parent || parent.closest('[aria-hidden="true"]')) continue;
+      if (!(textNode.nodeValue ?? '').trim()) continue;
+      textNodes.push(textNode);
+    }
+
+    for (const textNode of textNodes) {
+      const raw = textNode.nodeValue ?? '';
+      const parts = raw.split(/(\s+)/);
+      const frag = document.createDocumentFragment();
+
+      for (const part of parts) {
+        if (!part) continue;
+        if (/^\s+$/.test(part) || !/[a-zA-Z0-9]/.test(part)) {
+          frag.appendChild(document.createTextNode(part));
+          continue;
+        }
+
+        const span = document.createElement('span');
+        span.className = 'twitch-word';
+        span.dataset.twitchOrig = part;
+        span.textContent = part;
+        frag.appendChild(span);
+      }
+
+      textNode.parentNode?.replaceChild(frag, textNode);
+    }
+  }
+
+  function initHeroWordTwitch() {
+    teardownHoverTwitch();
+
+    const scope = document.querySelector<HTMLElement>('[data-twitch-scope]');
+    if (!scope) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    wrapWordsInScope(scope);
+
+    twitchAbort = new AbortController();
+    const { signal } = twitchAbort;
+
+    const words = Array.from(scope.querySelectorAll<HTMLElement>('.twitch-word'));
+
+    words.forEach((wordEl) => {
+      const orig = wordEl.dataset.twitchOrig ?? wordEl.textContent ?? '';
+      const origChars = Array.from(orig);
+      const mutableIndices: number[] = [];
+
+      origChars.forEach((ch, idx) => {
+        if (getPool(ch) !== null) mutableIndices.push(idx);
+      });
+
+      if (mutableIndices.length === 0) return;
+
+      let intervalId: number | null = null;
+
+      const restore = () => {
+        if (intervalId !== null) {
+          window.clearInterval(intervalId);
+          activeIntervals.delete(intervalId);
+          intervalId = null;
+        }
+        if (wordEl.textContent !== orig) {
+          wordEl.textContent = orig;
+        }
+      };
+
+      restoreCallbacks.push(restore);
+
+      const tick = () => {
+        const nextChars = [...origChars];
+        const maxMutate = Math.max(1, Math.ceil(mutableIndices.length * 0.45));
+        const mutateCount = 1 + Math.floor(Math.random() * maxMutate);
+
+        for (let i = 0; i < mutateCount; i++) {
+          const idx = mutableIndices[Math.floor(Math.random() * mutableIndices.length)];
+          const replacement = pickReplacement(origChars[idx]);
+          if (replacement) nextChars[idx] = replacement;
+        }
+
+        wordEl.textContent = nextChars.join('');
+      };
+
+      wordEl.addEventListener(
+        'mouseenter',
+        () => {
+          if (intervalId !== null) return;
+          tick();
+          intervalId = window.setInterval(tick, 70);
+          activeIntervals.add(intervalId);
+        },
+        { signal }
+      );
+
+      wordEl.addEventListener('mouseleave', restore, { signal });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initHeroWordTwitch);
+  document.addEventListener('astro:before-swap', teardownHoverTwitch);
+</script>
