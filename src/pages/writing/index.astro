@@ -319,6 +319,9 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
     top: calc(100% + 0.65rem);
     z-index: 50;
     width: min(21rem, calc(100vw - 2 * var(--gutter)));
+    max-height: min(65svh, 24rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: 0.9rem;
     border-radius: 13px;
     background: var(--tooltip-bg);
@@ -328,6 +331,20 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
     backdrop-filter: blur(22px) saturate(1.8);
     transform-origin: top right;
     animation: topic-pop-in 240ms var(--ease-spring) both;
+  }
+
+  @media (max-width: 639px) {
+    .topic-pop-wrap {
+      position: static;
+    }
+
+    .topic-popover {
+      left: 0;
+      right: 0;
+      width: 100%;
+      top: calc(100% + 0.55rem);
+      transform-origin: top center;
+    }
   }
 
   .topic-popover[hidden] {
@@ -533,6 +550,31 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
       tagButtons.find((b) => (b.dataset.tagFilter ?? '').toLowerCase() === initialTagParam?.toLowerCase())
         ?.dataset.tagFilter ?? 'All';
 
+    const positionPopover = () => {
+      if (!topicPopover || topicPopover.hidden) return;
+      topicPopover.style.left = '';
+      topicPopover.style.right = '';
+      topicPopover.style.transformOrigin = '';
+
+      if (window.innerWidth < 640) return;
+
+      const rect = topicPopover.getBoundingClientRect();
+      const margin = 16;
+
+      if (rect.left < margin) {
+        const maxShift = window.innerWidth - margin - rect.right;
+        const delta = Math.min(margin - rect.left, Math.max(0, maxShift));
+        if (delta > 0) {
+          topicPopover.style.right = `${-delta}px`;
+          topicPopover.style.transformOrigin = 'top center';
+        }
+      } else if (rect.right > window.innerWidth - margin) {
+        const delta = rect.right - (window.innerWidth - margin);
+        topicPopover.style.right = `${delta}px`;
+        topicPopover.style.transformOrigin = 'top right';
+      }
+    };
+
     const setPopoverOpen = (open: boolean) => {
       if (!topicPopover || !topicToggle) return;
       topicPopover.hidden = !open;
@@ -540,6 +582,7 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
       if (open) {
         topicPopover.style.animation = 'none';
         void topicPopover.offsetWidth;
+        positionPopover();
         topicPopover.style.animation = '';
       }
     };
@@ -645,6 +688,8 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
       },
       { signal }
     );
+
+    window.addEventListener('resize', positionPopover, { signal });
 
     typeButtons.forEach((btn) => {
       btn.addEventListener(
