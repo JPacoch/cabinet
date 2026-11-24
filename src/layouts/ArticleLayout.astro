@@ -27,6 +27,7 @@ const articleJsonLd = [
     '@type': 'BlogPosting',
     headline: title,
     description,
+    image: `${siteOrigin}/images/og_image.png`,
     datePublished: date.toISOString(),
     dateModified: date.toISOString(),
     articleSection: displayType,
@@ -127,12 +128,12 @@ const articleJsonLd = [
               {formatFullDate(date)}
             </a>
           </time>
-          <span aria-hidden="true">·</span>
+          <span aria-hidden="true">/</span>
           <span>{readingTime}</span>
           {
             rendered.en.references.length > 0 && (
               <>
-                <span aria-hidden="true">·</span>
+                <span aria-hidden="true">/</span>
                 <a href="#references" class="meta-ref-link">
                   {rendered.en.references.length} {rendered.en.references.length === 1 ? 'note' : 'notes'}
                 </a>
