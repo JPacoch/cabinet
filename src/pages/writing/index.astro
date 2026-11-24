@@ -29,7 +29,7 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
     <div class="col-wide">
       <header class="archive-head">
         <span class="kicker enter" style="--d: 0">
-          Archive · <span data-archive-count>{String(articles.length).padStart(2, '0')}</span> Entries
+          Archive / <span data-archive-count>{String(articles.length).padStart(2, '0')}</span> Entries
         </span>
         <h1 class="archive-head__title enter" style="--d: 1">Writing</h1>
         <p class="archive-head__desc enter" style="--d: 2">
@@ -157,11 +157,11 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
 
                   <div class="archive-row__meta kicker">
                     <span>{displayType}</span>
-                    <span aria-hidden="true">·</span>
+                    <span aria-hidden="true">/</span>
                     <time datetime={article.data.date.toISOString().slice(0, 10)}>
                       {formatShortDate(article.data.date)}
                     </time>
-                    <span aria-hidden="true">·</span>
+                    <span aria-hidden="true">/</span>
                     <span>{article.data.readingTime}</span>
                   </div>
                 </a>
@@ -602,7 +602,7 @@ const allTags = Array.from(tagCounts.keys()).sort((a, b) => {
         topicToggle.classList.toggle('is-active', activeTag !== 'All');
       }
       if (topicLabel) {
-        topicLabel.textContent = activeTag === 'All' ? 'Topics' : `Topics · ${activeTag}`;
+        topicLabel.textContent = activeTag === 'All' ? 'Topics' : `Topics / ${activeTag}`;
       }
       if (topicClear) {
         topicClear.hidden = activeTag === 'All';

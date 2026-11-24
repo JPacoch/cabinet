@@ -48,7 +48,7 @@ const recentArticles = articles.slice(0, 3);
                     <span class="entry-row__desc">{article.data.excerpt}</span>
                   </div>
                   <span class="entry-row__meta kicker">
-                    {normalizeTypeLabel(article.data.type)} · {formatShortDate(article.data.date)}
+                    {normalizeTypeLabel(article.data.type)} / {formatShortDate(article.data.date)}
                   </span>
                 </a>
               </li>

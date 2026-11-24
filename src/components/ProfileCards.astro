@@ -1,11 +1,59 @@
 ---
-import type { GitHubProfileData } from '../lib/profiles';
+import type { SocialProfilesData } from '../lib/profiles';
 
 interface Props {
-  github: GitHubProfileData;
+  profiles: SocialProfilesData;
 }
 
-const { github } = Astro.props;
+const { profiles } = Astro.props;
+const { github, mastodon, substack, x } = profiles;
+
+function getInitials(label: string): string {
+  const cleaned = label.replace(/^@/, '').trim();
+  const words = cleaned.split(/[\s._-]+/).filter(Boolean);
+  if (words.length >= 2) {
+    return `${words[0][0]}${words[1][0]}`.toUpperCase();
+  }
+  return cleaned.slice(0, 2).toUpperCase() || '??';
+}
+
+function formatCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, '')}M`;
+  if (n >= 10_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, '')}k`;
+  return n.toLocaleString('en-US');
+}
+
+const githubSummary =
+  github.bio || [github.company, github.location].filter(Boolean).join(' / ') || undefined;
+const githubMeta = [
+  typeof github.repos === 'number' ? `${formatCount(github.repos)} ${github.repos === 1 ? 'repo' : 'repos'}` : null,
+  typeof github.followers === 'number'
+    ? `${formatCount(github.followers)} ${github.followers === 1 ? 'follower' : 'followers'}`
+    : null,
+].filter((item): item is string => Boolean(item));
+
+const mastodonMeta = [
+  typeof mastodon.statuses === 'number'
+    ? `${formatCount(mastodon.statuses)} ${mastodon.statuses === 1 ? 'post' : 'posts'}`
+    : null,
+  typeof mastodon.followers === 'number'
+    ? `${formatCount(mastodon.followers)} ${mastodon.followers === 1 ? 'follower' : 'followers'}`
+    : null,
+].filter((item): item is string => Boolean(item));
+
+const substackTitle = substack.publicationName || substack.name;
+const substackMeta = [
+  typeof substack.postCount === 'number'
+    ? `${formatCount(substack.postCount)} ${substack.postCount === 1 ? 'post' : 'posts'}`
+    : 'Newsletter',
+].filter((item): item is string => Boolean(item));
+
+const xMeta = [
+  typeof x.posts === 'number' ? `${formatCount(x.posts)} ${x.posts === 1 ? 'post' : 'posts'}` : null,
+  typeof x.followers === 'number'
+    ? `${formatCount(x.followers)} ${x.followers === 1 ? 'follower' : 'followers'}`
+    : null,
+].filter((item): item is string => Boolean(item));
 ---
 
 <div id="profile-card" class="profile-card" role="status" aria-hidden="true" hidden>
@@ -13,85 +61,71 @@ const { github } = Astro.props;
 </div>
 
 <template data-profile-tpl="github">
-  <div class="pc-gh">
-    <div class="pc-gh__months">
-      {github.months.map((m) => <span>{m}</span>)}
-    </div>
-    <div class="pc-gh__grid" aria-hidden="true">
-      {
-        github.weeks.map((week) => (
-          <div class="pc-gh__col">
-            {week.map((lvl) => (
-              <span class="pc-gh__cell" data-level={lvl} />
+  <div class="pc-social">
+    {
+      github.contributions && (
+        <div class="pc-gh__cal">
+          <div class="pc-gh__months">
+            {github.contributions.months.map((m) => <span>{m}</span>)}
+          </div>
+          <div class="pc-gh__grid" aria-hidden="true">
+            {github.contributions.weeks.map((week) => (
+              <div class="pc-gh__col">
+                {week.map((lvl) => (
+                  <span class="pc-gh__cell" data-level={lvl} />
+                ))}
+              </div>
             ))}
           </div>
-        ))
-      }
-    </div>
-    <div class="pc-gh__foot">
-      <div class="pc-avatar pc-avatar--cabinet" aria-hidden="true">JP</div>
-      <div class="pc-gh__meta">
-        <div class="pc-identity">
-          <span class="pc-name">{github.name}</span>
-          <span class="pc-handle">{github.username}</span>
         </div>
-        <p class="pc-bio">{github.bio}</p>
-        <div class="pc-sub">
-          {
-            typeof github.repos === 'number'
-              ? `${github.repos} public repos · github.com/${github.username} ↗`
-              : `github.com/${github.username} ↗`
-          }
-        </div>
+      )
+    }
+
+    <div class="pc-social__top">
+      <div class="pc-avatar pc-avatar--cabinet" aria-hidden="true">
+        <span class="pc-avatar__initials">{getInitials(github.name || github.username)}</span>
+        {
+          github.avatarUrl && (
+            <img
+              class="pc-avatar__img"
+              src={github.avatarUrl}
+              alt=""
+              width="36"
+              height="36"
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+            />
+          )
+        }
       </div>
-    </div>
-  </div>
-</template>
-
-<template data-profile-tpl="x">
-  <div class="pc-social">
-    <div class="pc-social__top">
-      <div class="pc-avatar pc-avatar--warm" aria-hidden="true">JP</div>
-      <span class="pc-badge" aria-label="X profile">𝕏</span>
-    </div>
-    <div class="pc-identity">
-      <span class="pc-name">Jakub Pacocha</span>
-      <svg class="pc-verified" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="10" fill="currentColor" />
-        <path d="M8.5 12.3l2.3 2.3 4.8-5.1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
-      </svg>
-      <span class="pc-handle">@JakubPacocha</span>
-    </div>
-    <p class="pc-bio">
-      Krajniak.
-
-Geografia, F1, polityka, Atalanta, Polska.
-    </p>
-    <div class="pc-stats">
-      <span>x.com/JakubPacocha ↗</span>
-    </div>
-  </div>
-</template>
-
-<template data-profile-tpl="substack">
-  <div class="pc-social">
-    <div class="pc-social__top">
-      <div class="pc-avatar pc-avatar--oxblood" aria-hidden="true">C</div>
-      <span class="pc-badge pc-badge--substack" aria-hidden="true">
-        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor">
-          <path d="M2 2h12v2H2V2zm0 3.5h12v2H2v-2zM2 9h12v5.5l-6-3.2-6 3.2V9z" />
+      <span class="pc-badge" aria-label="GitHub">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
         </svg>
       </span>
     </div>
+
     <div class="pc-identity">
-      <span class="pc-name">From the Cabinet</span>
-      <span class="pc-handle">@jakubpacocha</span>
+      <span class="pc-name">{github.name || github.handle}</span>
+      {github.name && <span class="pc-handle">@{github.username}</span>}
     </div>
-    <p class="pc-bio">Monthly dispatches, quiet reading notes &amp; new essays delivered to your inbox.</p>
+
+    {githubSummary && <p class="pc-bio">{githubSummary}</p>}
+    {!githubSummary && github.status === 'unavailable' && (
+      <p class="pc-bio pc-bio--muted">Public profile on GitHub</p>
+    )}
+
     <div class="pc-stats">
-      <span><strong>Newsletter</strong></span>
-      <span class="pc-dot" aria-hidden="true">·</span>
-      <span>jakubpacocha.substack.com ↗</span>
+      {
+        githubMeta.map((item) => (
+          <>
+            <span><strong>{item}</strong></span>
+            <span class="pc-sep" aria-hidden="true">/</span>
+          </>
+        ))
+      }
+      <span class="pc-url">{github.displayUrl} ↗</span>
     </div>
   </div>
 </template>
@@ -99,18 +133,163 @@ Geografia, F1, polityka, Atalanta, Polska.
 <template data-profile-tpl="mastodon">
   <div class="pc-social">
     <div class="pc-social__top">
-      <div class="pc-avatar pc-avatar--indigo" aria-hidden="true">JP</div>
-      <span class="pc-badge" aria-hidden="true">@</span>
+      <div class="pc-avatar pc-avatar--indigo" aria-hidden="true">
+        <span class="pc-avatar__initials">{getInitials(mastodon.name || mastodon.username)}</span>
+        {
+          mastodon.avatarUrl && (
+            <img
+              class="pc-avatar__img"
+              src={mastodon.avatarUrl}
+              alt=""
+              width="36"
+              height="36"
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+            />
+          )
+        }
+      </div>
+      <span class="pc-badge" aria-label="Mastodon">@</span>
     </div>
+
     <div class="pc-identity">
-      <span class="pc-name">Jakub Pacocha</span>
-      <span class="pc-handle">@JakubPacocha@mastodon.social</span>
+      <span class="pc-name">{mastodon.name || mastodon.handle}</span>
+      {mastodon.name && <span class="pc-handle">{mastodon.handle}</span>}
     </div>
-    <p class="pc-bio">#philosophy, #genai and local #activism. Writing for fromthecabinet.com/</p>
+
+    {mastodon.bio && <p class="pc-bio">{mastodon.bio}</p>}
+    {!mastodon.bio && mastodon.status === 'unavailable' && (
+      <p class="pc-bio pc-bio--muted">Public profile on {mastodon.instance}</p>
+    )}
+
     <div class="pc-stats">
-      <span><strong>Fediverse</strong></span>
-      <span class="pc-dot" aria-hidden="true">·</span>
-      <span>mastodon.social ↗</span>
+      {
+        mastodonMeta.map((item) => (
+          <>
+            <span><strong>{item}</strong></span>
+            <span class="pc-sep" aria-hidden="true">/</span>
+          </>
+        ))
+      }
+      <span class="pc-url">{mastodon.instance} ↗</span>
+    </div>
+  </div>
+</template>
+
+<template data-profile-tpl="substack">
+  <div class="pc-social">
+    <div class="pc-social__top">
+      <div class="pc-avatar pc-avatar--oxblood" aria-hidden="true">
+        <span class="pc-avatar__initials">{getInitials(substackTitle || substack.handle)}</span>
+        {
+          substack.avatarUrl && (
+            <img
+              class="pc-avatar__img"
+              src={substack.avatarUrl}
+              alt=""
+              width="36"
+              height="36"
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+            />
+          )
+        }
+      </div>
+      <span class="pc-badge pc-badge--substack" aria-label="Substack">
+        <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+          <path d="M2 2h12v2H2V2zm0 3.5h12v2H2v-2zM2 9h12v5.5l-6-3.2-6 3.2V9z" />
+        </svg>
+      </span>
+    </div>
+
+    <div class="pc-identity">
+      <span class="pc-name">{substackTitle || substack.handle}</span>
+      {substackTitle && <span class="pc-handle">{substack.handle}</span>}
+    </div>
+
+    {substack.bio && <p class="pc-bio">{substack.bio}</p>}
+    {!substack.bio && substack.status === 'unavailable' && (
+      <p class="pc-bio pc-bio--muted">Substack publication</p>
+    )}
+
+    {
+      substack.latestPostTitle && (
+        <div class="pc-latest">
+          <span class="pc-latest__label">
+            Latest{substack.latestPostDate ? ` / ${substack.latestPostDate}` : ''}
+          </span>
+          <span class="pc-latest__title">{substack.latestPostTitle}</span>
+        </div>
+      )
+    }
+
+    <div class="pc-stats">
+      {
+        substackMeta.map((item) => (
+          <>
+            <span><strong>{item}</strong></span>
+            <span class="pc-sep" aria-hidden="true">/</span>
+          </>
+        ))
+      }
+      <span class="pc-url">{substack.displayUrl} ↗</span>
+    </div>
+  </div>
+</template>
+
+<template data-profile-tpl="x">
+  <div class="pc-social">
+    <div class="pc-social__top">
+      <div class="pc-avatar pc-avatar--warm" aria-hidden="true">
+        <span class="pc-avatar__initials">{getInitials(x.name || x.username)}</span>
+        {
+          x.avatarUrl && (
+            <img
+              class="pc-avatar__img"
+              src={x.avatarUrl}
+              alt=""
+              width="36"
+              height="36"
+              loading="lazy"
+              decoding="async"
+              referrerpolicy="no-referrer"
+            />
+          )
+        }
+      </div>
+      <span class="pc-badge" aria-label="X">𝕏</span>
+    </div>
+
+    <div class="pc-identity">
+      <span class="pc-name">{x.name || x.handle}</span>
+      {
+        x.verifiedType && x.verifiedType !== 'none' && (
+          <svg class="pc-verified" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" fill="currentColor" />
+            <path d="M8.5 12.3l2.3 2.3 4.8-5.1" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+          </svg>
+        )
+      }
+      {x.name && <span class="pc-handle">{x.handle}</span>}
+    </div>
+
+    {x.bio && <p class="pc-bio">{x.bio}</p>}
+    {!x.bio && x.status === 'unavailable' && (
+      <p class="pc-bio pc-bio--muted">Public profile on X</p>
+    )}
+
+    <div class="pc-stats">
+      {
+        xMeta.map((item) => (
+          <>
+            <span><strong>{item}</strong></span>
+            <span class="pc-sep" aria-hidden="true">/</span>
+          </>
+        ))
+      }
+      <span class="pc-url">{x.displayUrl} ↗</span>
     </div>
   </div>
 </template>
@@ -130,7 +309,7 @@ Geografia, F1, polityka, Atalanta, Polska.
   }
 
   .profile-card__inner {
-    width: min(17.75rem, calc(100vw - 1.5rem));
+    width: min(18.5rem, calc(100vw - 1.5rem));
     padding: 0.9rem;
     border-radius: 16px;
     background: var(--tooltip-bg);
@@ -147,10 +326,17 @@ Geografia, F1, polityka, Atalanta, Polska.
     transform-origin: 50% 0%;
   }
 
+  :global(.pc-gh__cal) {
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.7rem;
+    border-bottom: 1px solid var(--line);
+  }
+
   :global(.pc-gh__months) {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     margin-bottom: 0.35rem;
+    font-family: var(--font-secondary);
     font-size: 0.6875rem;
     font-weight: 500;
     color: var(--muted);
@@ -160,7 +346,6 @@ Geografia, F1, polityka, Atalanta, Polska.
     display: grid;
     grid-template-columns: repeat(14, 1fr);
     gap: 3px;
-    margin-bottom: 0.8rem;
   }
 
   :global(.pc-gh__col) {
@@ -205,28 +390,43 @@ Geografia, F1, polityka, Atalanta, Polska.
     background: #39d353;
   }
 
-  :global(.pc-gh__foot) {
+  :global(.pc-social__top) {
     display: flex;
-    align-items: flex-start;
-    gap: 0.65rem;
-  }
-
-  :global(.pc-gh__meta) {
-    min-width: 0;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.55rem;
   }
 
   :global(.pc-avatar) {
-    width: 34px;
-    height: 34px;
+    position: relative;
+    width: 36px;
+    height: 36px;
     border-radius: var(--r-pill);
+    overflow: hidden;
     display: grid;
     place-items: center;
     flex-shrink: 0;
+    font-family: var(--font-secondary);
     font-size: 0.72rem;
-    font-weight: 650;
+    font-weight: 600;
     letter-spacing: -0.02em;
     color: #fff;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.22),
+      0 0 0 1px var(--line);
+  }
+
+  :global(.pc-avatar__initials) {
+    user-select: none;
+  }
+
+  :global(.pc-avatar__img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
   :global(.pc-avatar--cabinet) {
@@ -245,13 +445,6 @@ Geografia, F1, polityka, Atalanta, Polska.
     background: linear-gradient(135deg, #4f46e5, #881337);
   }
 
-  :global(.pc-social__top) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 0.55rem;
-  }
-
   :global(.pc-badge) {
     display: grid;
     place-items: center;
@@ -260,6 +453,7 @@ Geografia, F1, polityka, Atalanta, Polska.
     border-radius: var(--r-pill);
     background: var(--line);
     color: var(--ink-2);
+    font-family: var(--font-secondary);
     font-size: 0.75rem;
     font-weight: 600;
   }
@@ -271,9 +465,9 @@ Geografia, F1, polityka, Atalanta, Polska.
   :global(.pc-identity) {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    gap: 0.28rem;
-    margin-bottom: 0.28rem;
+    align-items: baseline;
+    gap: 0.3rem;
+    margin-bottom: 0.3rem;
     line-height: 1.25;
   }
 
@@ -287,42 +481,88 @@ Geografia, F1, polityka, Atalanta, Polska.
   :global(.pc-verified) {
     color: #1d9bf0;
     flex-shrink: 0;
+    align-self: center;
   }
 
   :global(.pc-handle) {
+    font-family: var(--font-secondary);
     font-size: 0.75rem;
     color: var(--muted);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.005em;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    max-width: 100%;
   }
 
   :global(.pc-bio) {
-    margin: 0 0 0.55rem;
+    margin: 0 0 0.6rem;
     font-size: 0.78rem;
-    line-height: 1.42;
+    line-height: 1.45;
     color: var(--ink-soft);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  :global(.pc-accent) {
-    color: var(--accent);
+  :global(.pc-bio--muted) {
+    color: var(--muted);
+  }
+
+  :global(.pc-latest) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-bottom: 0.6rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  :global(.pc-latest__label) {
+    font-family: var(--font-secondary);
+    font-size: 0.65rem;
     font-weight: 500;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
   }
 
-  :global(.pc-stats),
-  :global(.pc-sub) {
+  :global(.pc-latest__title) {
+    font-size: 0.76rem;
+    font-weight: 500;
+    line-height: 1.35;
+    color: var(--tooltip-ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(.pc-stats) {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.35rem;
+    font-family: var(--font-secondary);
     font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
     color: var(--muted);
   }
 
   :global(.pc-stats strong) {
     font-weight: 600;
     color: var(--tooltip-ink);
+  }
+
+  :global(.pc-sep) {
+    opacity: 0.6;
+  }
+
+  :global(.pc-url) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
 
@@ -354,7 +594,6 @@ Geografia, F1, polityka, Atalanta, Polska.
     let showTimer: number | null = null;
 
     let lastMouseX: number | null = null;
-    let lastMouseY: number | null = null;
     let lastMoveTime = performance.now();
     let pointerVx = 0;
 
@@ -482,6 +721,9 @@ Geografia, F1, polityka, Atalanta, Polska.
       const wasHidden = card.hidden || activeLink !== link;
       activeLink = link;
       body.replaceChildren(tpl.content.cloneNode(true));
+      body.querySelectorAll('img.pc-avatar__img').forEach((img) => {
+        img.addEventListener('error', () => img.remove(), { once: true });
+      });
       card.hidden = false;
 
       const { clampedX, top, pos } = computeBounds(link, lastMouseX);
@@ -510,7 +752,6 @@ Geografia, F1, polityka, Atalanta, Polska.
         (e) => {
           if (!canHover()) return;
           lastMouseX = e.clientX;
-          lastMouseY = e.clientY;
           if (showTimer !== null) window.clearTimeout(showTimer);
           showTimer = window.setTimeout(() => showFor(link), 70);
         },
@@ -526,7 +767,6 @@ Geografia, F1, polityka, Atalanta, Polska.
             pointerVx = clamp(((e.clientX - lastMouseX) / elapsed) * 1000, -1400, 1400);
           }
           lastMouseX = e.clientX;
-          lastMouseY = e.clientY;
           lastMoveTime = now;
 
           if (activeLink === link && !card.hidden) {
