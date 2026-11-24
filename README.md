@@ -1,6 +1,6 @@
 # From the Cabinet
 
-**[fromthecabinet.com](https://fromthecabinet.com)** · [Writing](https://fromthecabinet.com/writing/) · [Quotes](https://quotes.fromthecabinet.com/) · [RSS](https://fromthecabinet.com/rss.xml)
+**[fromthecabinet.com](https://fromthecabinet.com)** / [Writing](https://fromthecabinet.com/writing/) / [Quotes](https://quotes.fromthecabinet.com/) / [RSS](https://fromthecabinet.com/rss.xml)
 
 ---
 
@@ -27,17 +27,24 @@ If you enjoy reading this way, you can follow new texts via [RSS](https://fromth
 - **Framework:** [Astro](https://astro.build/) (static site generation, View Transitions)
 - **Runtime & Package Manager:** [Bun](https://bun.sh/)
 - **Content:** Pure `.mdx` files in `src/content/articles/` validated via `src/content.config.ts` and parsed via `src/lib/markdown.ts`
-- **Typography & Styling:** `Geist Variable` & `Geist Mono Variable` with semantic design tokens (`src/styles/tokens.css`, `global.css`, `typography.css`)
+- **Typography & Styling:** `Geist Variable` (primary), `Instrument Sans Variable` (secondary metadata & labels), and `Geist Mono Variable` (code & citation indices) with semantic design tokens (`src/styles/tokens.css`, `global.css`, `typography.css`)
 - **Hosting & CI:** Netlify (`netlify.toml`), rebuilding static HTML, RSS, and sitemaps automatically on push
 
 ### Local Development
 
 ```bash
 bun install
-bun run dev      # Start local dev server
-bun run build    # Build production static site to dist/
-bun run preview  # Preview dist/ locally
+bun --bun run dev      # Start local dev server (http://localhost:4321)
+bun --bun run build    # Build production static site to dist/
+bun --bun run preview  # Preview dist/ locally
 ```
+
+Use `--bun` so Bun executes Astro on its own runtime rather than falling back to system `node` (Astro `7.4.x` requires Node `>=22.23.4`).
+
+Optional environment variables (local `.env` or Netlify build settings) for the `/about/` social profile cards:
+- `X_BEARER_TOKEN` - enables live X profile metadata via X API v2 (without it, X falls back to a minimal link card).
+- `GITHUB_TOKEN` - raises GitHub API rate limits and enables the live 14-week contribution grid via GitHub GraphQL.
+- Mastodon, Substack, and basic GitHub profile details load automatically with no tokens.
 
 ### Adding a New Piece
 
@@ -62,7 +69,7 @@ Optional frontmatter flags:
 
 ### SEO, RSS & Sitemaps
 
-RSS (`/rss.xml`) and XML sitemaps (`/sitemap-index.xml`, `/sitemap-0.xml`, plus Netlify's `/sitemap.xml` rewrite) are generated strictly **at build time** (`bun run build`). That means zero runtime server overhead or slowdown for visitors, and automatic freshness on every Netlify production deploy.
+RSS (`/rss.xml`) and XML sitemaps (`/sitemap-index.xml`, `/sitemap-0.xml`, plus Netlify's `/sitemap.xml` rewrite) are generated strictly **at build time** (`bun --bun run build`). Open Graph and Twitter/X `summary_large_image` previews use `public/images/og_image.png`, browser tabs use `public/images/favicon.svg`, and the custom `404.html` page is excluded from sitemaps and marked `noindex, follow`. That means zero runtime server overhead or slowdown for visitors, and automatic freshness on every Netlify production deploy.
 
 </details>
 

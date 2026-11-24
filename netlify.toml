@@ -1,5 +1,5 @@
 [build]
-  command = "bun run build"
+  command = "bun --bun run build"
   publish = "dist"
 
 [build.environment]
@@ -75,3 +75,8 @@
   [headers.values]
     Content-Type = "application/xml; charset=utf-8"
     Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/404.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, follow"
