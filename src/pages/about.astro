@@ -1,9 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProfileCards from '../components/ProfileCards.astro';
-import { loadGitHubProfile } from '../lib/profiles';
+import { loadSocialProfiles } from '../lib/profiles';
 
-const githubProfile = await loadGitHubProfile('JPacoch');
+const socialProfiles = await loadSocialProfiles({
+  github: 'JPacoch',
+  mastodon: { username: 'JakubPacocha', instance: 'mastodon.social' },
+  substack: 'jakubpacocha',
+  x: 'JakubPacocha',
+});
 ---
 
 <BaseLayout
@@ -86,7 +91,7 @@ const githubProfile = await loadGitHubProfile('JPacoch');
       </div>
     </div>
   </div>
-  <ProfileCards github={githubProfile} />
+  <ProfileCards profiles={socialProfiles} />
 </BaseLayout>
 
 <style>
