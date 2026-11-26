@@ -67,9 +67,16 @@ Optional frontmatter flags:
 - Footnotes (`[^1]` inline, `[^1]: ...` at the bottom) automatically classify into *Citation*, *Commentary*, *Aside*, or *Note* popovers and endnotes.
 - Headings (`##`, `###`) automatically populate the margin Table of Contents on articles with 2 or more sections.
 
-### SEO, RSS & Sitemaps
+### SEO, Dynamic OG Images, RSS & Sitemaps
 
-RSS (`/rss.xml`) and XML sitemaps (`/sitemap-index.xml`, `/sitemap-0.xml`, plus Netlify's `/sitemap.xml` rewrite) are generated strictly **at build time** (`bun --bun run build`). Open Graph and Twitter/X `summary_large_image` previews use `public/images/og_image.png`, browser tabs use `public/images/favicon.svg`, and the custom `404.html` page is excluded from sitemaps and marked `noindex, follow`. That means zero runtime server overhead or slowdown for visitors, and automatic freshness on every Netlify production deploy.
+RSS (`/rss.xml`), XML sitemaps (`/sitemap-index.xml`, `/sitemap-0.xml`, plus Netlify's `/sitemap.xml` rewrite), and `1200×630` Open Graph preview PNGs are generated strictly **at build time** (`bun --bun run build`) with zero client-side JavaScript required by crawlers:
+
+- **Homepage & default social banner:** Generated at `/og/home.png` (`src/pages/og/home.png.ts`) with site-level branding, tagline, and canonical URL (`https://fromthecabinet.com/`).
+- **Per-article social banners:** Generated automatically at `/og/writing/<slug>.png` (`src/pages/og/writing/[slug].png.ts`) using `satori` + `@resvg/resvg-js` (`src/lib/og.ts`) from each article's frontmatter (`title`, `summary`/`excerpt`, `type`, `readingTime`, `tags`, `date`). Missing optional fields are omitted gracefully and typography scales dynamically to avoid clipping.
+- **Caching & refresh behavior:**
+  - Each image's payload (metadata + template version) is SHA-256 hashed (`?v=<hash>`). Rendered PNGs are cached locally in `.astro/og-cache/` so unchanged articles are not re-rendered across builds.
+  - Updating any article frontmatter changes its `?v=<hash>` query string in `og:image` and `twitter:image`, busting social platform CDN caches automatically on the next deploy while `/og/*` serves `Cache-Control: public, max-age=3600, must-revalidate` (`netlify.toml`).
+- **404 & Sitemap hygiene:** The custom `404.html` page and `/og/*` endpoints are excluded from sitemaps, and `404.html` emits `noindex, follow` (both `<meta>` and `X-Robots-Tag`) with no canonical tag.
 
 </details>
 

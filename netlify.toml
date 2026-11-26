@@ -80,3 +80,9 @@
   for = "/404.html"
   [headers.values]
     X-Robots-Tag = "noindex, follow"
+
+[[headers]]
+  for = "/og/*"
+  [headers.values]
+    Content-Type = "image/png"
+    Cache-Control = "public, max-age=3600, must-revalidate"
