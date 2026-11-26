@@ -5,6 +5,7 @@ import CitationPopover from '../components/CitationPopover.astro';
 import InteractiveDiagram from '../components/InteractiveDiagram.astro';
 import type { RenderedArticle } from '../lib/markdown';
 import { formatFullDate, formatShortDate, normalizeTypeLabel, type ArticleEntry } from '../lib/articles';
+import { getArticleOgAlt, getArticleOgPath } from '../lib/og';
 
 interface Props {
   entry: ArticleEntry;
@@ -21,13 +22,16 @@ const description = summary || excerpt;
 
 const siteOrigin = (Astro.site ?? new URL('https://fromthecabinet.com')).toString().replace(/\/$/, '');
 const articleUrl = `${siteOrigin}/writing/${entry.id}/`;
+const articleOgPath = getArticleOgPath(entry);
+const articleOgUrl = new URL(articleOgPath, siteOrigin).href;
+const articleOgAlt = getArticleOgAlt(entry);
 const articleJsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
     headline: title,
     description,
-    image: `${siteOrigin}/images/og_image.png`,
+    image: articleOgUrl,
     datePublished: date.toISOString(),
     dateModified: date.toISOString(),
     articleSection: displayType,
@@ -71,6 +75,8 @@ const articleJsonLd = [
   title={`${title} — From the Cabinet`}
   description={description}
   ogType="article"
+  ogImage={articleOgPath}
+  ogImageAlt={articleOgAlt}
   publishedTime={date.toISOString()}
   articleSection={displayType}
   tags={tags}

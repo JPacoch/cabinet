@@ -11,6 +11,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import NewsletterModal from '../components/NewsletterModal.astro';
 import LinkTooltip from '../components/LinkTooltip.astro';
+import { getHomeOgPath, OG_HEIGHT, OG_WIDTH } from '../lib/og';
 
 interface Props {
   title: string;
@@ -31,7 +32,7 @@ const {
   title,
   description = 'From the Cabinet — Essays, dialogues, and slow notes on philosophy, theology, and attention by Jakub Pacocha.',
   ogType = 'website',
-  ogImage = '/images/og_image.png',
+  ogImage = getHomeOgPath(),
   ogImageAlt = 'From the Cabinet — A living cabinet of essays, treatises and longform notes',
   publishedTime,
   articleSection,
@@ -43,7 +44,12 @@ const {
 } = Astro.props;
 
 const siteOrigin = (Astro.site ?? new URL('https://fromthecabinet.com')).toString().replace(/\/$/, '');
-const canonicalUrl = new URL(Astro.url.pathname, siteOrigin).href;
+const rawPath = Astro.url.pathname;
+const normalizedPath =
+  rawPath === '/' || rawPath.endsWith('/') || /\.[a-z0-9]+$/i.test(rawPath)
+    ? rawPath
+    : `${rawPath}/`;
+const canonicalUrl = new URL(normalizedPath, siteOrigin).href;
 const ogImageUrl = new URL(ogImage, siteOrigin).href;
 const currentPath = Astro.url.pathname;
 
@@ -54,6 +60,7 @@ const defaultJsonLd = {
   url: `${siteOrigin}/`,
   description:
     'A living cabinet of essays, dialogues, and slow notes on philosophy, theology, and attention.',
+  image: ogImageUrl,
   author: {
     '@type': 'Person',
     name: 'Jakub Pacocha',
@@ -73,7 +80,7 @@ const structuredData = jsonLd ?? defaultJsonLd;
     <meta name="description" content={description} />
     <meta name="author" content="Jakub Pacocha" />
     <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
-    <link rel="canonical" href={canonicalUrl} />
+    {!noindex && <link rel="canonical" href={canonicalUrl} />}
     <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap-index.xml" />
     <link rel="icon" type="image/svg+xml" href="/images/favicon.png" />
     <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)" />
@@ -89,8 +96,8 @@ const structuredData = jsonLd ?? defaultJsonLd;
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
     <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1220" />
-    <meta property="og:image:height" content="650" />
+    <meta property="og:image:width" content={String(OG_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_HEIGHT)} />
     <meta property="og:image:alt" content={ogImageAlt} />
     {ogType === 'article' && <meta property="article:author" content="Jakub Pacocha" />}
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}

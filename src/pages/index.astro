@@ -1,11 +1,19 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getSortedArticles, formatShortDate, normalizeTypeLabel } from '../lib/articles';
+import { getHomeOgPath } from '../lib/og';
 
 const articles = await getSortedArticles();
+const homeOgImage = getHomeOgPath();
 ---
 
-<BaseLayout title="From the Cabinet — Essays, Dialogues & Slow Notes">
+<BaseLayout
+  title="From the Cabinet — Essays, Dialogues & Slow Notes"
+  description="A living cabinet of essays, treatises, dialogues, and slow notes on philosophy, theology, and attention by Jakub Pacocha."
+  ogType="website"
+  ogImage={homeOgImage}
+  ogImageAlt="From the Cabinet — A living cabinet of essays, treatises and longform notes"
+>
   <div class="wrap home">
     <div class="col-wide">
       <section class="intro">

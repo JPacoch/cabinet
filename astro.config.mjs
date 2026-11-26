@@ -29,6 +29,7 @@ export default defineConfig({
   integrations: [
     mdx(),
     sitemap({
+      filter: (page) => !page.includes('/og/') && !page.endsWith('/404/') && !page.endsWith('/404.html'),
       serialize(item) {
         const articleLastMod = articleDates.get(item.url);
         if (articleLastMod) {
