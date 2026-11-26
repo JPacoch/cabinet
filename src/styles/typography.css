@@ -66,6 +66,7 @@
   text-decoration-color: var(--accent-line);
   text-underline-offset: 0.24em;
   text-decoration-thickness: 1px;
+  overflow-wrap: anywhere;
   transition: color var(--dur-1) ease, text-decoration-color var(--dur-1) ease;
 }
 

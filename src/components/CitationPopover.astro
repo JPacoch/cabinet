@@ -166,10 +166,17 @@
     transform: scale(0.9);
   }
 
+  .citation-popover__body {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .citation-popover__body :global(a) {
     color: var(--accent);
     text-decoration: underline;
     text-underline-offset: 2px;
+    overflow-wrap: anywhere;
+    word-break: break-word;
   }
 
   .citation-popover__footer {
@@ -214,6 +221,9 @@
       bottom: 0 !important;
       width: 100%;
       max-width: 100%;
+      max-height: min(75svh, 32rem);
+      overflow-y: auto;
+      overscroll-behavior: contain;
       background: var(--surface);
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
